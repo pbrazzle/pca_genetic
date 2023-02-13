@@ -1,0 +1,19 @@
+Notes for genetic algorithm implementation
+
+User provides fitness function and training data
+Runs for given number of generations
+Model selects highest scoring solution at the end
+
+API Data Structures
+- Fitness function
+- Input function
+- Genetic Model
+- Model Settings
+
+Internal Data Structures
+- Solution
+- Generation
+
+Use Cases
+- Given a fitness function, and number of generations, train the model
+- Given a trained model, run an arbitrary function
