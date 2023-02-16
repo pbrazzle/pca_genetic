@@ -17,3 +17,9 @@ Internal Data Structures
 Use Cases
 - Given a fitness function, and number of generations, train the model
 - Given a trained model, run an arbitrary function
+
+I want to give the algorithm some training data and a blank model, and have it work from there
+So it would be nice if the model and data were abstract classes
+If the model was templated based on input and output data, the algorithm would need that as well
+
+The model doesn't want a specific input subclass -> Just the correct data length

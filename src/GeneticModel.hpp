@@ -1,30 +1,25 @@
 #ifndef GENETIC_MODEL 
 #define GENETIC_MODEL
 
-#include <functional>
-#include <array>
+#include <memory>
+#include <vector>
+
+#include "ModelInputData.hpp"
+#include "ModelOutputData.hpp"
+#include "ModelParameters.hpp"
 
 namespace PCAGenetic
 {
-	template <typename T, int numParams>
 	class GeneticModel
 	{
-		typedef std::function<T(std::array<T,numParams>)> modelFunc;
-		
-		private:
-			
 		public:
-			GeneticModel();
-		
-			//Trains the model with the provided fitness function
-			//Runs the provided number of generations
-			void train(modelFunc fitnessFunc, int generations);
+			virtual ~GeneticModel() = 0;
 			
-			//Calculates the result of the given function using the best available solution
-			T calculateFunc(modelFunc func);
+			virtual std::unique_ptr<ModelOutputData> evaluate(ModelInputData&) = 0;
+			
+			virtual std::unique_ptr<ModelParameters> getParameters() const = 0;
+			virtual void setParameters(ModelParameters&) = 0;
 	};
 }
-
-#include "GeneticModel.tpp"
 
 #endif

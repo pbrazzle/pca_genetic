@@ -2,7 +2,5 @@
 
 int main()
 {
-	GeneticModel<int, 10> basicModel;
-	
 	return 0;
 }
