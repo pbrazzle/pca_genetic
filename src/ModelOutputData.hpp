@@ -1,15 +1,20 @@
 #ifndef MODELOUTPUTDATA
 #define MODELOUTPUTDATA
 
+#include <vector>
+
 namespace PCAGenetic
 {
 	class ModelOutputData
 	{
 		public:
-			virtual ~ModelOutputData = 0;
+			virtual ~ModelOutputData() { }
 			
 			//Returns a double representing the distance between 2 model outputs
 			virtual double distance(ModelOutputData&) = 0;
+
+			//Returns a vector representation of the data
+			virtual std::vector<double> getData() = 0;
 	};
 }
 
