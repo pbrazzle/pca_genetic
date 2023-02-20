@@ -15,7 +15,7 @@ namespace PCAGenetic
 		public:
 			virtual ~GeneticAlgorithm() { }
 			
-			virtual void train(std::unique_ptr<GeneticModel>, std::vector<trainingItem>, int) = 0;
+			virtual void train(const GeneticModel&, std::vector<trainingItem>, int) = 0;
 			virtual void continueTraining(int) = 0;
 			
 			virtual std::unique_ptr<GeneticModel> getBestModel() = 0;

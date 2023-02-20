@@ -6,7 +6,6 @@
 #include <time.h>
 #include <numeric>
 #include <algorithm>
-#include <iostream>
 
 #include "LinearGeneticModel.hpp"
 
@@ -14,7 +13,6 @@ using PCAGenetic::BasicGeneticAlgorithm;
 using PCAGenetic::GeneticModel;
 
 const unsigned int GENERATION_SIZE = 100;
-const double MUTATION_CHANCE = 0.01;
 
 template <typename T>
 std::vector<size_t> getSortedIndices(const std::vector<T>&);
@@ -39,12 +37,6 @@ void BasicGeneticAlgorithm::calculateFitnesses()
 		fitnesses.push_back(fitness);
 	}
 
-	//This way better models have higher fitness scores
-	for (int i = 0; i < fitnesses.size(); i++)
-	{
-		fitnesses[i] = 1 / fitnesses[i];	
-	}
-
 	std::vector<size_t> fitnessIndices = getSortedIndices(fitnesses);
 
 	//Sorting by fitness for easier parent selection
@@ -60,6 +52,7 @@ void BasicGeneticAlgorithm::calculateFitnesses()
 
 std::vector<double> BasicGeneticAlgorithm::combineParameters(std::vector<double> p1, std::vector<double> p2)
 {
+	srand((unsigned) time(NULL));
 	int crossingPos = rand() % p1.size();
 
 	std::vector<double> newParams;
@@ -67,14 +60,6 @@ std::vector<double> BasicGeneticAlgorithm::combineParameters(std::vector<double>
 
 	newParams.insert(newParams.end(), p1.begin(), p1.begin() + crossingPos);
 	newParams.insert(newParams.end(), p2.begin() + crossingPos, p2.end());
-
-	for (int i = 0; i < newParams.size(); i++)
-	{
-		if ((double) rand() / RAND_MAX < MUTATION_CHANCE)
-		{
-			newParams[i] += 20*((double) rand() / RAND_MAX) - 10;
-		}
-	}
 
 	return newParams;
 }
@@ -102,26 +87,33 @@ std::vector<std::reference_wrapper<const T>> applyPermutation(const std::vector<
 	return perm;
 }
 
-size_t lowestFitnessSelect(std::vector<double> fitnesses)
-{
-	double sum = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0);
-	std::vector<double> probDensity(fitnesses.size());
-	double p = 0.0;
-	std::transform(fitnesses.begin(), fitnesses.end(), probDensity.begin(),
-		[&p, sum](double fitness){ p += fitness/sum; return p; });
-
-	double selection = (double) rand() / RAND_MAX;
-	size_t index = 0;
-	while (selection > probDensity[index] && index < probDensity.size()-1) index++;
-	return index;	
-}
-
+//TODO Select parents based on fitness scores
 std::pair<std::unique_ptr<GeneticModel>, std::unique_ptr<GeneticModel>> BasicGeneticAlgorithm::selectParents()
 {
 	std::pair<std::unique_ptr<GeneticModel>, std::unique_ptr<GeneticModel>> parents;
 
-	parents.first = models[lowestFitnessSelect(fitnesses)]->clone();
-	parents.second = models[lowestFitnessSelect(fitnesses)]->clone();
+	parents.first = models[0]->clone();
+	parents.second = models[0]->clone();
+
+	double selection = (double) rand() / RAND_MAX;
+	double fitnessSum = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0);
+
+	int i = 0;
+	while (selection > 0)
+	{
+		selection -= fitnesses[i] / fitnessSum;
+		i++;
+	}
+	parents.first = models[i]->clone();
+
+	selection = (double) rand() / RAND_MAX;
+	i = 0;
+	while (selection > 0)
+	{
+		selection -= fitnesses[i] / fitnessSum;
+		i++;
+	}
+	parents.second = models[i]->clone();
 
 	return parents;
 }
@@ -146,19 +138,15 @@ void BasicGeneticAlgorithm::runGeneration()
 	models = std::move(newGeneration);
 }
 
-void BasicGeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem> tData, int generations)
+void BasicGeneticAlgorithm::train(std::unique_ptr<GeneticModel> modelTemplate, std::vector<trainingItem> tData, int generations)
 {
-	srand(time(NULL));
 	trainingData = std::move(tData);
 
 	models.clear();
 	for (int i = 0; i < GENERATION_SIZE; i++)
 	{
-		std::unique_ptr<GeneticModel> model = modelTemplate.clone();
-		std::vector<double> params = model->getParameters();
-		for (int j = 0; j < params.size(); j++) params[j] = 2000*((double) rand() / RAND_MAX) - 1000;
-		model->setParameters(params);
-		models.push_back(std::move(model));
+		//TODO give each clone random parameters
+		models.push_back(modelTemplate->clone());
 	}
 
 	continueTraining(generations);
@@ -171,5 +159,5 @@ void BasicGeneticAlgorithm::continueTraining(int generations)
 
 std::unique_ptr<GeneticModel> BasicGeneticAlgorithm::getBestModel()
 {
-	return models[0]->clone();
+	return std::make_unique<LinearGeneticModel>(0);
 }

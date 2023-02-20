@@ -22,7 +22,7 @@ namespace PCAGenetic
 		public:
 			BasicGeneticAlgorithm();
 
-			void train(std::unique_ptr<GeneticModel>, std::vector<trainingItem>, int);
+			void train(const GeneticModel&, std::vector<trainingItem>, int);
 			void continueTraining(int);
 
 			std::unique_ptr<GeneticModel> getBestModel();
