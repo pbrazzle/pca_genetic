@@ -42,7 +42,7 @@ namespace PCAGenetic
 		
 			GeneticAlgorithm& operator=(const GeneticAlgorithm& other);
 
-			virtual void train(const GeneticModel&, std::vector<trainingItem>, int);
+			virtual void train(const GeneticModel&, std::vector<trainingItem>&, int);
 			virtual void continueTraining(int);
 			
 			virtual std::unique_ptr<GeneticModel> getBestModel();

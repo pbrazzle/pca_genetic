@@ -1,7 +1,8 @@
 #ifndef MODELINPUTDATAVECTOR
 #define MODELINPUTDATAVECTOR
 
-#include "ModelInputData.hpp"
+#include "model/ModelInputData.hpp"
+#include <memory>
 
 namespace PCAGenetic
 {
@@ -12,6 +13,8 @@ namespace PCAGenetic
 
 		public:
 			ModelInputDataVector(std::vector<double>);
+
+			std::unique_ptr<ModelInputData> clone() const;
 
 			std::vector<double> getData();			
 	};

@@ -13,5 +13,12 @@ std::unique_ptr<ParentCombiner> SingleCrossingCombiner::clone() const
 
 std::vector<double> SingleCrossingCombiner::combineParameters(const std::vector<double> &p1, const std::vector<double> &p2)
 {
-	return p1;
+	size_t crossingIndex = rand() % p1.size();
+
+	std::vector<double> newParams;
+	newParams.reserve(p1.size());
+	newParams.insert(newParams.end(), p1.begin(), p1.begin()+crossingIndex);
+	newParams.insert(newParams.end(), p2.begin()+crossingIndex, p2.end());
+
+	return newParams;
 }

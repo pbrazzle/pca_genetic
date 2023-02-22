@@ -1,6 +1,7 @@
 #ifndef MODELOUTPUTDATA
 #define MODELOUTPUTDATA
 
+#include <memory>
 #include <vector>
 
 namespace PCAGenetic
@@ -9,7 +10,9 @@ namespace PCAGenetic
 	{
 		public:
 			virtual ~ModelOutputData() { }
-			
+
+			virtual std::unique_ptr<ModelOutputData> clone() const = 0;
+
 			//Returns a double representing the distance between 2 model outputs
 			virtual double distance(ModelOutputData&) = 0;
 

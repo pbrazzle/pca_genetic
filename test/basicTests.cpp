@@ -19,9 +19,13 @@ using PCAGenetic::ModelOutputData;
 //Optimize to 3x3 identity matrix
 int main()
 {
+	std::cout << "Basic Algorithm test: 3x3 identity matrix\n";
+	
 	GeneticAlgorithm geneticAlg = makeBasicAlgorithm();
+	std::cout << "Built BasicGeneticAlgorithm\n";
 
 	LinearGeneticModel templateModel(3);
+	std::cout << "Built LinearGeneticModel as template\n";
 
 	std::vector<double> vals = {1.0, 1.0, 1.0};
 	ModelInputDataVector sampleInput(vals);
@@ -30,18 +34,22 @@ int main()
 	PCAGenetic::trainingItem item;
 	item.first = std::unique_ptr<ModelInputData>(new ModelInputDataVector(vals));
 	item.second = std::unique_ptr<ModelOutputData>(new ModelOutputDataVector(vals));
+	std::cout << "Built training data\n";
 
 	std::vector<PCAGenetic::trainingItem> trainingData;
 	trainingData.emplace_back(std::move(item));
 
-	geneticAlg.train(templateModel, std::move(trainingData), 500);
+	geneticAlg.train(templateModel, std::move(trainingData), 0);
+	for (int i = 0; i < 1000; i++)
+	{
+		geneticAlg.continueTraining(100);
 
-	std::unique_ptr<GeneticModel> optimizedModel = geneticAlg.getBestModel();
+		std::unique_ptr<GeneticModel> optimizedModel = geneticAlg.getBestModel();
 
-	std::unique_ptr<ModelOutputData> optimizedOutput = optimizedModel->evaluate(sampleInput);
-	std::vector<double> optimizedVals = optimizedOutput->getData();
-
-	std::cout << "Optimized output: " << optimizedVals[0] << ", " << optimizedVals[1] << ", " << optimizedVals[2] << '\n';
+		std::unique_ptr<ModelOutputData> optimizedOutput = optimizedModel->evaluate(sampleInput);
+		double distance = optimizedOutput->distance(sampleOutput);
+		std::cout << "Run " << i << ": " << distance << '\n';
+	}
 
 	return 0;
 }

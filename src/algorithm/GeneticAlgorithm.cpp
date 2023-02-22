@@ -1,15 +1,28 @@
 #include "GeneticAlgorithm.hpp"
-#include "LinearGeneticModel.hpp"
+#include "model/LinearGeneticModel.hpp"
 
 #include <cstdlib>
 #include <numeric>
 #include <algorithm>
+#include <vector>
+#include <iostream>
 
 using PCAGenetic::GeneticAlgorithm;
 using PCAGenetic::GeneticModel;
 using PCAGenetic::trainingItem;
 
-const unsigned int GENERATION_SIZE = 100;
+const unsigned int GENERATION_SIZE = 500;
+const double MUTATION_CHANCE = 0.1;
+const double START_RANGE = 1;
+const double MUTATION_SIZE = 0.01;
+const bool DEBUG = true;
+
+template <class T>
+void LOG(T message)
+{
+	if (DEBUG)
+		std::cout << message;
+}
 
 GeneticAlgorithm::GeneticAlgorithm() { }
 
@@ -35,7 +48,7 @@ GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& other)
 	return *this;
 }
 
-void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem> td, int generations)
+void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem>& td, int generations)
 {
 	trainingData = std::move(td);
 	models.clear();
@@ -46,7 +59,7 @@ void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trai
 		std::vector<double> params = modelTemplate.getParameters();
 		for (int j = 0; j < params.size(); j++)
 		{
-			params[j] = 2000*((double) rand() / RAND_MAX) - 1000;
+			params[j] = 2*START_RANGE*((double) rand() / RAND_MAX) - START_RANGE;
 		}
 		std::unique_ptr<GeneticModel> model = modelTemplate.clone();
 		model->setParameters(params);
@@ -78,6 +91,17 @@ void GeneticAlgorithm::calculateFitnesses()
 	models = std::move(models);
 }
 
+std::vector<double> mutateParams(const std::vector<double>& params)
+{
+	std::vector<double> mutated = params;
+	for (int i = 0; i < params.size(); i++)
+	{
+		if (((double) rand() / RAND_MAX) < MUTATION_CHANCE)
+			mutated[i] += mutated[i]*MUTATION_SIZE*((rand() % 3) - 1);
+	}
+	return mutated;
+}
+
 void GeneticAlgorithm::runGeneration()
 {
 	modelVector newModels;
@@ -86,6 +110,7 @@ void GeneticAlgorithm::runGeneration()
 	{
 		parentPair parents = parentSelect->selectParents(models, fitnesses);
 		std::vector<double> combined = parentComb->combineParameters(parents.first->getParameters(), parents.second->getParameters());
+		combined = mutateParams(combined);
 
 		std::unique_ptr<GeneticModel> child = models[0]->clone();
 		child->setParameters(combined);
@@ -94,6 +119,11 @@ void GeneticAlgorithm::runGeneration()
 
 	models = std::move(newModels);
 	calculateFitnesses();
+
+	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / GENERATION_SIZE;
+	LOG("Generation complete: ");
+	LOG(avg_fitness);
+	LOG('\n');
 }
 
 std::unique_ptr<GeneticModel> GeneticAlgorithm::getBestModel()

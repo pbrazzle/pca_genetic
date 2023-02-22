@@ -1,0 +1,21 @@
+#ifndef SIMULATION_FILE_READER
+#define SIMULATION_FILE_READER
+
+#include "simulator/Simulation.hpp"
+
+#include <vector>
+#include <string>
+
+namespace PCAGenetic
+{
+	//Parses Simulation objects from .gen file
+	class SimulationFileReader
+	{
+		public:
+			SimulationFileReader();
+
+			std::vector<Simulation> readSimulations(std::string);
+	};
+}
+
+#endif

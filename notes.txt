@@ -1,25 +1,21 @@
-Notes for genetic algorithm implementation
+TODOs:
+	The program should be able to read instructions from a file
+	For example:
+		File contains info about Algorithm, Model, and training data
+		Run for X generations/run until converged/whatever
 
-User provides fitness function and training data
-Runs for given number of generations
-Model selects highest scoring solution at the end
+	The files should be able to chain up simulations and print out results
+	This way we can run a ton of them and let it go witout recompiling/rerunning
 
-API Data Structures
-- Fitness function
-- Input function
-- Genetic Model
-- Model Settings
-
-Internal Data Structures
-- Solution
-- Generation
-
-Use Cases
-- Given a fitness function, and number of generations, train the model
-- Given a trained model, run an arbitrary function
-
-I want to give the algorithm some training data and a blank model, and have it work from there
-So it would be nice if the model and data were abstract classes
-If the model was templated based on input and output data, the algorithm would need that as well
-
-The model doesn't want a specific input subclass -> Just the correct data length
+Instruction file format:
+${Algorithm Name}
+${Fitness Calculator Class Name}
+${Parent Selector Class Name}
+${Parent Combiner Class Name}
+${Model Class Name}
+"Model Specific Data" 				#For LinearGeneticModel this will be a single line for data length
+${Number of Training Data Entries}		
+"Training Data"					#For now this will be CSV lines of Input then Output
+${Number of generations to run}
+\n
+...						#We can chain up several algorithm runs

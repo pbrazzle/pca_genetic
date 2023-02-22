@@ -2,6 +2,7 @@
 #define MODELOUTPUTDATAVECTOR
 
 #include "ModelOutputData.hpp"
+#include <memory>
 
 namespace PCAGenetic
 {
@@ -11,6 +12,8 @@ namespace PCAGenetic
 			std::vector<double> data;
 		public:
 			ModelOutputDataVector(std::vector<double>);
+
+			std::unique_ptr<ModelOutputData> clone() const;
 
 			double distance(ModelOutputData&);
 
