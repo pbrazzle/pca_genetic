@@ -11,11 +11,28 @@ using PCAGenetic::trainingItem;
 
 const unsigned int GENERATION_SIZE = 100;
 
+GeneticAlgorithm::GeneticAlgorithm() { }
+
 GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps, std::unique_ptr<ParentCombiner> pc)
 { 
 	fitnessCalc = std::move(fc);
 	parentSelect = std::move(ps);
 	parentComb = std::move(pc);
+}
+
+GeneticAlgorithm::GeneticAlgorithm(GeneticAlgorithm& alg)
+{
+	fitnessCalc = std::move(alg.fitnessCalc->clone());
+	parentSelect = std::move(alg.parentSelect->clone());
+	parentComb = std::move(alg.parentComb->clone());
+}
+
+GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& other)
+{
+	fitnessCalc = std::move(other.fitnessCalc->clone());
+	parentComb = std::move(other.parentComb->clone());
+	parentSelect = std::move(other.parentSelect->clone());
+	return *this;
 }
 
 void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem> td, int generations)

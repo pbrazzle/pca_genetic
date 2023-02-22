@@ -1,6 +1,7 @@
 #ifndef PARENT_COMBINER
 #define PARENT_COMBINER
 
+#include <memory>
 #include <vector>
 
 namespace PCAGenetic
@@ -9,6 +10,8 @@ namespace PCAGenetic
 	{
 		public:
 			virtual ~ParentCombiner() { }
+
+			virtual std::unique_ptr<ParentCombiner> clone() const = 0;
 
 			//Combines parameters from 2 parent models to create a child model
 			//Does not perform mutations

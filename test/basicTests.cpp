@@ -1,11 +1,13 @@
-#include "BasicGeneticAlgorithm.hpp"
-#include "LinearGeneticModel.hpp"
-#include "ModelInputDataVector.hpp"
-#include "ModelOutputDataVector.hpp"
+#include "algorithm/GeneticAlgorithm.hpp"
+#include "model/LinearGeneticModel.hpp"
+#include "model/ModelInputDataVector.hpp"
+#include "model/ModelOutputDataVector.hpp"
+#include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <iostream>
 
-using PCAGenetic::BasicGeneticAlgorithm;
+using PCAGenetic::GeneticAlgorithm;
+using PCAGenetic::makeBasicAlgorithm;
 using PCAGenetic::LinearGeneticModel;
 using PCAGenetic::GeneticModel;
 using PCAGenetic::ModelInputDataVector;
@@ -17,7 +19,7 @@ using PCAGenetic::ModelOutputData;
 //Optimize to 3x3 identity matrix
 int main()
 {
-	BasicGeneticAlgorithm geneticAlg;
+	GeneticAlgorithm geneticAlg = makeBasicAlgorithm();
 
 	LinearGeneticModel templateModel(3);
 

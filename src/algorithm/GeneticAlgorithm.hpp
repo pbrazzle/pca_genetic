@@ -1,15 +1,16 @@
 #ifndef GENETICALGORITHM
 #define GENETICALGORITHM
 
+#include <algorithm>
 #include <memory>
 #include <vector>
 
-#include "ModelInputData.hpp"
-#include "GeneticModel.hpp"
+#include "model/ModelInputData.hpp"
+#include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
-#include "FitnessCalculator.hpp"
-#include "ParentSelector.hpp"
-#include "ParentCombiner.hpp"
+#include "algorithm/FitnessCalculator.hpp"
+#include "algorithm/ParentSelector.hpp"
+#include "algorithm/ParentCombiner.hpp"
 
 namespace PCAGenetic
 {
@@ -33,13 +34,18 @@ namespace PCAGenetic
 			void calculateFitnesses();
 
 		public:
+			GeneticAlgorithm();
 			GeneticAlgorithm(std::unique_ptr<FitnessCalculator>, std::unique_ptr<ParentSelector>, std::unique_ptr<ParentCombiner>);
+			GeneticAlgorithm(GeneticAlgorithm& alg);
+
 			virtual ~GeneticAlgorithm() { }
+		
+			GeneticAlgorithm& operator=(const GeneticAlgorithm& other);
+
+			virtual void train(const GeneticModel&, std::vector<trainingItem>, int);
+			virtual void continueTraining(int);
 			
-			virtual void train(const GeneticModel&, std::vector<trainingItem>, int) = 0;
-			virtual void continueTraining(int) = 0;
-			
-			virtual std::unique_ptr<GeneticModel> getBestModel() = 0;
+			virtual std::unique_ptr<GeneticModel> getBestModel();
 	};
 }
 
