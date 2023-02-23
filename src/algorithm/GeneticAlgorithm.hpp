@@ -32,6 +32,12 @@ namespace PCAGenetic
 
 			void runGeneration();
 			void calculateFitnesses();
+			
+			unsigned int generationSize;
+			double mutationChance, mutationSize;
+			double paramRange;
+			
+			std::vector<double> mutateParams(const std::vector<double>&);
 
 		public:
 			GeneticAlgorithm();
@@ -46,6 +52,11 @@ namespace PCAGenetic
 			virtual void continueTraining(int);
 			
 			virtual std::unique_ptr<GeneticModel> getBestModel();
+			
+			void setGenerationSize(const int&);
+			void setMutationChance(const double&);
+			void setMutationSize(const double&);
+			void setParamRange(const double&);
 	};
 }
 
