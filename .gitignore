@@ -1,3 +1,6 @@
 build
 bin
 lib
+*.pdf
+*.csv
+*.gen

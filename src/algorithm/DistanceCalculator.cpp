@@ -30,7 +30,7 @@ std::vector<double> DistanceCalculator::calculateFitnesses(const std::vector<tra
 			distance += result->distance(*trainingData[j].second);
 		}
 		//Invert value so better models have higher fitness scores
-		fitnesses[i] = distance;
+		fitnesses[i] = 1/distance;
 	}
 	
 	/*

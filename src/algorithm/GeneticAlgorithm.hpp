@@ -38,6 +38,8 @@ namespace PCAGenetic
 			double paramRange;
 			
 			std::vector<double> mutateParams(const std::vector<double>&);
+			
+			std::vector<double> avgFitnesses;
 
 		public:
 			GeneticAlgorithm();
@@ -57,6 +59,8 @@ namespace PCAGenetic
 			void setMutationChance(const double&);
 			void setMutationSize(const double&);
 			void setParamRange(const double&);
+			
+			std::vector<double> getAvgFitnesses() const;
 	};
 }
 

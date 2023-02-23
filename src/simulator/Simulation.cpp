@@ -1,6 +1,8 @@
 #include "Simulation.hpp"
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
 
 using PCAGenetic::Simulation;
 
@@ -44,4 +46,11 @@ void Simulation::run()
 	std::cout << "Out: ";
 	for (auto val : result->getData()) std::cout << val << ", ";
 	std::cout << '\n';
+	
+	std::replace(name.begin(), name.end(), ' ', '_');
+	std::cout << "Writing data to " << name << ".csv\n";
+	
+	std::ofstream outFile(name + ".csv");
+	for (double avgFit : alg.getAvgFitnesses()) outFile << avgFit << '\n';
+	outFile.close();
 }

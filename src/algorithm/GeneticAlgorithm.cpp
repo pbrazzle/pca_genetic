@@ -11,7 +11,7 @@ using PCAGenetic::GeneticAlgorithm;
 using PCAGenetic::GeneticModel;
 using PCAGenetic::trainingItem;
 
-const bool DEBUG = true;
+const bool DEBUG = false;
 
 template <class T>
 void LOG(T message)
@@ -58,6 +58,8 @@ GeneticAlgorithm::GeneticAlgorithm(GeneticAlgorithm& alg)
 	mutationChance = alg.mutationChance;
 	mutationSize = alg.mutationSize;
 	paramRange = alg.paramRange;
+	
+	avgFitnesses = alg.avgFitnesses;
 }
 
 GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
@@ -86,6 +88,8 @@ GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
 	mutationChance = alg.mutationChance;
 	mutationSize = alg.mutationSize;
 	paramRange = alg.paramRange;
+	
+	avgFitnesses = alg.avgFitnesses;
 	return *this;
 }
 
@@ -162,10 +166,13 @@ void GeneticAlgorithm::runGeneration()
 	calculateFitnesses();
 
 	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / generationSize;
-	LOG("Generation complete: ");
-	LOG(avg_fitness);
-	LOG('\n');
+	//LOG("Generation complete: ");
+	//LOG(avg_fitness);
+	avgFitnesses.push_back(avg_fitness);
+	//LOG('\n');
 }
+
+std::vector<double> GeneticAlgorithm::getAvgFitnesses() const { return avgFitnesses; }
 
 std::unique_ptr<GeneticModel> GeneticAlgorithm::getBestModel()
 {

@@ -9,6 +9,10 @@ TODOs:
 
 Instruction file format:
 ${Algorithm Name}
+${Generation Size}
+${Mutation Chance}
+${Mutation Size}
+${Param Range}
 ${Fitness Calculator Class Name}
 ${Parent Selector Class Name}
 ${Parent Combiner Class Name}

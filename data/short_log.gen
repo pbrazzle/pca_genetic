@@ -1,4 +1,8 @@
-Basic Algorithm Run
+1000Gen100_005_01
+100
+0.005
+0.01
+1
 DistanceCalculator
 FitnessSumSelector
 SingleCrossingCombiner
@@ -7,4 +11,19 @@ LinearGeneticModel
 1,1,1
 1,1,1
 1,1,1
-10
+1000
+
+1000Gen100_005_01
+100
+0.005
+0.01
+1
+DistanceCalculator
+FitnessSumSelector
+SingleCrossingCombiner
+LinearGeneticModel
+3
+1,1,1
+1,1,1
+1,1,1
+1000

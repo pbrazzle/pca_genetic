@@ -78,6 +78,16 @@ std::vector<double> readLineAsVector(std::ifstream& file)
 	return data;
 }
 
+double readLineAsDouble(std::ifstream& file)
+{
+	std::string line;
+	std::getline(file, line);
+	std::stringstream ss(line);
+	double d;
+	ss >> d;
+	return d;
+}
+
 std::vector<trainingItem> readTrainingData(std::ifstream& file)
 {
 	int dataSize;
@@ -115,6 +125,15 @@ Simulation readNextSim(std::ifstream& file)
 	name = line;
 	std::cout << "Read Simulation name as " << name << '\n'; 
 
+	//Read Parameters
+	int generationSize;
+	double mutationChance, mutationSize, paramRange;
+	
+	generationSize = readLineAsDouble(file);
+	mutationChance = readLineAsDouble(file);
+	mutationSize = readLineAsDouble(file);
+	paramRange = readLineAsDouble(file);
+
 	//Build Algorithm
 	std::getline(file, line);
 	std::unique_ptr<PCAGenetic::FitnessCalculator> fitCalc = makeFitnessCalc(line);
@@ -124,6 +143,16 @@ Simulation readNextSim(std::ifstream& file)
 	std::unique_ptr<ParentCombiner> parentComb = makeParentComb(line);
 	alg = GeneticAlgorithm(std::move(fitCalc), std::move(parentSelect), std::move(parentComb));
 	std::cout << "Built simulation algorithm\n";
+
+	alg.setGenerationSize(generationSize);
+	alg.setMutationChance(mutationChance);
+	alg.setMutationSize(mutationSize);
+	alg.setParamRange(paramRange);
+	std::cout << "Added simulation parameters\n";
+	std::cout << "Gen Size: " << generationSize << '\n';
+	std::cout << "Mut %: " << mutationChance << '\n';
+	std::cout << "Mut Size: " << mutationSize << '\n';
+	std::cout << "Start Range: " << paramRange << '\n';
 
 	//Build Model
 	modelTemplate = std::move(readModel(file));
@@ -137,9 +166,6 @@ Simulation readNextSim(std::ifstream& file)
 	std::getline(file, line);
 	std::stringstream(line) >> generations;
 	std::cout << "Read generation count: " << generations << '\n';
-	
-	//Read newline at end
-	std::getline(file, line);
 
 	return Simulation(name, alg, std::move(modelTemplate), std::move(trainingData), generations);
 }
@@ -149,7 +175,12 @@ std::vector<Simulation> SimulationFileReader::readSimulations(std::string filena
 	std::ifstream simFile(filename);
 
 	std::vector<Simulation> sims;
-	while (!simFile.eof()) sims.push_back(readNextSim(simFile));
+	while (!simFile.eof()) 
+	{
+		sims.push_back(readNextSim(simFile));
+		
+		while (simFile.peek() == '\n') simFile.get();
+	}
 
 	return sims;
 }
