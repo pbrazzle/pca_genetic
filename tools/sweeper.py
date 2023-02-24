@@ -18,7 +18,8 @@ class Simulation:
         
         self.model_type = 'LinearGeneticModel'
         self.model_data = 3
-        
+        self.model_params = [0]*self.model_data**2
+
         self.num_training = 1
         self.training_data = [([1,1,1], [1,1,1])]
         
@@ -36,6 +37,7 @@ class Simulation:
         gen_string += self.parent_comb + '\n'
         gen_string += self.model_type + '\n'
         gen_string += str(self.model_data) + '\n'
+        gen_string += ','.join([str(x) for x in self.model_params]) + '\n'
         gen_string += str(self.num_training) + '\n'
         for item in self.training_data:
             gen_string += ','.join([str(x) for x in item[0]]) + '\n'
@@ -73,7 +75,8 @@ def run_sweep_with_graphs(template, sweep_vals, sweep_name, num_runs=1):
     graph_filenames = []
     for f in data_filenames:
         image_name = ''
-        data = []
+        avg = []
+        best = []
         
         print('Averaging runs')
         for run in f:
@@ -81,15 +84,19 @@ def run_sweep_with_graphs(template, sweep_vals, sweep_name, num_runs=1):
             print('Reading '+run)
             file = open(run, 'r')
             run_data = [line.rstrip() for line in file if line != '\n']
-            run_data = [float(x)/len(f) for x in run_data]
-            if len(data) == 0:
-                data = [0 for x in run_data]
-            data = [x+y for x,y in zip(data, run_data)]
+            avg_data = [float(x.split(',')[0])/len(f) for x in run_data]
+            best_data = [float(x.split(',')[1])/len(f) for x in run_data]
+            if len(avg) == 0:
+                avg = [0 for x in run_data]
+                best = [0 for x in run_data]
+            avg = [x+y for x,y in zip(avg, avg_data)]
+            best = [x+y for x,y in zip(best, best_data)]
             file.close()
             os.system('del '+run)
             
         plt.clf()
-        plt.plot(data)
+        plt.plot(avg, label='Avg Fitness')
+        plt.plot(best, label='Best Fitness')
         plt.xlabel('Generations')
         plt.ylabel('Fitness')
         plt.title(image_name)
@@ -105,11 +112,15 @@ def run_sweep_with_graphs(template, sweep_vals, sweep_name, num_runs=1):
     pdf.output('sweep_'+sweep_name+'_'+str(sweep_vals[0]).replace('.','_')+'_'+str(sweep_vals[-1]).replace('.','_')+'.pdf', 'F')
     
 sim = Simulation()
-sim.gen_size = 20
-sim.num_gens = 1000
-sim.mut_chance = 0.01
-sim.mut_size = 0.05
+sim.gen_size = 100
+sim.num_gens = 300
+sim.mut_chance = 0.1
+sim.mut_size = 0.01
+#sim.model_params = [1,0.1,0,0,1,0,0,0,1]
+sim.param_range = 5
 
-run_sweep_with_graphs(sim, np.arange(0.1,1,0.1), 'param_range', num_runs=5)
-run_sweep_with_graphs(sim, np.arange(1,11,1), 'param_range', num_runs=5)
+#run_sweep_with_graphs(sim, np.arange(0.001,0.011,0.001), 'param_range', num_runs=5)
+#run_sweep_with_graphs(sim, np.arange(1,11,1), 'param_range', num_runs=5)
 #run_sweep_with_graphs(sim, np.arange(0.1,0.6,0.1), 'mut_size', num_runs=5)
+#run_sweep_with_graphs(sim, np.arange(0.0,0.31,0.05), 'mut_size', num_runs=1)
+run_sweep_with_graphs(sim, np.arange(10, 110, 10), 'gen_size', num_runs=5)

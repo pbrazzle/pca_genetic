@@ -48,6 +48,8 @@ std::unique_ptr<PCAGenetic::ParentCombiner> makeParentComb(std::string className
 	return std::unique_ptr<PCAGenetic::ParentCombiner>(new SingleCrossingCombiner());
 }
 
+std::vector<double> readLineAsVector(std::ifstream&);
+
 std::unique_ptr<GeneticModel> readModel(std::ifstream& file)
 {
 	std::string line;
@@ -56,7 +58,8 @@ std::unique_ptr<GeneticModel> readModel(std::ifstream& file)
 	std::stringstream ss(line);
 	int dataLength;
 	ss >> dataLength;
-	return std::unique_ptr<GeneticModel>(new LinearGeneticModel(dataLength));
+	std::vector<double> startParams = readLineAsVector(file);
+	return std::unique_ptr<GeneticModel>(new LinearGeneticModel(dataLength, startParams));
 }
 
 std::vector<double> readLineAsVector(std::ifstream& file)

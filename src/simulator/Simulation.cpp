@@ -51,6 +51,11 @@ void Simulation::run()
 	std::cout << "Writing data to " << name << ".csv\n";
 	
 	std::ofstream outFile(name + ".csv");
-	for (double avgFit : alg.getAvgFitnesses()) outFile << avgFit << '\n';
+
+	std::vector<double> avgFits = alg.getAvgFitnesses(), bestFits = alg.getBestFitnesses();
+	for (int i = 0; i < avgFits.size(); i++)
+	{
+		outFile << avgFits[i] << ',' << bestFits[i] << '\n';
+	}
 	outFile.close();
 }

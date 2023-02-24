@@ -3,6 +3,8 @@
 
 #include "GeneticModel.hpp"
 
+#include <string>
+
 namespace PCAGenetic
 {
 	class LinearGeneticModel : public GeneticModel
@@ -36,6 +38,9 @@ namespace PCAGenetic
 			//Throws a std::invaild_argument exception if the vector is not the same length
 			//as the current model parameters
 			void setParameters(std::vector<double>);
+
+			//Returns a string representation of the model parameters in matrix form
+			std::string printMatrix() const;
 	};
 }
 

@@ -26,6 +26,7 @@ GeneticAlgorithm::GeneticAlgorithm()
 	mutationChance = 0.1;
 	mutationSize = 0.01;
 	paramRange = 1;
+	elitism = 0.50;
 }
 
 GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps, std::unique_ptr<ParentCombiner> pc) : GeneticAlgorithm()
@@ -60,6 +61,8 @@ GeneticAlgorithm::GeneticAlgorithm(GeneticAlgorithm& alg)
 	paramRange = alg.paramRange;
 	
 	avgFitnesses = alg.avgFitnesses;
+	bestFitnesses = alg.bestFitnesses;
+	elitism = alg.elitism;
 }
 
 GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
@@ -90,6 +93,8 @@ GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
 	paramRange = alg.paramRange;
 	
 	avgFitnesses = alg.avgFitnesses;
+	bestFitnesses = alg.bestFitnesses;
+	elitism = alg.elitism;
 	return *this;
 }
 
@@ -104,7 +109,7 @@ void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trai
 		std::vector<double> params = modelTemplate.getParameters();
 		for (int j = 0; j < params.size(); j++)
 		{
-			params[j] = 2*paramRange*((double) rand() / RAND_MAX) - paramRange;
+			params[j] += 2*paramRange*((double) rand() / RAND_MAX) - paramRange;
 		}
 		std::unique_ptr<GeneticModel> model = modelTemplate.clone();
 		model->setParameters(params);
@@ -130,10 +135,11 @@ void GeneticAlgorithm::calculateFitnesses()
 	std::sort(sortedIndices.begin(), sortedIndices.end(), 
 			[&](size_t i1, size_t i2) { return fitnesses[i1] < fitnesses[i2]; });
 	std::sort(fitnesses.begin(), fitnesses.end());
-	
-	modelVector sortedModels(models.size());
+
+	modelVector sortedModels;
+	sortedModels.reserve(models.size());
 	for (size_t i : sortedIndices) sortedModels.emplace_back(models[i]->clone());
-	models = std::move(models);
+	models = std::move(sortedModels);
 }
 
 std::vector<double> GeneticAlgorithm::mutateParams(const std::vector<double>& params)
@@ -151,7 +157,14 @@ void GeneticAlgorithm::runGeneration()
 {
 	modelVector newModels;
 
-	for (int i = 0; i < generationSize; i++)
+	int numEliteModels = elitism*generationSize;
+	LOG("Saving best "); LOG(numEliteModels); LOG(" models\n");
+	for (int i = 0; i < numEliteModels; i++)
+	{
+		newModels.emplace_back(models[generationSize-1-i]->clone());
+	}
+
+	for (int i = 0; i < generationSize-numEliteModels; i++)
 	{
 		parentPair parents = parentSelect->selectParents(models, fitnesses);
 		std::vector<double> combined = parentComb->combineParameters(parents.first->getParameters(), parents.second->getParameters());
@@ -166,10 +179,9 @@ void GeneticAlgorithm::runGeneration()
 	calculateFitnesses();
 
 	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / generationSize;
-	//LOG("Generation complete: ");
-	//LOG(avg_fitness);
 	avgFitnesses.push_back(avg_fitness);
-	//LOG('\n');
+	bestFitnesses.push_back(fitnesses.back());
+	LOG("Best fitness: "); LOG(fitnesses.back()); LOG('\n');
 }
 
 std::vector<double> GeneticAlgorithm::getAvgFitnesses() const { return avgFitnesses; }
@@ -183,3 +195,10 @@ void GeneticAlgorithm::setGenerationSize(const int& g) { generationSize = g; }
 void GeneticAlgorithm::setMutationChance(const double& m) { mutationChance = m; }
 void GeneticAlgorithm::setMutationSize(const double& s) { mutationSize = s; }
 void GeneticAlgorithm::setParamRange(const double& p) { paramRange = p; }
+void GeneticAlgorithm::setEilitism(const double& e) 
+{ 
+	elitism = e; 
+	if (elitism > 1) elitism = 1;
+	else if (elitism < 0) elitism = 0;
+}
+std::vector<double> GeneticAlgorithm::getBestFitnesses() const { return bestFitnesses; }

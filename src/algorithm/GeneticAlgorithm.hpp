@@ -36,10 +36,12 @@ namespace PCAGenetic
 			unsigned int generationSize;
 			double mutationChance, mutationSize;
 			double paramRange;
+			double elitism;
 			
 			std::vector<double> mutateParams(const std::vector<double>&);
 			
 			std::vector<double> avgFitnesses;
+			std::vector<double> bestFitnesses;
 
 		public:
 			GeneticAlgorithm();
@@ -59,8 +61,10 @@ namespace PCAGenetic
 			void setMutationChance(const double&);
 			void setMutationSize(const double&);
 			void setParamRange(const double&);
+			void setEilitism(const double&);
 			
 			std::vector<double> getAvgFitnesses() const;
+			std::vector<double> getBestFitnesses() const;
 	};
 }
 

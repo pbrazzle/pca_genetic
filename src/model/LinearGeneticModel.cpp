@@ -3,6 +3,7 @@
 #include "ModelOutputDataVector.hpp"
 
 #include <stdexcept>
+#include <iostream>
 
 using PCAGenetic::LinearGeneticModel;
 using PCAGenetic::GeneticModel;
@@ -50,4 +51,19 @@ void LinearGeneticModel::setParameters(std::vector<double> p)
 	if (parameters.size() != p.size()) throw std::invalid_argument("LinearGeneticModel: Incorrect number of parameters");
 
 	parameters = p;
+}
+
+std::string LinearGeneticModel::printMatrix() const
+{
+	std::string matrixString;
+	for (int i = 0; i < dataLength; i++)
+	{
+		matrixString += "[";
+		for (int j = 0; j < dataLength; j++)
+		{
+			matrixString += std::to_string(parameters[dataLength*i + j]) + ", ";
+		}
+		matrixString += "]\n";
+	}
+	return matrixString;
 }

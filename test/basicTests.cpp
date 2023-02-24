@@ -22,10 +22,14 @@ int main()
 	std::cout << "Basic Algorithm test: 3x3 identity matrix\n";
 	
 	GeneticAlgorithm geneticAlg = makeBasicAlgorithm();
+	geneticAlg.setParamRange(0.01);
+	geneticAlg.setGenerationSize(100);
 	std::cout << "Built BasicGeneticAlgorithm\n";
 
 	LinearGeneticModel templateModel(3);
+	templateModel.setParameters({1, 0, 0, 0, 1, 0, 0, 0, 1});
 	std::cout << "Built LinearGeneticModel as template\n";
+	std::cout << templateModel.printMatrix();
 
 	std::vector<double> vals = {1.0, 1.0, 1.0};
 	ModelInputDataVector sampleInput(vals);
@@ -40,15 +44,17 @@ int main()
 	trainingData.emplace_back(std::move(item));
 
 	geneticAlg.train(templateModel, std::move(trainingData), 0);
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		geneticAlg.continueTraining(100);
+		geneticAlg.continueTraining(10);
 
 		std::unique_ptr<GeneticModel> optimizedModel = geneticAlg.getBestModel();
+		LinearGeneticModel linModel = *((LinearGeneticModel*) optimizedModel.get());
 
 		std::unique_ptr<ModelOutputData> optimizedOutput = optimizedModel->evaluate(sampleInput);
 		double distance = optimizedOutput->distance(sampleOutput);
-		std::cout << "Run " << i << ": " << distance << '\n';
+		std::cout << "Lowest Distance :" << distance << '\n';
+		std::cout << linModel.printMatrix();
 	}
 
 	return 0;
