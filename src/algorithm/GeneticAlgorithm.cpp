@@ -195,10 +195,12 @@ void GeneticAlgorithm::setGenerationSize(const int& g) { generationSize = g; }
 void GeneticAlgorithm::setMutationChance(const double& m) { mutationChance = m; }
 void GeneticAlgorithm::setMutationSize(const double& s) { mutationSize = s; }
 void GeneticAlgorithm::setParamRange(const double& p) { paramRange = p; }
+
 void GeneticAlgorithm::setEilitism(const double& e) 
 { 
 	elitism = e; 
 	if (elitism > 1) elitism = 1;
 	else if (elitism < 0) elitism = 0;
 }
+
 std::vector<double> GeneticAlgorithm::getBestFitnesses() const { return bestFitnesses; }

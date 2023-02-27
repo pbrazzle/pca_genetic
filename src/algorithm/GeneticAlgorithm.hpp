@@ -8,9 +8,9 @@
 #include "model/ModelInputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
-#include "algorithm/FitnessCalculator.hpp"
-#include "algorithm/ParentSelector.hpp"
-#include "algorithm/ParentCombiner.hpp"
+#include "algorithm/fitness/FitnessCalculator.hpp"
+#include "algorithm/selection/ParentSelector.hpp"
+#include "algorithm/combination/ParentCombiner.hpp"
 
 namespace PCAGenetic
 {

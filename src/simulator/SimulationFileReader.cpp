@@ -1,11 +1,12 @@
 #include "simulator/SimulationFileReader.hpp"
 
-#include "algorithm/DistanceCalculator.hpp"
-#include "algorithm/FitnessSumSelector.hpp"
-#include "algorithm/SingleCrossingCombiner.hpp"
+#include "algorithm/fitness/DistanceCalculator.hpp"
+#include "algorithm/selection/FitnessSumSelector.hpp"
+#include "algorithm/combination/SingleCrossingCombiner.hpp"
 #include "model/LinearGeneticModel.hpp"
 #include "model/ModelInputDataVector.hpp"
 #include "model/ModelOutputDataVector.hpp"
+#include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <fstream>
 #include <memory>
@@ -31,22 +32,11 @@ using PCAGenetic::ModelOutputDataVector;
 using PCAGenetic::ModelInputData;
 using PCAGenetic::ModelOutputData;
 
+using PCAGenetic::fitCalcMap;
+using PCAGenetic::selectMap;
+using PCAGenetic::combinerMap;
+
 SimulationFileReader::SimulationFileReader() { }
-
-std::unique_ptr<PCAGenetic::FitnessCalculator> makeFitnessCalc(std::string className)
-{
-	return std::unique_ptr<PCAGenetic::FitnessCalculator>(new DistanceCalculator());
-}
-
-std::unique_ptr<PCAGenetic::ParentSelector> makeParentSelect(std::string className)
-{
-	return std::unique_ptr<ParentSelector>(new FitnessSumSelector());
-}
-
-std::unique_ptr<PCAGenetic::ParentCombiner> makeParentComb(std::string className)
-{
-	return std::unique_ptr<PCAGenetic::ParentCombiner>(new SingleCrossingCombiner());
-}
 
 std::vector<double> readLineAsVector(std::ifstream&);
 
@@ -139,11 +129,11 @@ Simulation readNextSim(std::ifstream& file)
 
 	//Build Algorithm
 	std::getline(file, line);
-	std::unique_ptr<PCAGenetic::FitnessCalculator> fitCalc = makeFitnessCalc(line);
+	std::unique_ptr<PCAGenetic::FitnessCalculator> fitCalc = fitCalcMap[line]();
 	std::getline(file, line);
-	std::unique_ptr<PCAGenetic::ParentSelector> parentSelect = makeParentSelect(line);
+	std::unique_ptr<PCAGenetic::ParentSelector> parentSelect = selectMap[line]();
 	std::getline(file, line);
-	std::unique_ptr<ParentCombiner> parentComb = makeParentComb(line);
+	std::unique_ptr<ParentCombiner> parentComb = combinerMap[line]();
 	alg = GeneticAlgorithm(std::move(fitCalc), std::move(parentSelect), std::move(parentComb));
 	std::cout << "Built simulation algorithm\n";
 

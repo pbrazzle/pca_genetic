@@ -2,10 +2,13 @@
 #define GENETIC_ALGORITHM_FACTORY
 
 #include "GeneticAlgorithm.hpp"
-#include "SingleCrossingCombiner.hpp"
-#include "FitnessSumSelector.hpp"
-#include "DistanceCalculator.hpp"
+#include "algorithm/combination/SingleCrossingCombiner.hpp"
+#include "algorithm/selection/FitnessSumSelector.hpp"
+#include "algorithm/fitness/DistanceCalculator.hpp"
+
 #include <memory>
+#include <string>
+#include <map>
 
 namespace PCAGenetic 
 {
@@ -17,6 +20,31 @@ namespace PCAGenetic
 		GeneticAlgorithm alg(std::move(fc), std::move(ps), std::move(pc));
 		return alg;
 	}
+
+	using FitCalcFactory = std::unique_ptr<FitnessCalculator> (*)();
+	using SelectFactory = std::unique_ptr<ParentSelector> (*)();
+	using CombinerFactory = std::unique_ptr<ParentCombiner> (*)();
+	
+	template <typename FitCalc>
+	std::unique_ptr<FitnessCalculator> makeFitnessCalculator() { return std::unique_ptr<FitnessCalculator>(new FitCalc()); }
+	
+	template <typename PSelect>
+	std::unique_ptr<ParentSelector> makeParentSelector() { return std::unique_ptr<ParentSelector>(new PSelect()); }
+	
+	template <typename PComb>
+	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
+	
+	std::map<std::string, FitCalcFactory> fitCalcMap {
+		{"DistanceCalculator", &makeFitnessCalculator<DistanceCalculator>}
+	};
+	
+	std::map<std::string, SelectFactory> selectMap {
+		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>}
+	};
+	
+	std::map<std::string, CombinerFactory> combinerMap {
+		{"SingleCrossingCombiner", &makeParentCombiner<SingleCrossingCombiner>}
+	};
 }
 
 #endif
