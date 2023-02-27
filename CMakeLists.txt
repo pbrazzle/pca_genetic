@@ -14,7 +14,7 @@ add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
 target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels)
 
-set(SIMULATOR_SOURCES src/simulator/GeneticSim.cpp src/simulator/SimulationFileReader.cpp src/simulator/Simulation.cpp)
+set(SIMULATOR_SOURCES src/simulator/GeneticSim.cpp src/simulator/SimulationFileReader.cpp src/simulator/Simulation.cpp src/Logger.cpp)
 add_executable(GeneticSim ${SIMULATOR_SOURCES})
 target_include_directories(GeneticSim PUBLIC src)
 target_link_libraries(GeneticSim PUBLIC GeneticAlgorithms GeneticModels)
