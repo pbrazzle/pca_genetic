@@ -17,7 +17,8 @@ namespace PCAGenetic
 			virtual std::unique_ptr<GeneticModel> clone() const = 0;
 			
 			virtual std::unique_ptr<ModelOutputData> evaluate(ModelInputData&) = 0;
-			
+
+			//TODO: Using iterators here would make more sense			
 			virtual std::vector<double> getParameters() const = 0;
 			virtual void setParameters(std::vector<double>) = 0;
 	};

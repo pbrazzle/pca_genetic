@@ -1,0 +1,10 @@
+How can neural networks be represented in code?
+Nodes are built into layers
+Layers are connected into networks
+
+Generally, my models should be able to connect to each other
+A linear model should be able to send its output to a neural network
+The neural network should be able to then create the full output
+
+New model classes:
+	InterconnectedModel
