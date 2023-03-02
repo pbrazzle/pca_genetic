@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "model/ModelInputData.hpp"
+#include "model/input/ModelInputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
 #include "algorithm/fitness/FitnessCalculator.hpp"

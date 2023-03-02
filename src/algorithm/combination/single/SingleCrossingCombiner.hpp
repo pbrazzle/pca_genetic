@@ -1,7 +1,7 @@
 #ifndef SINGLE_CROSSING_COMBINER
 #define SINGLE_CROSSING_COMBINER
 
-#include "ParentCombiner.hpp"
+#include "algorithm/combination/ParentCombiner.hpp"
 #include <memory>
 #include <vector>
 

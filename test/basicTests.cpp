@@ -1,7 +1,7 @@
 #include "algorithm/GeneticAlgorithm.hpp"
-#include "model/LinearGeneticModel.hpp"
-#include "model/ModelInputDataVector.hpp"
-#include "model/ModelOutputDataVector.hpp"
+#include "model/linear/LinearGeneticModel.hpp"
+#include "model/input/ModelInputDataVector.hpp"
+#include "model/output/ModelOutputDataVector.hpp"
 #include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <iostream>

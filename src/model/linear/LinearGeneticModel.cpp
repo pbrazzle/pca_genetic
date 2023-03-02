@@ -1,6 +1,6 @@
 #include "LinearGeneticModel.hpp"
 
-#include "ModelOutputDataVector.hpp"
+#include "model/output/ModelOutputDataVector.hpp"
 
 #include <stdexcept>
 #include <iostream>

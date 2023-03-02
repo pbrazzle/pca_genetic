@@ -1,7 +1,7 @@
 #ifndef MODELOUTPUTDATAVECTOR
 #define MODELOUTPUTDATAVECTOR
 
-#include "ModelOutputData.hpp"
+#include "model/output/ModelOutputData.hpp"
 #include <memory>
 
 namespace PCAGenetic

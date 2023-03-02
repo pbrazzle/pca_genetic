@@ -1,5 +1,4 @@
 #include "GeneticAlgorithm.hpp"
-#include "model/LinearGeneticModel.hpp"
 
 #include <cstdlib>
 #include <numeric>

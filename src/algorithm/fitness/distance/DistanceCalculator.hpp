@@ -1,7 +1,7 @@
 #ifndef DISTANCE_CALCULATOR
 #define DISTANCE_CALCULATOR
 
-#include "FitnessCalculator.hpp"
+#include "algorithm/fitness/FitnessCalculator.hpp"
 
 #include <memory>
 #include <vector>

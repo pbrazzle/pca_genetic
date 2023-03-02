@@ -2,9 +2,9 @@
 #define GENETIC_ALGORITHM_FACTORY
 
 #include "GeneticAlgorithm.hpp"
-#include "algorithm/combination/SingleCrossingCombiner.hpp"
-#include "algorithm/selection/FitnessSumSelector.hpp"
-#include "algorithm/fitness/DistanceCalculator.hpp"
+#include "algorithm/combination/single/SingleCrossingCombiner.hpp"
+#include "algorithm/selection/sum/FitnessSumSelector.hpp"
+#include "algorithm/fitness/distance/DistanceCalculator.hpp"
 
 #include <memory>
 #include <string>

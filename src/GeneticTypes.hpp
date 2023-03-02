@@ -1,8 +1,8 @@
 #ifndef GENETIC_TYPES
 #define GENETIC_TYPES
 
-#include "model/ModelInputData.hpp"
-#include "model/ModelOutputData.hpp"
+#include "model/input/ModelInputData.hpp"
+#include "model/output/ModelOutputData.hpp"
 #include "model/GeneticModel.hpp"
 
 namespace PCAGenetic

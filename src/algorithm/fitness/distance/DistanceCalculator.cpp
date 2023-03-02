@@ -1,4 +1,4 @@
-#include "DistanceCalculator.hpp"
+#include "algorithm/fitness/distance/DistanceCalculator.hpp"
 #include <memory>
 #include <vector>
 #include <numeric>

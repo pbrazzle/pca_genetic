@@ -1,11 +1,11 @@
 #include "simulator/SimulationFileReader.hpp"
 
-#include "algorithm/fitness/DistanceCalculator.hpp"
-#include "algorithm/selection/FitnessSumSelector.hpp"
-#include "algorithm/combination/SingleCrossingCombiner.hpp"
-#include "model/LinearGeneticModel.hpp"
-#include "model/ModelInputDataVector.hpp"
-#include "model/ModelOutputDataVector.hpp"
+#include "algorithm/fitness/distance/DistanceCalculator.hpp"
+#include "algorithm/selection/sum/FitnessSumSelector.hpp"
+#include "algorithm/combination/single/SingleCrossingCombiner.hpp"
+#include "model/linear/LinearGeneticModel.hpp"
+#include "model/input/ModelInputDataVector.hpp"
+#include "model/output/ModelOutputDataVector.hpp"
 #include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <fstream>

@@ -6,17 +6,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
 
 set(MODEL_SOURCES 
-	src/model/LinearGeneticModel.cpp 
-	src/model/ModelInputDataVector.cpp 
-	src/model/ModelOutputDataVector.cpp)
+	src/model/linear/LinearGeneticModel.cpp 
+	src/model/input/ModelInputDataVector.cpp 
+	src/model/output/ModelOutputDataVector.cpp)
 add_library(GeneticModels STATIC ${MODEL_SOURCES})
 target_include_directories(GeneticModels PUBLIC src src/model)
 
 set(ALG_SOURCES 
 	src/algorithm/GeneticAlgorithm.cpp 
-	src/algorithm/fitness/DistanceCalculator.cpp 
-	src/algorithm/combination/SingleCrossingCombiner.cpp 
-	src/algorithm/selection/FitnessSumSelector.cpp)
+	src/algorithm/fitness/distance/DistanceCalculator.cpp 
+	src/algorithm/combination/single/SingleCrossingCombiner.cpp 
+	src/algorithm/selection/sum/FitnessSumSelector.cpp
+	src/algorithm/selection/best/BestFitnessSelector.cpp)
 
 add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)

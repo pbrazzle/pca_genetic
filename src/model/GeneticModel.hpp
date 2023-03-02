@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "ModelInputData.hpp"
-#include "ModelOutputData.hpp"
+#include "model/input/ModelInputData.hpp"
+#include "model/output/ModelOutputData.hpp"
 
 namespace PCAGenetic
 {

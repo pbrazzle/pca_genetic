@@ -1,4 +1,4 @@
-#include "model/ModelInputDataVector.hpp"
+#include "model/input/ModelInputDataVector.hpp"
 #include <memory>
 
 using PCAGenetic::ModelInputDataVector;

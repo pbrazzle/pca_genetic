@@ -1,7 +1,7 @@
 #ifndef MODELINPUTDATAVECTOR
 #define MODELINPUTDATAVECTOR
 
-#include "model/ModelInputData.hpp"
+#include "model/input/ModelInputData.hpp"
 #include <memory>
 
 namespace PCAGenetic
