@@ -3,7 +3,9 @@
 
 #include "GeneticAlgorithm.hpp"
 #include "algorithm/combination/single/SingleCrossingCombiner.hpp"
+#include "algorithm/combination/random/RandomCrossingCombiner.hpp"
 #include "algorithm/selection/sum/FitnessSumSelector.hpp"
+#include "algorithm/selection/best/BestFitnessSelector.hpp"
 #include "algorithm/fitness/distance/DistanceCalculator.hpp"
 
 #include <memory>
@@ -39,11 +41,13 @@ namespace PCAGenetic
 	};
 	
 	std::map<std::string, SelectFactory> selectMap {
-		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>}
+		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>},
+		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>}
 	};
 	
 	std::map<std::string, CombinerFactory> combinerMap {
-		{"SingleCrossingCombiner", &makeParentCombiner<SingleCrossingCombiner>}
+		{"SingleCrossingCombiner", &makeParentCombiner<SingleCrossingCombiner>},
+		{"RandomCrossingCombiner", &makeParentCombiner<RandomCrossingCombiner>}
 	};
 }
 

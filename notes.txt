@@ -11,9 +11,4 @@ TODOs:
 		DecisionCalculator - Percentage correct decisions
 	
 	New ParentSelectors:
-		BestFitnessSelector - Fixed distribution selection based on fitness ranking
-
-	New ParentCombiners:
-		RandomCrossingCombiner - Random chance to cross for every parameter
-
-We could use a small overhaul in file organization before adding all these new classes...
+		DistributionFitnessSelector - Fixed distribution selection based on fitness ranking

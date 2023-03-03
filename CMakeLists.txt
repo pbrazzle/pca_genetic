@@ -15,7 +15,9 @@ target_include_directories(GeneticModels PUBLIC src src/model)
 set(ALG_SOURCES 
 	src/algorithm/GeneticAlgorithm.cpp 
 	src/algorithm/fitness/distance/DistanceCalculator.cpp 
+	src/algorithm/fitness/decision/DecisionCalculator.cpp
 	src/algorithm/combination/single/SingleCrossingCombiner.cpp 
+	src/algorithm/combination/random/RandomCrossingCombiner.cpp
 	src/algorithm/selection/sum/FitnessSumSelector.cpp
 	src/algorithm/selection/best/BestFitnessSelector.cpp)
 
