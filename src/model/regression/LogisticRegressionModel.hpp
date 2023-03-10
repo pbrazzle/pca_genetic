@@ -1,11 +1,11 @@
-#ifndef CONVOLUTION_MODEL
-#define CONVOLUTION_MODEL
+#ifndef LOGISTIC_REGRESSION_MODEL
+#define LOGISTIC_REGRESSION_MODEL
 
 #include "model/GeneticModel.hpp"
 
 namespace PCAGenetic
 {
-	class ConvolutionModel : public GeneticModel
+	class LogisticRegressionModel : public GeneticModel
 	{
 		public:
 			std::unique_ptr<GeneticModel> clone() const;

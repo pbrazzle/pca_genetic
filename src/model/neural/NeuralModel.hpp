@@ -1,11 +1,11 @@
-#ifndef CONVOLUTION_MODEL
-#define CONVOLUTION_MODEL
+#ifndef NEURAL_MODEL
+#define NEURAL_MODEL
 
 #include "model/GeneticModel.hpp"
 
 namespace PCAGenetic
 {
-	class ConvolutionModel : public GeneticModel
+	class NeuralModel : public GeneticModel
 	{
 		public:
 			std::unique_ptr<GeneticModel> clone() const;

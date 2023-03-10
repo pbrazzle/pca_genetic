@@ -8,7 +8,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
 set(MODEL_SOURCES 
 	src/model/linear/LinearGeneticModel.cpp 
 	src/model/input/ModelInputDataVector.cpp 
-	src/model/output/ModelOutputDataVector.cpp)
+	src/model/output/ModelOutputDataVector.cpp
+	src/model/convolution/ConvolutionModel.cpp
+	src/model/downsample/DownSamplingModel.cpp
+	src/model/neural/NeuralModel.cpp
+	src/model/regression/LogisticRegressionModel.cpp)
+	
 add_library(GeneticModels STATIC ${MODEL_SOURCES})
 target_include_directories(GeneticModels PUBLIC src src/model)
 
