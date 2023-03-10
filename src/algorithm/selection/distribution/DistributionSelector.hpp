@@ -1,9 +1,10 @@
 #ifndef DISTRIBUTION_SELECTOR
 #define DISTRIBUTION_SELECTOR
 
-#include "model/GeneticModel.hpp"
-#include "GeneticTypes.hpp"
+#include "algorithm/selection/ParentSelector.hpp"
+
 #include <memory>
+#include <functional>
 
 namespace PCAGenetic
 {

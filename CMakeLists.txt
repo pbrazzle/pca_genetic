@@ -19,7 +19,8 @@ set(ALG_SOURCES
 	src/algorithm/combination/single/SingleCrossingCombiner.cpp 
 	src/algorithm/combination/random/RandomCrossingCombiner.cpp
 	src/algorithm/selection/sum/FitnessSumSelector.cpp
-	src/algorithm/selection/best/BestFitnessSelector.cpp)
+	src/algorithm/selection/best/BestFitnessSelector.cpp
+	src/algorithm/selection/distribution/DistributionSelector.cpp)
 
 add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)

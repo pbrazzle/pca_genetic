@@ -6,6 +6,3 @@ TODOs:
 		Write LinearRegressionModel
 		Write LogisticRegressionModel
 		Write InterconnectedModel
-	
-	New ParentSelectors:
-		DistributionFitnessSelector - Fixed distribution selection based on fitness ranking

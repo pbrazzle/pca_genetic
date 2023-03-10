@@ -12,7 +12,7 @@ DistributionSelector::DistributionSelector()
 	distribution = [](int rank, int total) 
 	{
 		double p = 0.5;
-		return p*exp(p, rank); 
+		return p*pow(p, rank); 
 	};
 }
 
@@ -23,7 +23,7 @@ std::unique_ptr<ParentSelector> DistributionSelector::clone() const
 	return std::unique_ptr<ParentSelector>(new DistributionSelector(distribution));
 }
 
-size_t DistributionSelector::makeSelection(const modelVector& models)
+size_t DistributionSelector::makeSelection(const modelVector& models) const
 {
 	size_t i = 0;
 	double selection = (double) rand() / RAND_MAX;
