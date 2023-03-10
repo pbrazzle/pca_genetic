@@ -1,8 +1,5 @@
 TODOs:
-	New Models:
-		Write NeuralNetworkModel
-		Write ConvolutionModel
-		Write DownsamplingModel
-		Write LinearRegressionModel
-		Write LogisticRegressionModel
-		Write InterconnectedModel
+	- Work on better system for .gen files
+	- Read through and add TODOs for refactors
+	- Plan full scale tests
+	- Consider data inputs from online sources
