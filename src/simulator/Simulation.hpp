@@ -11,6 +11,7 @@
 
 namespace PCAGenetic
 {
+	//TODO should Simulation write algorithm reports? Or should GeneticAlgorithm do it?
 	class Simulation
 	{
 		private:

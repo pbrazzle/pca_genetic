@@ -14,11 +14,8 @@
 
 namespace PCAGenetic
 {
-	//GeneticAlgorithm can be composed of several substrategies
-	//Fitness calculation
-	//Parent selection
-	//Parent combination
-	//If we compose these strategies, there will be no need for GeneticAlgorithm to be an interface at all
+	//TODO reporting about algorithm progress (avg/best fitness, etc.) should be pulled out into its own class
+	//TODO algorithm parameters (mutationChance, elitism, etc.) should be pulled out into its own class
 	class GeneticAlgorithm
 	{
 		private:

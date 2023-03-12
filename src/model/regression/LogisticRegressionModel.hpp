@@ -5,6 +5,7 @@
 
 namespace PCAGenetic
 {
+	//TODO implement this
 	class LogisticRegressionModel : public GeneticModel
 	{
 		public:

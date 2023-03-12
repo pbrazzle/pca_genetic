@@ -3,6 +3,7 @@
 
 #include <string>
 
+//TODO I need to add more log messages in general - Add more TODOs to add log messages in each class
 namespace GeneticLogger
 {
 	enum class Level

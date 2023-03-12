@@ -5,6 +5,7 @@
 
 namespace PCAGenetic
 {
+	//TODO implement this
 	class DownSamplingModel : public GeneticModel
 	{
 		public:

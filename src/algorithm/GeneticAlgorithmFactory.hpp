@@ -6,7 +6,9 @@
 #include "algorithm/combination/random/RandomCrossingCombiner.hpp"
 #include "algorithm/selection/sum/FitnessSumSelector.hpp"
 #include "algorithm/selection/best/BestFitnessSelector.hpp"
+#include "algorithm/selection/distribution/DistributionSelector.hpp"
 #include "algorithm/fitness/distance/DistanceCalculator.hpp"
+#include "algorithm/fitness/decision/DecisionCalculator.hpp"
 
 #include <memory>
 #include <string>
@@ -37,12 +39,14 @@ namespace PCAGenetic
 	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
 	
 	std::map<std::string, FitCalcFactory> fitCalcMap {
-		{"DistanceCalculator", &makeFitnessCalculator<DistanceCalculator>}
+		{"DistanceCalculator", &makeFitnessCalculator<DistanceCalculator>},
+		{"DecisionCalculator", &makeFitnessCalculator<DecisionCalculator>}
 	};
 	
 	std::map<std::string, SelectFactory> selectMap {
 		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>},
-		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>}
+		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>},
+		{"DistributionSelector", &makeParentSelector<DistributionFitnessSelector>}
 	};
 	
 	std::map<std::string, CombinerFactory> combinerMap {

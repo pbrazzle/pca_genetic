@@ -9,6 +9,7 @@
 namespace PCAGenetic
 {
 	//Parses Simulation objects from .gen file
+	//TODO switch to reading JSON files
 	class SimulationFileReader
 	{
 		public:

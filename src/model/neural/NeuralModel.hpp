@@ -5,6 +5,7 @@
 
 namespace PCAGenetic
 {
+	//TODO implement this
 	class NeuralModel : public GeneticModel
 	{
 		public:

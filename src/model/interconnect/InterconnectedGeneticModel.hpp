@@ -16,6 +16,8 @@ namespace GeneticModels
 	//The first layer processes the input data, and subsequent layers process the output of the previous one
 	//If a layer has multiple models, the input data will be split in the order of the vector representation of the data
 	//The split will match the datalength of each model in the layer
+	
+	//TODO implement this
 	class InterconnectedGeneticModel : public GeneticModel
 	{
 		public:
