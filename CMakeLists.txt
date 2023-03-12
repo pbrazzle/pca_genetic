@@ -31,6 +31,16 @@ add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
 target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels)
 
+set(JSON_SOURCES
+	src/json/JSONObject.cpp)
+	
+add_library(GeneticJSON STATIC ${JSON_SOURCES})
+target_include_directories(GeneticJSON PUBLIC src/json)
+
+add_executable(JSONTest src/json/JSONTest.cpp)
+target_include_directories(JSONTest PUBLIC src/json)
+target_link_libraries(JSONTest PUBLIC GeneticJSON)
+
 set(SIMULATOR_SOURCES 
 	src/simulator/GeneticSim.cpp 
 	src/simulator/SimulationFileReader.cpp

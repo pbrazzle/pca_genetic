@@ -1,5 +1,5 @@
 TODOs:
-	- Work on JSON system for simulation/report files
+	- Integrate JSON into Simulation Files
 	- Read through and add TODOs for refactors
 	- Plan full scale tests
 	- Consider data inputs from online sources
@@ -8,12 +8,3 @@ Simulations should be able to report data about itself
 	Execution time
 	Average/best fitness per generation
 	Best model parameters
-	
-File I/O should be much more robust
-	JSON format
-	
-Notes on JSON:
-	All JSON objects begin with a '{' and end with '}'
-	Each object consists of an unordered list of key-value pairs
-	All keys are strings surrounded by double quotes, while values can take many forms
-	Values can be number, strings, arrays, or objects
