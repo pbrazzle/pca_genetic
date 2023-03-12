@@ -1,8 +1,8 @@
 TODOs:
 	- Integrate JSON into Simulation Files
-	- Read through and add TODOs for refactors
 	- Plan full scale tests
 	- Consider data inputs from online sources
+	- Add ModelInput/Output classes for images
 	
 Simulations should be able to report data about itself
 	Execution time
