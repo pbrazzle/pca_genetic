@@ -32,13 +32,14 @@ target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
 target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels)
 
 set(JSON_SOURCES
-	src/json/JSONObject.cpp)
+	src/json/JSONObject.cpp
+	src/json/JSONFile.cpp)
 	
 add_library(GeneticJSON STATIC ${JSON_SOURCES})
-target_include_directories(GeneticJSON PUBLIC src/json)
+target_include_directories(GeneticJSON PUBLIC src)
 
 add_executable(JSONTest src/json/JSONTest.cpp)
-target_include_directories(JSONTest PUBLIC src/json)
+target_include_directories(JSONTest PUBLIC src)
 target_link_libraries(JSONTest PUBLIC GeneticJSON)
 
 set(SIMULATOR_SOURCES 
