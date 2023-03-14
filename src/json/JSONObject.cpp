@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 using GeneticJSON::JSONObject;
 
@@ -35,8 +36,32 @@ std::string trim(std::string s)
 	return s;
 }
 
+JSONObject parseObjectFromString(std::string objString)
+{
+	try
+	{
+		double d = std::stod(objString);
+		if (floor(d) == d) return JSONObject((int) d);
+		return JSONObject(d);
+	} catch(...) { }
+	if (objString == "true") return JSONObject(true);
+	if (objString == "false") return JSONObject(false);
+	
+	if (objString[0] == '[')
+	{
+		objString = objString.substr(1, objString.size()-2);
+		auto arrStrings = split(objString, ',');
+		std::vector<JSONObject> arr;
+		for (auto str : arrStrings) arr.push_back(parseObjectFromString(str));
+		return JSONObject(arr);
+	}
+	
+	return JSONObject(objString.substr(1, objString.size()-2));
+}
+
 JSONObject::JSONObject() { }
 
+JSONObject::JSONObject(const char* value) : JSONObject(std::string(value)) { }
 JSONObject::JSONObject(std::string value)
 { 
 	data = trim(value);
@@ -56,9 +81,33 @@ JSONObject::JSONObject(std::string value)
 				return trim(s);
 			});
 			
-			subObjects[keyVal[0]] = JSONObject(keyVal[1]);
+			JSONObject parsedObj = parseObjectFromString(keyVal[1]);
+			
+			subObjects[keyVal[0]] = parsedObj;
 		}
 	}
+	else
+	{
+		data = '"' + data + '"';
+	}
+}
+
+JSONObject::JSONObject(int value) { data = std::to_string(value); }
+			
+JSONObject::JSONObject(bool value)
+{
+	if (value) data = "true";
+	else data = "false";
+}
+
+JSONObject::JSONObject(double value) { data = std::to_string(value); }
+
+JSONObject::JSONObject(std::vector<JSONObject> value)
+{
+	data = "[";
+	for (auto obj : value) data += obj.asJSON() + ',';
+	data.pop_back();
+	data += ']';
 }
 
 void JSONObject::addObject(std::string key, JSONObject obj)
@@ -74,13 +123,15 @@ void JSONObject::addObject(std::string key, JSONObject obj)
 	data += "}";
 }
 
-void JSONObject::addInt(std::string key, int val) { addObject(key, JSONObject(std::to_string(val))); }
+void JSONObject::addInt(std::string key, int val) { addObject(key, JSONObject(val)); }
 
-void JSONObject::addFloat(std::string key, double val) { addObject(key, JSONObject(std::to_string(val))); }
+void JSONObject::addFloat(std::string key, double val) { addObject(key, JSONObject(val)); }
 
-void JSONObject::addBool(std::string key, bool val) { addObject(key, JSONObject(std::to_string(val))); }
+void JSONObject::addBool(std::string key, bool val) { addObject(key, JSONObject(val)); }
 
-void JSONObject::addString(std::string key, std::string val) { addObject(key, JSONObject('"'+val+'"')); }
+void JSONObject::addString(std::string key, std::string val) { addObject(key, JSONObject(val)); }
+
+void JSONObject::addArray(std::string key, std::vector<JSONObject> arr) { addObject(key, JSONObject(arr)); }
 
 std::string JSONObject::asJSON() const
 {
@@ -112,4 +163,19 @@ std::string JSONObject::asString() const
 {
 	//Exclude double quotes
 	return data.substr(1, data.size()-2);
+}
+
+std::vector<JSONObject> JSONObject::asArray() const
+{
+	if (data[0] != '[') return std::vector<JSONObject>();
+	
+	std::string noDelims = data.substr(1, data.size()-2);
+	auto objectStrings = split(noDelims, ',');
+	
+	std::vector<JSONObject> objects;
+	for (auto objString : objectStrings)
+	{
+		objects.push_back(parseObjectFromString(objString));
+	}
+	return objects;
 }

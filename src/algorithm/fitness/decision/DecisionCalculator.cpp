@@ -8,12 +8,14 @@ using PCAGenetic::FitnessCalculator;
 using PCAGenetic::trainingItem;
 using PCAGenetic::GeneticModel;
 
+DecisionCalculator::DecisionCalculator() { }
+
 std::unique_ptr<FitnessCalculator> DecisionCalculator::clone() const
 {
 	return std::unique_ptr<FitnessCalculator>(new DecisionCalculator());
 }
 
-std::vector<double> calculateFitnesses(const std::vector<trainingItem>& trainingData, const std::vector<std::unique_ptr<GeneticModel>>& models)
+std::vector<double> DecisionCalculator::calculateFitnesses(const std::vector<trainingItem>& trainingData, const std::vector<std::unique_ptr<GeneticModel>>& models)
 {
 	std::vector<double> fitnesses;
 	fitnesses.reserve(models.size());

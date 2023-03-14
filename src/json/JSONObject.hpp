@@ -2,6 +2,7 @@
 #define JSON_OBJECT
 
 #include <string>
+#include <vector>
 #include <map>
 
 namespace GeneticJSON
@@ -17,8 +18,22 @@ namespace GeneticJSON
 		
 			JSONObject();
 			
-			//Constructs a JSONObject from the provided string
+			//Constructs a JSON string or object
+			//If the provided string can be parsed as a JSON object, the JSONObject will be constructed as such
 			JSONObject(std::string value);
+			
+			//Constructs a JSON int
+			JSONObject(int value);
+			
+			//Constructs a JSON bool
+			JSONObject(bool value);
+			
+			//Constructs a JSON double
+			JSONObject(double value);
+			
+			//Constructs a JSON array
+			JSONObject(const char* value);
+			JSONObject(std::vector<JSONObject> value);
 			
 			/**Writing**/
 			
@@ -31,6 +46,8 @@ namespace GeneticJSON
 			void addBool(std::string key, bool val);
 			
 			void addString(std::string key, std::string val);
+			
+			void addArray(std::string key, std::vector<JSONObject> arr);
 			
 			//Converts object to JSON string
 			std::string asJSON() const;
@@ -51,6 +68,9 @@ namespace GeneticJSON
 			
 			//Converts object to string value
 			std::string asString() const;
+			
+			//Converts object to vector of JSONObjects
+			std::vector<JSONObject> asArray() const;
 	};
 }
 

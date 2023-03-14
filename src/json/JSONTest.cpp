@@ -7,28 +7,28 @@ using GeneticJSON::JSONObject;
 
 void testJSONInt()
 {
-	JSONObject intTest("10");
+	JSONObject intTest(10);
 	assert(intTest.asInt() == 10);
 	std::cout << "JSON asInt passed\n";
 }
 
 void testJSONBool()
 {
-	JSONObject boolTest("true");
+	JSONObject boolTest(true);
 	assert(boolTest.asBool() == true);
 	std::cout << "JSON asBool passed\n";
 }
 
 void testJSONFloat()
 {
-	JSONObject floatTest("5.567");
+	JSONObject floatTest(5.567);
 	assert(floatTest.asFloat() == 5.567);
 	std::cout << "JSON asFloat passed\n";
 }
 
 void testJSONString()
 {
-	JSONObject stringTest("\"Hello string\"");
+	JSONObject stringTest("Hello string");
 	assert(stringTest.asString() == "Hello string");
 	std::cout << "JSON asString passed\n";
 }
@@ -47,6 +47,20 @@ void testJSONObject()
 	std::cout << "JSON object reading passed\n";
 }
 
+void testReadJSONArray()
+{
+	std::vector<JSONObject> objectArr = {JSONObject(0), JSONObject(1), JSONObject(2), JSONObject(3), JSONObject(4)};
+	JSONObject arrObj(objectArr);
+	auto objects = arrObj.asArray();
+	for (int i = 0; i < 5; i++) assert(objects[i].asInt() == i);
+	std::cout << "JSON array reading passed\n";
+}
+
+void testWriteJSONArray()
+{
+	
+}
+
 void testBuildingJSONObject()
 {
 	JSONObject buildTest;
@@ -56,6 +70,10 @@ void testBuildingJSONObject()
 	
 	buildTest.addString("string", "hello JSON");
 	assert(buildTest["string"].asString() == "hello JSON");
+	
+	JSONObject readWrittenOutput(buildTest.asJSON());
+	assert(readWrittenOutput["test"].asInt() == 10);
+	assert(readWrittenOutput["string"].asString() == "hello JSON");
 
 	std::cout << buildTest.asJSON() << '\n';
 	std::cout << "JSON adding subobjects passed\n";
@@ -72,5 +90,7 @@ int main()
 	testJSONFloat();
 	testJSONString();
 	testJSONObject();
+	testReadJSONArray();
+	testWriteJSONArray();
 	testBuildingJSONObject();
 }

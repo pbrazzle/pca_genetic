@@ -8,6 +8,8 @@ namespace PCAGenetic
 	class DecisionCalculator : public FitnessCalculator
 	{
 		public:
+			DecisionCalculator();
+		
 			std::unique_ptr<FitnessCalculator> clone() const;
 
 			std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<std::unique_ptr<GeneticModel>>&);

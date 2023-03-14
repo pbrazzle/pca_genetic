@@ -46,7 +46,7 @@ namespace PCAGenetic
 	std::map<std::string, SelectFactory> selectMap {
 		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>},
 		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>},
-		{"DistributionSelector", &makeParentSelector<DistributionFitnessSelector>}
+		{"DistributionSelector", &makeParentSelector<DistributionSelector>}
 	};
 	
 	std::map<std::string, CombinerFactory> combinerMap {
