@@ -56,3 +56,7 @@ target_link_libraries(GeneticSim PUBLIC GeneticAlgorithms GeneticModels)
 add_executable(basicTests test/basicTests.cpp)
 target_include_directories(basicTests PUBLIC src src/model src/algorithm)
 target_link_libraries(basicTests PUBLIC GeneticModels GeneticAlgorithms)
+
+add_executable(ParamJSONTest src/algorithm/ParamJSONTest.cpp)
+target_include_directories(ParamJSONTest PUBLIC src)
+target_link_libraries(ParamJSONTest PUBLIC GeneticAlgorithms GeneticJSON)
