@@ -4,6 +4,7 @@ project(pca_genetic)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
+enable_testing()
 
 set(MODEL_SOURCES 
 	src/model/linear/LinearGeneticModel.cpp 
@@ -60,3 +61,13 @@ target_link_libraries(basicTests PUBLIC GeneticModels GeneticAlgorithms)
 add_executable(ParamJSONTest src/algorithm/ParamJSONTest.cpp)
 target_include_directories(ParamJSONTest PUBLIC src)
 target_link_libraries(ParamJSONTest PUBLIC GeneticAlgorithms GeneticJSON)
+
+add_test(
+	NAME JSONTest
+	COMMAND $<TARGET_FILE:JSONTest>
+	)
+	
+add_test(
+	NAME ParamJSONTest
+	COMMAND $<TARGET_FILE:ParamJSONTest>
+	)
