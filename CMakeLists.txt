@@ -40,10 +40,6 @@ set(JSON_SOURCES
 add_library(GeneticJSON STATIC ${JSON_SOURCES})
 target_include_directories(GeneticJSON PUBLIC src)
 
-add_executable(JSONTest src/json/JSONTest.cpp)
-target_include_directories(JSONTest PUBLIC src)
-target_link_libraries(JSONTest PUBLIC GeneticJSON)
-
 set(SIMULATOR_SOURCES 
 	src/simulator/GeneticSim.cpp 
 	src/simulator/SimulationFileReader.cpp
@@ -54,20 +50,26 @@ add_executable(GeneticSim ${SIMULATOR_SOURCES})
 target_include_directories(GeneticSim PUBLIC src)
 target_link_libraries(GeneticSim PUBLIC GeneticAlgorithms GeneticModels)
 
-add_executable(basicTests test/basicTests.cpp)
-target_include_directories(basicTests PUBLIC src src/model src/algorithm)
-target_link_libraries(basicTests PUBLIC GeneticModels GeneticAlgorithms)
-
-add_executable(ParamJSONTest src/algorithm/ParamJSONTest.cpp)
-target_include_directories(ParamJSONTest PUBLIC src)
-target_link_libraries(ParamJSONTest PUBLIC GeneticAlgorithms GeneticJSON)
-
-add_test(
-	NAME JSONTest
-	COMMAND $<TARGET_FILE:JSONTest>
-	)
+set(ALL_LIBS
+	GeneticModels
+	GeneticAlgorithms
+	GeneticJSON)
 	
-add_test(
-	NAME ParamJSONTest
-	COMMAND $<TARGET_FILE:ParamJSONTest>
-	)
+set(TEST_SOURCES
+	src/json/JSONTest.cpp
+	test/basicTests.cpp
+	src/algorithm/ParamJSONTest.cpp)
+	
+foreach(testSrc ${TEST_SOURCES})
+	get_filename_component(testName ${testSrc} NAME_WE)
+	add_executable(${testName} ${testSrc})
+	
+	target_include_directories(${testName} PUBLIC src)
+	target_link_libraries(${testName} PUBLIC ${ALL_LIBS})
+	set_target_properties(${testName} PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/bin/tests)
+		
+	add_test(NAME ${testName}
+			COMMAND $<TARGET_FILE:${testName}>
+			)
+endforeach(testSrc)
