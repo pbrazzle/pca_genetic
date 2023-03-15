@@ -32,6 +32,21 @@ JSONObject GeneticAlgorithmParameters::toJSON() const
 	paramObj.addString("selectType", selectType);
 	paramObj.addString("combType", combType);
 	
+	if (parentComb)
+		paramObj.addObject("combData", parentComb->toJSON());
+	else
+		paramObj.addObject("combData", JSONObject());
+	
+	if (parentSelect)
+		paramObj.addObject("selectData", parentSelect->toJSON());
+	else
+		paramObj.addObject("selectData", JSONObject());
+	
+	if (fitnessCalc)
+		paramObj.addObject("calcData", fitnessCalc->toJSON());
+	else
+		paramObj.addObject("calcData", JSONObject());
+	
 	return paramObj;
 }
 void GeneticAlgorithmParameters::fromJSON(const JSONObject& obj) 
@@ -47,10 +62,16 @@ void GeneticAlgorithmParameters::fromJSON(const JSONObject& obj)
 	selectType = obj["selectType"].asString();
 	combType = obj["combType"].asString();
 	
-	//TODO pass strategy data onto these
 	fitnessCalc = fitCalcMap[calcType]();
 	parentSelect = selectMap[selectType]();
 	parentComb = combinerMap[combType]();
+	
+	if (parentComb)
+		parentComb->fromJSON(obj["combData"]);
+	if (parentSelect)
+		parentSelect->fromJSON(obj["selectData"]);
+	if (fitnessCalc)
+		fitnessCalc->fromJSON(obj["calcData"]);
 	
 	//TODO make string -> model factory and pass data
 }

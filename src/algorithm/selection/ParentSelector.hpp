@@ -3,11 +3,15 @@
 
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
+#include "json/JSONSerializable.hpp"
+
 #include <memory>
 
 namespace PCAGenetic
 {
-	class ParentSelector
+	using namespace GeneticJSON;
+	
+	class ParentSelector : public JSONSerializable
 	{
 		public:
 			virtual ~ParentSelector() { }

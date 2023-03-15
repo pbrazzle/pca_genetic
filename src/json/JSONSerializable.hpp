@@ -8,8 +8,8 @@ namespace GeneticJSON
 	class JSONSerializable
 	{
 		public:
-			virtual JSONObject toJSON() const = 0;
-			virtual void fromJSON(const JSONObject& obj) = 0;
+			virtual JSONObject toJSON() const { return JSONObject(); }
+			virtual void fromJSON(const JSONObject& obj) { }
 	};
 }
 

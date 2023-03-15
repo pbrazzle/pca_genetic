@@ -6,6 +6,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
 enable_testing()
 
+set(JSON_SOURCES
+	src/json/JSONObject.cpp
+	src/json/JSONFile.cpp)
+	
+add_library(GeneticJSON STATIC ${JSON_SOURCES})
+target_include_directories(GeneticJSON PUBLIC src)
+
 set(MODEL_SOURCES 
 	src/model/linear/LinearGeneticModel.cpp 
 	src/model/input/ModelInputDataVector.cpp 
@@ -31,14 +38,7 @@ set(ALG_SOURCES
 
 add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
-target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels)
-
-set(JSON_SOURCES
-	src/json/JSONObject.cpp
-	src/json/JSONFile.cpp)
-	
-add_library(GeneticJSON STATIC ${JSON_SOURCES})
-target_include_directories(GeneticJSON PUBLIC src)
+target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels GeneticJSON)
 
 set(SIMULATOR_SOURCES 
 	src/simulator/GeneticSim.cpp 

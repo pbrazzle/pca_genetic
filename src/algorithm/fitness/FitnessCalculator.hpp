@@ -6,10 +6,13 @@
 #include <xstddef>
 
 #include "GeneticTypes.hpp"
+#include "json/JSONSerializable.hpp"
 
 namespace PCAGenetic
 {
-	class FitnessCalculator
+	using namespace GeneticJSON;
+	
+	class FitnessCalculator : public JSONSerializable
 	{
 		public:
 			virtual ~FitnessCalculator() { }

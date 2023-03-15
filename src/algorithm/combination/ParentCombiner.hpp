@@ -1,12 +1,16 @@
 #ifndef PARENT_COMBINER
 #define PARENT_COMBINER
 
+#include "json/JSONSerializable.hpp"
+
 #include <memory>
 #include <vector>
 
 namespace PCAGenetic
 {
-	class ParentCombiner
+	using namespace GeneticJSON;
+	
+	class ParentCombiner : public JSONSerializable
 	{
 		public:
 			virtual ~ParentCombiner() { }
