@@ -4,7 +4,7 @@
 #include <fstream>
 #include <algorithm>
 
-using PCAGenetic::Simulation;
+using GeneticSimulator::Simulation;
 
 Simulation::Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<GeneticModel> m, std::vector<trainingItem> td, int g) : name(n), alg(a), generations(g)
 {

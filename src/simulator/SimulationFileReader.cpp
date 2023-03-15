@@ -14,8 +14,8 @@
 #include <vector>
 #include <iostream>
 
-using PCAGenetic::SimulationFileReader;
-using PCAGenetic::Simulation;
+using GeneticSimulator::SimulationFileReader;
+using GeneticSimulator::Simulation;
 using PCAGenetic::GeneticAlgorithm;
 using PCAGenetic::GeneticModel;
 using PCAGenetic::trainingItem;

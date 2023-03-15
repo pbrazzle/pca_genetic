@@ -9,8 +9,10 @@
 #include <vector>
 #include <string>
 
-namespace PCAGenetic
+namespace GeneticSimulator
 {
+	using namespace PCAGenetic;
+	
 	//TODO should Simulation write algorithm reports? Or should GeneticAlgorithm do it?
 	class Simulation
 	{

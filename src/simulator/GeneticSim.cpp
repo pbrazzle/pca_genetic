@@ -3,7 +3,7 @@
 
 #include <time.h>
 
-using PCAGenetic::SimulationFileReader;
+using GeneticSimulator::SimulationFileReader;
 
 int main(int argc, char* argv[])
 {

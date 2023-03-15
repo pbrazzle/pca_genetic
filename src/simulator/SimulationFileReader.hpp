@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-namespace PCAGenetic
+namespace GeneticSimulator
 {
 	//Parses Simulation objects from .gen file
 	//TODO switch to reading JSON files
