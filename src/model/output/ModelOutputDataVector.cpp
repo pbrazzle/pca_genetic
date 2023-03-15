@@ -9,8 +9,8 @@
 #include <numeric>
 #include <iostream>
 
-using PCAGenetic::ModelOutputDataVector;
-using PCAGenetic::ModelOutputData;
+using GeneticModels::ModelOutputDataVector;
+using GeneticModels::ModelOutputData;
 
 ModelOutputDataVector::ModelOutputDataVector(std::vector<double> d) : data(d) { }
 

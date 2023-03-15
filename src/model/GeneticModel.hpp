@@ -7,7 +7,7 @@
 #include "model/input/ModelInputData.hpp"
 #include "model/output/ModelOutputData.hpp"
 
-namespace PCAGenetic
+namespace GeneticModels
 {
 	class GeneticModel
 	{

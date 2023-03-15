@@ -1,8 +1,8 @@
 #include "model/input/ModelInputDataVector.hpp"
 #include <memory>
 
-using PCAGenetic::ModelInputDataVector;
-using PCAGenetic::ModelInputData;
+using GeneticModels::ModelInputDataVector;
+using GeneticModels::ModelInputData;
 
 ModelInputDataVector::ModelInputDataVector(std::vector<double> d) : data(d) { }
 

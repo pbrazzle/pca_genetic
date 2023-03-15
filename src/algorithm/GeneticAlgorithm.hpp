@@ -14,6 +14,8 @@
 
 namespace PCAGenetic
 {
+	using namespace GeneticModels;
+	
 	//TODO reporting about algorithm progress (avg/best fitness, etc.) should be pulled out into its own class
 	//TODO algorithm parameters (mutationChance, elitism, etc.) should be pulled out into its own class
 	class GeneticAlgorithm

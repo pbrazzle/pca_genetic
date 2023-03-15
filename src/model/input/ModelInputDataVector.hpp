@@ -4,7 +4,7 @@
 #include "model/input/ModelInputData.hpp"
 #include <memory>
 
-namespace PCAGenetic
+namespace GeneticModels
 {
 	class ModelInputDataVector : public ModelInputData
 	{

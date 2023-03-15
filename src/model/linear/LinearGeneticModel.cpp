@@ -5,10 +5,10 @@
 #include <stdexcept>
 #include <iostream>
 
-using PCAGenetic::LinearGeneticModel;
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::ModelOutputDataVector;
+using GeneticModels::LinearGeneticModel;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::ModelOutputDataVector;
 
 LinearGeneticModel::LinearGeneticModel(int d) : dataLength(d)
 {

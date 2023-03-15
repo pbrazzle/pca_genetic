@@ -3,7 +3,7 @@
 
 #include "model/GeneticModel.hpp"
 
-namespace PCAGenetic
+namespace GeneticModels
 {
 	//TODO implement this
 	class LogisticRegressionModel : public GeneticModel

@@ -1,8 +1,8 @@
 #include "model/downsample/DownSamplingModel.hpp"
 
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::DownSamplingModel;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::DownSamplingModel;
 
 std::unique_ptr<GeneticModel> DownSamplingModel::clone() const
 {

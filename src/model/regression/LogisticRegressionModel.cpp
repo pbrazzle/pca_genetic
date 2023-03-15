@@ -1,8 +1,8 @@
 #include "model/regression/LogisticRegressionModel.hpp"
 
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::LogisticRegressionModel;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::LogisticRegressionModel;
 
 std::unique_ptr<GeneticModel> LogisticRegressionModel::clone() const
 {

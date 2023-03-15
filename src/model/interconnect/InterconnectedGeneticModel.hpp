@@ -5,9 +5,9 @@
 #include <memory>
 
 //TODO: All models should be moved to the GeneticModels namespace
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::ModelInputData;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::ModelInputData;
 
 namespace GeneticModels
 {

@@ -4,7 +4,7 @@
 #include "model/output/ModelOutputData.hpp"
 #include <memory>
 
-namespace PCAGenetic
+namespace GeneticModels
 {
 	class ModelOutputDataVector : public ModelOutputData
 	{

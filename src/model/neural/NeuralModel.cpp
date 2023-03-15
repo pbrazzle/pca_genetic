@@ -1,8 +1,8 @@
 #include "model/neural/NeuralModel.hpp"
 
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::NeuralModel;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::NeuralModel;
 
 std::unique_ptr<GeneticModel> NeuralModel::clone() const
 {

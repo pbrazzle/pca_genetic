@@ -1,8 +1,8 @@
 #include "model/convolution/ConvolutionModel.hpp"
 
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelOutputData;
-using PCAGenetic::ConvolutionModel;
+using GeneticModels::GeneticModel;
+using GeneticModels::ModelOutputData;
+using GeneticModels::ConvolutionModel;
 
 std::unique_ptr<GeneticModel> ConvolutionModel::clone() const
 {

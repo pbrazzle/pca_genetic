@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace PCAGenetic
+namespace GeneticModels
 {
 	class LinearGeneticModel : public GeneticModel
 	{
