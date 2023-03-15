@@ -39,17 +39,20 @@ namespace PCAGenetic
 	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
 	
 	std::map<std::string, FitCalcFactory> fitCalcMap {
+		{"", []() { return std::unique_ptr<FitnessCalculator>(); }},
 		{"DistanceCalculator", &makeFitnessCalculator<DistanceCalculator>},
 		{"DecisionCalculator", &makeFitnessCalculator<DecisionCalculator>}
 	};
 	
 	std::map<std::string, SelectFactory> selectMap {
+		{"", []() { return std::unique_ptr<ParentSelector>(); }},
 		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>},
 		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>},
 		{"DistributionSelector", &makeParentSelector<DistributionSelector>}
 	};
 	
 	std::map<std::string, CombinerFactory> combinerMap {
+		{"", []() { return std::unique_ptr<ParentCombiner>(); }},
 		{"SingleCrossingCombiner", &makeParentCombiner<SingleCrossingCombiner>},
 		{"RandomCrossingCombiner", &makeParentCombiner<RandomCrossingCombiner>}
 	};

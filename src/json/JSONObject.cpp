@@ -38,6 +38,7 @@ std::string trim(std::string s)
 
 JSONObject parseObjectFromString(std::string objString)
 {
+	if (objString == "null") return JSONObject();
 	try
 	{
 		double d = std::stod(objString);
@@ -59,7 +60,7 @@ JSONObject parseObjectFromString(std::string objString)
 	return JSONObject(objString.substr(1, objString.size()-2));
 }
 
-JSONObject::JSONObject() { }
+JSONObject::JSONObject() : data("null") { }
 
 JSONObject::JSONObject(const char* value) : JSONObject(std::string(value)) { }
 JSONObject::JSONObject(std::string value)
