@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
 
-#include "JSONObject.hpp"
+#include "json/JSONObject.hpp"
 
 using GeneticJSON::JSONObject;
 
@@ -83,8 +83,6 @@ int main()
 {
 	std::cout << "Testing JSONObject...\n";
 	
-	JSONObject test;
-	
 	testJSONInt();
 	testJSONBool();
 	testJSONFloat();
@@ -93,4 +91,6 @@ int main()
 	testReadJSONArray();
 	testWriteJSONArray();
 	testBuildingJSONObject();
+	
+	return 0;
 }

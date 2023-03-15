@@ -3,7 +3,6 @@ TODOs:
 	- Plan full scale tests
 	- Consider data inputs from online sources
 	- Add ModelInput/Output classes for images
-	- Clean up namespaces and source folders so they match up
 	- Write lots and lots of tests
 	
 Simulations should be able to report data about itself

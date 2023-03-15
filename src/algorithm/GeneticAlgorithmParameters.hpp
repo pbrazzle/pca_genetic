@@ -19,10 +19,10 @@ namespace PCAGenetic
 			std::string modelType, calcType, selectType, combType;
 			
 		public:
-			std::shared_ptr<FitnessCalculator> fitnessCalc;
-			std::shared_ptr<ParentSelector> parentSelect;
-			std::shared_ptr<ParentCombiner> parentComb;
-			std::shared_ptr<GeneticModel> modelTemplate;
+			std::unique_ptr<FitnessCalculator> fitnessCalc;
+			std::unique_ptr<ParentSelector> parentSelect;
+			std::unique_ptr<ParentCombiner> parentComb;
+			std::unique_ptr<GeneticModel> modelTemplate;
 			
 			unsigned int generationSize;
 			double mutationChance, mutationSize;

@@ -56,9 +56,8 @@ set(ALL_LIBS
 	GeneticJSON)
 	
 set(TEST_SOURCES
-	src/json/JSONTest.cpp
-	test/basicTests.cpp
-	src/algorithm/ParamJSONTest.cpp)
+	src/json/JSONObject.test.cpp
+	src/algorithm/GeneticAlgorithmParameters.test.cpp)
 	
 foreach(testSrc ${TEST_SOURCES})
 	get_filename_component(testName ${testSrc} NAME_WE)
