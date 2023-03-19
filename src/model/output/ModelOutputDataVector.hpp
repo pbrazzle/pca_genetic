@@ -6,6 +6,8 @@
 
 namespace GeneticModels
 {
+	using namespace GeneticJSON;
+	
 	class ModelOutputDataVector : public ModelOutputData
 	{
 		private:
@@ -18,6 +20,9 @@ namespace GeneticModels
 			double distance(ModelOutputData&);
 
 			std::vector<double> getData();
+			
+			JSONObject toJSON() const;
+			void fromJSON(const JSONObject& obj);
 	};
 }
 

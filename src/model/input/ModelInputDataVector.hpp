@@ -6,6 +6,8 @@
 
 namespace GeneticModels
 {
+	using namespace GeneticJSON;
+	
 	class ModelInputDataVector : public ModelInputData
 	{
 		private:
@@ -16,7 +18,10 @@ namespace GeneticModels
 
 			std::unique_ptr<ModelInputData> clone() const;
 
-			std::vector<double> getData();			
+			std::vector<double> getData();	
+
+			JSONObject toJSON() const;
+			void fromJSON(const JSONObject& obj);	
 	};
 }
 

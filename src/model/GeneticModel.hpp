@@ -6,10 +6,13 @@
 
 #include "model/input/ModelInputData.hpp"
 #include "model/output/ModelOutputData.hpp"
+#include "json/JSONSerializable.hpp"
 
 namespace GeneticModels
 {
-	class GeneticModel
+	using namespace GeneticJSON;
+	
+	class GeneticModel : public JSONSerializable
 	{
 		public:
 			virtual ~GeneticModel() { }

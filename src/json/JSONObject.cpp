@@ -105,6 +105,11 @@ JSONObject::JSONObject(double value) { data = std::to_string(value); }
 
 JSONObject::JSONObject(std::vector<JSONObject> value)
 {
+	if (value.size() == 0)
+	{
+		data = "null";
+		return;
+	}
 	data = "[";
 	for (auto obj : value) data += obj.asJSON() + ',';
 	data.pop_back();

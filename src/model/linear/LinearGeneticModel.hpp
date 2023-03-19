@@ -7,6 +7,8 @@
 
 namespace GeneticModels
 {
+	using namespace GeneticJSON;
+	
 	class LinearGeneticModel : public GeneticModel
 	{
 		private:
@@ -41,6 +43,9 @@ namespace GeneticModels
 
 			//Returns a string representation of the model parameters in matrix form
 			std::string printMatrix() const;
+			
+			JSONObject toJSON() const;
+			void fromJSON(const JSONObject& obj);
 	};
 }
 

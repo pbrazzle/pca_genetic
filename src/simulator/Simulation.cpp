@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using GeneticSimulator::Simulation;
+using namespace GeneticJSON;
 
 Simulation::Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<GeneticModel> m, std::vector<trainingItem> td, int g) : name(n), alg(a), generations(g)
 {
@@ -58,4 +59,31 @@ void Simulation::run()
 		outFile << avgFits[i] << ',' << bestFits[i] << '\n';
 	}
 	outFile.close();
+}
+
+JSONObject Simulation::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("name", name);
+	obj.addInt("generations", generations);
+	obj.addObject("algorithm", alg.toJSON());
+	obj.addObject("model_template", modelTemplate->toJSON());
+	
+	std::vector<JSONObject> JSONtrainingData;
+	for (int i = 0; i < trainingData.size(); i++)
+	{
+		JSONObject JSONitem;
+		JSONitem.addObject("input", trainingData[i].first->toJSON());
+		JSONitem.addObject("output", trainingData[i].second->toJSON());
+		JSONtrainingData.push_back(JSONitem);
+	}
+	
+	obj.addArray("training_data", JSONtrainingData);
+	
+	return obj;
+}
+
+void Simulation::fromJSON(const JSONObject& obj)
+{
+	
 }

@@ -9,6 +9,7 @@ using GeneticModels::LinearGeneticModel;
 using GeneticModels::GeneticModel;
 using GeneticModels::ModelOutputData;
 using GeneticModels::ModelOutputDataVector;
+using namespace GeneticJSON;
 
 LinearGeneticModel::LinearGeneticModel(int d) : dataLength(d)
 {
@@ -66,4 +67,21 @@ std::string LinearGeneticModel::printMatrix() const
 		matrixString += "]\n";
 	}
 	return matrixString;
+}
+
+JSONObject LinearGeneticModel::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("model_type", "LinearGeneticModel");
+	
+	std::vector<JSONObject> paramJSON;
+	for (double d : parameters) paramJSON.push_back(JSONObject(d));
+	obj.addArray("parameters", paramJSON);
+	
+	return obj;
+}
+
+void LinearGeneticModel::fromJSON(const JSONObject& obj)
+{
+	
 }

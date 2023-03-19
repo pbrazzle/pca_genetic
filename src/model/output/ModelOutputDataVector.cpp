@@ -11,6 +11,7 @@
 
 using GeneticModels::ModelOutputDataVector;
 using GeneticModels::ModelOutputData;
+using namespace GeneticJSON;
 
 ModelOutputDataVector::ModelOutputDataVector(std::vector<double> d) : data(d) { }
 
@@ -34,3 +35,20 @@ double ModelOutputDataVector::distance(ModelOutputData& otherData)
 }
 
 std::vector<double> ModelOutputDataVector::getData() { return data; }
+
+JSONObject ModelOutputDataVector::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("data_type", "ModelOutputDataVector");
+	
+	std::vector<JSONObject> dataJSON;
+	for (double d : data) dataJSON.push_back(JSONObject(d));
+	obj.addArray("data", dataJSON);
+	
+	return obj;
+}
+
+void ModelOutputDataVector::fromJSON(const JSONObject& obj)
+{
+	
+}

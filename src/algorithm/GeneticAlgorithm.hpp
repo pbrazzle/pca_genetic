@@ -11,14 +11,16 @@
 #include "algorithm/fitness/FitnessCalculator.hpp"
 #include "algorithm/selection/ParentSelector.hpp"
 #include "algorithm/combination/ParentCombiner.hpp"
+#include "json/JSONSerializable.hpp"
 
 namespace PCAGenetic
 {
 	using namespace GeneticModels;
+	using namespace GeneticJSON;
 	
 	//TODO reporting about algorithm progress (avg/best fitness, etc.) should be pulled out into its own class
 	//TODO algorithm parameters (mutationChance, elitism, etc.) should be pulled out into its own class
-	class GeneticAlgorithm
+	class GeneticAlgorithm : public JSONSerializable
 	{
 		private:
 			std::unique_ptr<FitnessCalculator> fitnessCalc;

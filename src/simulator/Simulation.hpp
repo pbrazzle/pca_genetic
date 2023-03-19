@@ -4,6 +4,7 @@
 #include "algorithm/GeneticAlgorithm.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
+#include "json/JSONSerializable.hpp"
 
 #include <memory>
 #include <vector>
@@ -12,9 +13,10 @@
 namespace GeneticSimulator
 {
 	using namespace PCAGenetic;
+	using namespace GeneticJSON;
 	
 	//TODO should Simulation write algorithm reports? Or should GeneticAlgorithm do it?
-	class Simulation
+	class Simulation : public JSONSerializable
 	{
 		private:
 			std::string name;
@@ -28,6 +30,9 @@ namespace GeneticSimulator
 			Simulation(const Simulation& other);
 
 			void run();
+			
+			JSONObject toJSON() const;
+			void fromJSON(const JSONObject& obj);
 	};
 }
 

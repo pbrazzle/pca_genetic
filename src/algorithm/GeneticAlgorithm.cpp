@@ -37,9 +37,12 @@ GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::u
 
 GeneticAlgorithm::GeneticAlgorithm(GeneticAlgorithm& alg)
 {
-	fitnessCalc = std::move(alg.fitnessCalc->clone());
-	parentSelect = std::move(alg.parentSelect->clone());
-	parentComb = std::move(alg.parentComb->clone());
+	if (alg.fitnessCalc)
+		fitnessCalc = std::move(alg.fitnessCalc->clone());
+	if (alg.parentSelect)
+		parentSelect = std::move(alg.parentSelect->clone());
+	if (alg.parentComb)
+		parentComb = std::move(alg.parentComb->clone());
 	
 	for (int i = 0; i < alg.models.size(); i++)
 	{

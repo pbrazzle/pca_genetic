@@ -3,6 +3,7 @@
 
 using GeneticModels::ModelInputDataVector;
 using GeneticModels::ModelInputData;
+using namespace GeneticJSON;
 
 ModelInputDataVector::ModelInputDataVector(std::vector<double> d) : data(d) { }
 
@@ -12,3 +13,20 @@ std::unique_ptr<ModelInputData> ModelInputDataVector::clone() const
 }
 
 std::vector<double> ModelInputDataVector::getData() { return data; }
+
+JSONObject ModelInputDataVector::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("data_type", "ModelInputDataVector");
+	
+	std::vector<JSONObject> dataJSON;
+	for (double d : data) dataJSON.push_back(JSONObject(d));
+	obj.addArray("data", dataJSON);
+	
+	return obj;
+}
+
+void ModelInputDataVector::fromJSON(const JSONObject& obj)
+{
+	
+}

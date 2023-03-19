@@ -40,24 +40,29 @@ add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
 target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels GeneticJSON)
 
-set(SIMULATOR_SOURCES 
-	src/simulator/GeneticSim.cpp 
+set(SIMULATOR_SOURCES
 	src/simulator/SimulationFileReader.cpp
 	src/simulator/Simulation.cpp 
 	src/Logger.cpp)
+	
+add_library(GeneticSimulator STATIC ${SIMULATOR_SOURCES})
+target_include_directories(GeneticSimulator PUBLIC src)
+target_link_libraries(GeneticSimulator PUBLIC GeneticAlgorithms)
 
-add_executable(GeneticSim ${SIMULATOR_SOURCES})
+add_executable(GeneticSim src/simulator/GeneticSim.cpp )
 target_include_directories(GeneticSim PUBLIC src)
-target_link_libraries(GeneticSim PUBLIC GeneticAlgorithms GeneticModels)
+target_link_libraries(GeneticSim PUBLIC GeneticSimulator)
 
 set(ALL_LIBS
 	GeneticModels
 	GeneticAlgorithms
+	GeneticSimulator
 	GeneticJSON)
 	
 set(TEST_SOURCES
 	src/json/JSONObject.test.cpp
-	src/algorithm/GeneticAlgorithmParameters.test.cpp)
+	src/algorithm/GeneticAlgorithmParameters.test.cpp
+	src/simulator/Simulation.test.cpp)
 	
 foreach(testSrc ${TEST_SOURCES})
 	get_filename_component(testName ${testSrc} NAME_WE)

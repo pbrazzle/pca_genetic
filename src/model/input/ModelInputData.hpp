@@ -4,9 +4,13 @@
 #include <memory>
 #include <vector>
 
+#include "json/JSONSerializable.hpp"
+
 namespace GeneticModels
 {	
-	class ModelInputData
+	using namespace GeneticJSON;
+
+	class ModelInputData : public JSONSerializable
 	{
 		public:
 			virtual ~ModelInputData() { }
