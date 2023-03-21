@@ -1,10 +1,7 @@
 set(ALG_SOURCES 
 	GeneticAlgorithm.cpp 
+	GenerationCreator.cpp
 	GeneticAlgorithmParameters.cpp
-	GeneticTrainer.cpp
-	TrainerData.cpp
-	TrainerParameters.cpp
-	TrainerModels.cpp
 	fitness/distance/DistanceCalculator.cpp 
 	fitness/decision/DecisionCalculator.cpp
 	combination/single/SingleCrossingCombiner.cpp 

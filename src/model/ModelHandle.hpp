@@ -14,11 +14,13 @@ namespace GeneticModels
 			
 		public:
 			ModelHandle(GeneticModel*);
+			ModelHandle(std::unique_ptr<GeneticModel>&);
+			ModelHandle(const GeneticModel&);
 			ModelHandle(const ModelHandle&);
 			
 			ModelHandle& operator=(const ModelHandle&);
 			
-			GeneticModel* operator->();
+			GeneticModel* operator->() const;
 	};
 }
 

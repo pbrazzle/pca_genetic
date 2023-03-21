@@ -10,7 +10,8 @@ namespace PCAGenetic
 	{
 		public:
 			std::unique_ptr<ParentSelector> clone() const;
-			parentPair selectParents(const modelVector&, const std::vector<double>&);
+
+			std::pair<ModelHandle, ModelHandle> selectParents(const std::vector<ModelHandle>&, const std::vector<double>&);
 	};
 }
 

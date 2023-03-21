@@ -21,10 +21,9 @@ void LOG(T message)
 
 GeneticAlgorithm::GeneticAlgorithm()
 { 
-	generationSize = 100;
+	creator = GenerationCreator(1, 100);
 	mutationChance = 0.1;
 	mutationSize = 0.01;
-	paramRange = 1;
 	elitism = 0.50;
 }
 
@@ -103,20 +102,7 @@ GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
 void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem>& td, int generations)
 {
 	trainingData = std::move(td);
-	models.clear();
-	models.reserve(generationSize);
-
-	for (int i =0; i < generationSize; i++)
-	{
-		std::vector<double> params = modelTemplate.getParameters();
-		for (int j = 0; j < params.size(); j++)
-		{
-			params[j] += 2*paramRange*((double) rand() / RAND_MAX) - paramRange;
-		}
-		std::unique_ptr<GeneticModel> model = modelTemplate.clone();
-		model->setParameters(params);
-		models.emplace_back(std::move(model));
-	}
+	models = creator.create(modelTemplate);
 
 	calculateFitnesses();
 	continueTraining(generations);
@@ -138,7 +124,7 @@ void GeneticAlgorithm::calculateFitnesses()
 			[&](size_t i1, size_t i2) { return fitnesses[i1] < fitnesses[i2]; });
 	std::sort(fitnesses.begin(), fitnesses.end());
 
-	modelVector sortedModels;
+	std::vector<ModelHandle> sortedModels;
 	sortedModels.reserve(models.size());
 	for (size_t i : sortedIndices) sortedModels.emplace_back(models[i]->clone());
 	models = std::move(sortedModels);
@@ -157,7 +143,7 @@ std::vector<double> GeneticAlgorithm::mutateParams(const std::vector<double>& pa
 
 void GeneticAlgorithm::runGeneration()
 {
-	modelVector newModels;
+	std::vector<ModelHandle> newModels;
 
 	int numEliteModels = elitism*generationSize;
 	LOG("Saving best "); LOG(numEliteModels); LOG(" models\n");
@@ -168,7 +154,7 @@ void GeneticAlgorithm::runGeneration()
 
 	for (int i = 0; i < generationSize-numEliteModels; i++)
 	{
-		parentPair parents = parentSelect->selectParents(models, fitnesses);
+		std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(models, fitnesses);
 		std::vector<double> combined = parentComb->combineParameters(parents.first->getParameters(), parents.second->getParameters());
 		combined = mutateParams(combined);
 
@@ -193,10 +179,10 @@ std::unique_ptr<GeneticModel> GeneticAlgorithm::getBestModel()
 	return models.back()->clone();
 }
 
-void GeneticAlgorithm::setGenerationSize(const int& g) { generationSize = g; }
+void GeneticAlgorithm::setGenerationSize(const int& g) { creator.setGenerationSize(g); }
 void GeneticAlgorithm::setMutationChance(const double& m) { mutationChance = m; }
 void GeneticAlgorithm::setMutationSize(const double& s) { mutationSize = s; }
-void GeneticAlgorithm::setParamRange(const double& p) { paramRange = p; }
+void GeneticAlgorithm::setParamRange(const double& p) { creator.setOffsetSize(p); }
 
 void GeneticAlgorithm::setEilitism(const double& e) 
 { 
