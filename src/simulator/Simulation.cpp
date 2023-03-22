@@ -83,6 +83,7 @@ JSONObject Simulation::toJSON() const
 	return obj;
 }
 
+//TODO implement this
 void Simulation::fromJSON(const JSONObject& obj)
 {
 	

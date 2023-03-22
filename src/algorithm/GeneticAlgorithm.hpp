@@ -76,6 +76,9 @@ namespace PCAGenetic
 			
 			std::vector<double> getAvgFitnesses() const;
 			std::vector<double> getBestFitnesses() const;
+
+			JSONObject toJSON() const;
+			void fromJSON(const JSONObject& obj);
 	};
 }
 

@@ -47,6 +47,7 @@ set(ALL_LIBS
 	GeneticJSON)
 	
 set(TEST_SOURCES
+	src/algorithm/GeneticAlgorithm.test.cpp
 	src/json/JSONObject.test.cpp
 	src/simulator/Simulation.test.cpp
 	src/model/neural/NeuralModel.test.cpp

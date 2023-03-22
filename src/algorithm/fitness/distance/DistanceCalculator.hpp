@@ -18,6 +18,8 @@ namespace PCAGenetic
 			std::vector<double> calculateFitnesses(const std::vector<trainingItem>& trainingData, const std::vector<std::unique_ptr<GeneticModel>>& models);
 			
 			std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<ModelHandle>&);
+
+			JSONObject toJSON() const;
 	};
 }
 

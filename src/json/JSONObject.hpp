@@ -7,7 +7,6 @@
 
 namespace GeneticJSON
 {
-	//TODO add support for arrays
 	class JSONObject
 	{
 		private:

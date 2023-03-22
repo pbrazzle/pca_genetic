@@ -16,15 +16,6 @@
 
 namespace PCAGenetic 
 {
-	GeneticAlgorithm makeBasicAlgorithm()
-	{
-		std::unique_ptr<FitnessCalculator> fc(new DistanceCalculator());
-		std::unique_ptr<ParentSelector> ps(new FitnessSumSelector());
-		std::unique_ptr<ParentCombiner> pc(new SingleCrossingCombiner());
-		GeneticAlgorithm alg(std::move(fc), std::move(ps), std::move(pc));
-		return alg;
-	}
-
 	using FitCalcFactory = std::unique_ptr<FitnessCalculator> (*)();
 	using SelectFactory = std::unique_ptr<ParentSelector> (*)();
 	using CombinerFactory = std::unique_ptr<ParentCombiner> (*)();

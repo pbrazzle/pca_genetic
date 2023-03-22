@@ -1,5 +1,7 @@
 #include "GeneticAlgorithm.hpp"
 
+#include "fitness/distance/DistanceCalculator.hpp"
+
 #include <cstdlib>
 #include <numeric>
 #include <algorithm>
@@ -25,6 +27,8 @@ GeneticAlgorithm::GeneticAlgorithm()
 	mutationChance = 0.1;
 	mutationSize = 0.01;
 	elitism = 0.50;
+
+	fitnessCalc = std::unique_ptr<FitnessCalculator>(new DistanceCalculator());
 }
 
 void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)
@@ -212,3 +216,42 @@ void GeneticAlgorithm::setEilitism(const double& e)
 }
 
 std::vector<double> GeneticAlgorithm::getBestFitnesses() const { return bestFitnesses; }
+
+JSONObject GeneticAlgorithm::toJSON() const
+{
+	JSONObject obj;
+
+	//Add settings
+	obj.addInt("generationSize", generationSize);
+	obj.addFloat("offsetSize", offsetSize);
+	obj.addFloat("mutationSize", mutationSize);
+	obj.addFloat("mutationChance", mutationChance);
+	obj.addFloat("elitism", elitism);
+
+	//Add strategies
+	if (fitnessCalc)
+		obj.addObject("FitnessCalculator", fitnessCalc->toJSON());
+	else
+		obj.addObject("FitnessCalculator", JSONObject());
+	if (parentSelect)
+		obj.addObject("ParentSelector", parentSelect->toJSON());
+	else
+		obj.addObject("ParentSelector", JSONObject());
+	if (parentComb)
+		obj.addObject("ParentCombiner", parentComb->toJSON());
+	else
+		obj.addObject("ParentCombiner", JSONObject());
+
+	return obj;
+}
+
+//TODO implement this
+//We'll need some factory setup to read in the strategies
+void GeneticAlgorithm::fromJSON(const JSONObject& obj) 
+{
+	generationSize = obj["generationSize"].asInt();
+	offsetSize = obj["offsetSize"].asFloat();
+	mutationChance = obj["mutationChance"].asFloat();
+	mutationSize = obj["mutationSize"].asFloat();
+	elitism = obj["elitism"].asFloat();
+}
