@@ -1,7 +1,8 @@
 TODOs:
+	- Write test for linear model (identity matrix)
+	
 	- Integrate JSON into Simulation Files - Derive from JSONSerializable
 	- Plan full scale tests
-	- Consider data inputs from online sources
 	- Add ModelInput/Output classes for images
 	- Write lots and lots of tests
 	
@@ -9,3 +10,14 @@ Simulations should be able to report data about itself
 	Execution time
 	Average/best fitness per generation
 	Best model parameters
+	
+Feature List for Report:
+	- Build a CNN model for image classification
+	- Train the model using the genetic algorithm
+	- Read simulation instructions from JSON file
+	- Write simulation report to file
+	
+TODOs for report:
+	- Implement CNN related models (Conv, downsample, neural, interconnect)
+	- Gather training data for image classification
+	- Write test for image classification model
