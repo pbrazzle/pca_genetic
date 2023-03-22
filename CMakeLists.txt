@@ -48,7 +48,8 @@ set(ALL_LIBS
 	
 set(TEST_SOURCES
 	src/json/JSONObject.test.cpp
-	src/simulator/Simulation.test.cpp)
+	src/simulator/Simulation.test.cpp
+	src/model/neural/NeuralModel.test.cpp)
 	
 foreach(testSrc ${TEST_SOURCES})
 	get_filename_component(testName ${testSrc} NAME_WE)
