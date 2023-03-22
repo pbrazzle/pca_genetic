@@ -1,7 +1,7 @@
 #ifndef PARENT_SELECTOR
 #define PARENT_SELECTOR
 
-#include "model/GeneticModel.hpp"
+#include "model/ModelHandle.hpp"
 #include "GeneticTypes.hpp"
 #include "json/JSONSerializable.hpp"
 
@@ -10,6 +10,7 @@
 namespace PCAGenetic
 {
 	using namespace GeneticJSON;
+	using namespace GeneticModels;
 	
 	class ParentSelector : public JSONSerializable
 	{
@@ -19,7 +20,7 @@ namespace PCAGenetic
 			virtual std::unique_ptr<ParentSelector> clone() const = 0;
 
 			//Returns a std::pair of GeneticModels to be combined as parents
-			virtual parentPair selectParents(const modelVector&, const std::vector<double>&) = 0;
+			virtual std::pair<ModelHandle, ModelHandle> selectParents(const std::vector<ModelHandle>&, const std::vector<double>&) = 0;
 	};
 }
 

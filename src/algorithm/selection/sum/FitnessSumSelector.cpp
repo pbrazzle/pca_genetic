@@ -9,6 +9,8 @@ using PCAGenetic::FitnessSumSelector;
 using PCAGenetic::ParentSelector;
 using PCAGenetic::parentPair;
 
+using namespace GeneticModels;
+
 FitnessSumSelector::FitnessSumSelector() { }
 
 std::unique_ptr<ParentSelector> FitnessSumSelector::clone() const
@@ -25,7 +27,7 @@ size_t probDensitySelect(const std::vector<double>& probDensity)
 	return i;
 }
 
-parentPair FitnessSumSelector::selectParents(const modelVector &models, const std::vector<double> &fitnesses)
+std::pair<ModelHandle, ModelHandle> FitnessSumSelector::selectParents(const std::vector<ModelHandle>& models, const std::vector<double>& fitnesses)
 {
 	double sum = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0);
 	double p = 0.0;
@@ -35,5 +37,5 @@ parentPair FitnessSumSelector::selectParents(const modelVector &models, const st
 		[&](double fitness){ p += fitness / sum; return p;});
 
 	size_t i1 = probDensitySelect(probDensity), i2 = probDensitySelect(probDensity);
-	return parentPair(models[i1]->clone(), models[i2]->clone());
+	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models[i1]->clone()), ModelHandle(models[i2]->clone()));
 }

@@ -13,30 +13,38 @@
 #include "algorithm/combination/ParentCombiner.hpp"
 #include "json/JSONSerializable.hpp"
 
+#include "GenerationCreator.hpp"
+#include "Evaluator.hpp"
+#include "Selector.hpp"
+#include "Combiner.hpp"
+#include "Mutator.hpp"
+
 namespace PCAGenetic
 {
 	using namespace GeneticModels;
 	using namespace GeneticJSON;
 	
-	//TODO reporting about algorithm progress (avg/best fitness, etc.) should be pulled out into its own class
-	//TODO algorithm parameters (mutationChance, elitism, etc.) should be pulled out into its own class
 	class GeneticAlgorithm : public JSONSerializable
 	{
 		private:
+			GenerationCreator creator;
+			Evaluator evaluator;
+			Selector selector;
+			Combiner combiner;
+			Mutator mutator;
+		
 			std::unique_ptr<FitnessCalculator> fitnessCalc;
 			std::unique_ptr<ParentSelector> parentSelect;
 			std::unique_ptr<ParentCombiner> parentComb;
 
-			modelVector models;
+			std::vector<ModelHandle> models;
 			std::vector<double> fitnesses;
 			std::vector<trainingItem> trainingData;
 
 			void runGeneration();
 			void calculateFitnesses();
 			
-			unsigned int generationSize;
 			double mutationChance, mutationSize;
-			double paramRange;
 			double elitism;
 			
 			std::vector<double> mutateParams(const std::vector<double>&);

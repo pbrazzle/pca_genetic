@@ -5,6 +5,8 @@ using PCAGenetic::BestFitnessSelector;
 using PCAGenetic::parentPair;
 using PCAGenetic::ParentSelector;
 
+using namespace GeneticModels;
+
 std::unique_ptr<ParentSelector> BestFitnessSelector::clone() const
 {
 	return std::unique_ptr<ParentSelector>(new BestFitnessSelector());
@@ -12,7 +14,7 @@ std::unique_ptr<ParentSelector> BestFitnessSelector::clone() const
 
 //For now select the best model as a parent every time
 //TODO: Should this selector pick the first and second best? Or just the best?
-parentPair BestFitnessSelector::selectParents(const modelVector& models, const std::vector<double>& fitnesses)
+std::pair<ModelHandle, ModelHandle> BestFitnessSelector::selectParents(const std::vector<ModelHandle>& models, const std::vector<double>&)
 {
-	return parentPair(models.back()->clone(), models.back()->clone());
+	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models.back()->clone()), ModelHandle(models.back()->clone()));
 }

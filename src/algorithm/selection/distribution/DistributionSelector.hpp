@@ -15,7 +15,7 @@ namespace PCAGenetic
 			//The ranking of the model, and the total number of models
 			std::function<double(int, int)> distribution;
 		
-			size_t makeSelection(const modelVector&) const;
+			size_t makeSelection(const std::vector<ModelHandle>&) const;
 		
 		public:
 			//The default distribution is a geometric distribution with p=0.5
@@ -26,7 +26,7 @@ namespace PCAGenetic
 			std::unique_ptr<ParentSelector> clone() const;
 
 			//Returns a std::pair of GeneticModels to be combined as parents
-			parentPair selectParents(const modelVector&, const std::vector<double>&);
+			std::pair<ModelHandle, ModelHandle> selectParents(const std::vector<ModelHandle>&, const std::vector<double>&);
 	};
 }
 

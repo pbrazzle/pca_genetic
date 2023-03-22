@@ -7,6 +7,8 @@ using PCAGenetic::parentPair;
 using PCAGenetic::ParentSelector;
 using PCAGenetic::modelVector;
 
+using namespace GeneticModels;
+
 DistributionSelector::DistributionSelector()
 {
 	distribution = [](int rank, int total) 
@@ -23,7 +25,7 @@ std::unique_ptr<ParentSelector> DistributionSelector::clone() const
 	return std::unique_ptr<ParentSelector>(new DistributionSelector(distribution));
 }
 
-size_t DistributionSelector::makeSelection(const modelVector& models) const
+size_t DistributionSelector::makeSelection(const std::vector<ModelHandle>& models) const
 {
 	size_t i = 0;
 	double selection = (double) rand() / RAND_MAX;
@@ -39,8 +41,8 @@ size_t DistributionSelector::makeSelection(const modelVector& models) const
 }
 
 //Returns a std::pair of GeneticModels to be combined as parents
-parentPair DistributionSelector::selectParents(const modelVector& models, const std::vector<double>& fitnesses)
+std::pair<ModelHandle, ModelHandle> DistributionSelector::selectParents(const std::vector<ModelHandle>& models, const std::vector<double>& fitnesses)
 {
 	size_t i1 = makeSelection(models), i2 = makeSelection(models);
-	return parentPair(models[i1]->clone(), models[i2]->clone());
+	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models[i1]->clone()), ModelHandle(models[i2]->clone()));
 }

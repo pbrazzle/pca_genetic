@@ -20,25 +20,13 @@ set(MODEL_SOURCES
 	src/model/convolution/ConvolutionModel.cpp
 	src/model/downsample/DownSamplingModel.cpp
 	src/model/neural/NeuralModel.cpp
-	src/model/regression/LogisticRegressionModel.cpp)
+	src/model/regression/LogisticRegressionModel.cpp
+	src/model/ModelHandle.cpp)
 	
 add_library(GeneticModels STATIC ${MODEL_SOURCES})
 target_include_directories(GeneticModels PUBLIC src src/model)
 
-set(ALG_SOURCES 
-	src/algorithm/GeneticAlgorithm.cpp 
-	src/algorithm/GeneticAlgorithmParameters.cpp
-	src/algorithm/fitness/distance/DistanceCalculator.cpp 
-	src/algorithm/fitness/decision/DecisionCalculator.cpp
-	src/algorithm/combination/single/SingleCrossingCombiner.cpp 
-	src/algorithm/combination/random/RandomCrossingCombiner.cpp
-	src/algorithm/selection/sum/FitnessSumSelector.cpp
-	src/algorithm/selection/best/BestFitnessSelector.cpp
-	src/algorithm/selection/distribution/DistributionSelector.cpp)
-
-add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
-target_include_directories(GeneticAlgorithms PUBLIC src src/model src/algorithm)
-target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels GeneticJSON)
+add_subdirectory(src/algorithm)
 
 set(SIMULATOR_SOURCES
 	src/simulator/SimulationFileReader.cpp
