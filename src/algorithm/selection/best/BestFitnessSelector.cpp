@@ -1,11 +1,8 @@
 #include "algorithm/selection/best/BestFitnessSelector.hpp"
 #include <memory>
 
-using PCAGenetic::BestFitnessSelector;
-using PCAGenetic::parentPair;
-using PCAGenetic::ParentSelector;
-
 using namespace GeneticModels;
+using namespace PCAGenetic;
 
 std::unique_ptr<ParentSelector> BestFitnessSelector::clone() const
 {

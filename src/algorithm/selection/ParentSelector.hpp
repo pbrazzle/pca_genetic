@@ -1,7 +1,6 @@
 #ifndef PARENT_SELECTOR
 #define PARENT_SELECTOR
 
-#include "model/ModelHandle.hpp"
 #include "GeneticTypes.hpp"
 #include "json/JSONSerializable.hpp"
 

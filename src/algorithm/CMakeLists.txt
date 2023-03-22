@@ -1,7 +1,5 @@
 set(ALG_SOURCES 
 	GeneticAlgorithm.cpp 
-	GenerationCreator.cpp
-	GeneticAlgorithmParameters.cpp
 	fitness/distance/DistanceCalculator.cpp 
 	fitness/decision/DecisionCalculator.cpp
 	combination/single/SingleCrossingCombiner.cpp 

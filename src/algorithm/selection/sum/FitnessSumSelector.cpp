@@ -5,11 +5,8 @@
 #include <vector>
 #include <iostream>
 
-using PCAGenetic::FitnessSumSelector;
-using PCAGenetic::ParentSelector;
-using PCAGenetic::parentPair;
-
 using namespace GeneticModels;
+using namespace PCAGenetic;
 
 FitnessSumSelector::FitnessSumSelector() { }
 

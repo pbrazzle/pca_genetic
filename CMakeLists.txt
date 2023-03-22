@@ -20,8 +20,7 @@ set(MODEL_SOURCES
 	src/model/convolution/ConvolutionModel.cpp
 	src/model/downsample/DownSamplingModel.cpp
 	src/model/neural/NeuralModel.cpp
-	src/model/regression/LogisticRegressionModel.cpp
-	src/model/ModelHandle.cpp)
+	src/model/regression/LogisticRegressionModel.cpp)
 	
 add_library(GeneticModels STATIC ${MODEL_SOURCES})
 target_include_directories(GeneticModels PUBLIC src src/model)
@@ -49,7 +48,6 @@ set(ALL_LIBS
 	
 set(TEST_SOURCES
 	src/json/JSONObject.test.cpp
-	src/algorithm/GeneticAlgorithmParameters.test.cpp
 	src/simulator/Simulation.test.cpp)
 	
 foreach(testSrc ${TEST_SOURCES})

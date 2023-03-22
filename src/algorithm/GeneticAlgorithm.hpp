@@ -13,12 +13,6 @@
 #include "algorithm/combination/ParentCombiner.hpp"
 #include "json/JSONSerializable.hpp"
 
-#include "GenerationCreator.hpp"
-#include "Evaluator.hpp"
-#include "Selector.hpp"
-#include "Combiner.hpp"
-#include "Mutator.hpp"
-
 namespace PCAGenetic
 {
 	using namespace GeneticModels;
@@ -27,12 +21,6 @@ namespace PCAGenetic
 	class GeneticAlgorithm : public JSONSerializable
 	{
 		private:
-			GenerationCreator creator;
-			Evaluator evaluator;
-			Selector selector;
-			Combiner combiner;
-			Mutator mutator;
-		
 			std::unique_ptr<FitnessCalculator> fitnessCalc;
 			std::unique_ptr<ParentSelector> parentSelect;
 			std::unique_ptr<ParentCombiner> parentComb;
@@ -44,6 +32,8 @@ namespace PCAGenetic
 			void runGeneration();
 			void calculateFitnesses();
 			
+			int generationSize;
+			double offsetSize;
 			double mutationChance, mutationSize;
 			double elitism;
 			
@@ -51,6 +41,18 @@ namespace PCAGenetic
 			
 			std::vector<double> avgFitnesses;
 			std::vector<double> bestFitnesses;
+
+			void copyStrategies(const GeneticAlgorithm& alg);
+			void copyData(const GeneticAlgorithm& alg);
+			void copySettings(const GeneticAlgorithm& alg);
+			void copy(const GeneticAlgorithm& alg);
+
+			void initializeGeneration(const GeneticModel& modelTemplate);
+
+			std::vector<size_t> getSortedFitnessIndices();
+			void reorderModels(std::vector<size_t> indices);
+			void recordFitness();
+			ModelHandle createChildModel();
 
 		public:
 			GeneticAlgorithm();

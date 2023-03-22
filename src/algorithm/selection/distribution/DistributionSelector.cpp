@@ -2,12 +2,8 @@
 
 #include <cmath>
 
-using PCAGenetic::DistributionSelector;
-using PCAGenetic::parentPair;
-using PCAGenetic::ParentSelector;
-using PCAGenetic::modelVector;
-
 using namespace GeneticModels;
+using namespace PCAGenetic;
 
 DistributionSelector::DistributionSelector()
 {

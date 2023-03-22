@@ -7,7 +7,6 @@
 
 #include "GeneticTypes.hpp"
 #include "json/JSONSerializable.hpp"
-#include "model/ModelHandle.hpp"
 
 namespace PCAGenetic
 {
