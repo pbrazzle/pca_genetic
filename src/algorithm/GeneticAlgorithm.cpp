@@ -180,7 +180,7 @@ void GeneticAlgorithm::runGeneration()
 {
 	std::vector<ModelHandle> newModels;
 
-	int numEliteModels = elitism*models.size();
+	int numEliteModels = (int) (elitism*models.size());
 	LOG("Saving best "); LOG(numEliteModels); LOG(" models\n");
 	models.erase(models.begin(), models.end()-numEliteModels);
 

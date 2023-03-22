@@ -122,7 +122,7 @@ Simulation readNextSim(std::ifstream& file)
 	int generationSize;
 	double mutationChance, mutationSize, paramRange;
 	
-	generationSize = readLineAsDouble(file);
+	generationSize = (int) readLineAsDouble(file);
 	mutationChance = readLineAsDouble(file);
 	mutationSize = readLineAsDouble(file);
 	paramRange = readLineAsDouble(file);

@@ -7,7 +7,7 @@ using GeneticSimulator::SimulationFileReader;
 
 int main(int argc, char* argv[])
 {
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 	SimulationFileReader simReader;
 
 	std::string filename(argv[1]);
