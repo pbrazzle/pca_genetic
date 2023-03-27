@@ -33,8 +33,7 @@ namespace GeneticModels
 			//Mutate all parameters
 			//Params: Mutation chance, mutation size
 			virtual void mutate(double, double);
-
-			//TODO: Using iterators here would make more sense			
+	
 			virtual std::vector<double> getParameters() const = 0;
 			virtual void setParameters(std::vector<double>) = 0;
 	};

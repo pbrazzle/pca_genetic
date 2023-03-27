@@ -144,9 +144,14 @@ std::string JSONObject::asJSON() const
 	return data;
 }
 
-JSONObject JSONObject::operator[](std::string key) const
+JSONObject JSONObject::operator[](const std::string key) const
 {
 	return subObjects.at(key);
+}
+
+JSONObject JSONObject::operator[](const char* key) const
+{
+	return (*this)[std::string(key)];
 }
 
 int JSONObject::asInt() const
@@ -184,4 +189,14 @@ std::vector<JSONObject> JSONObject::asArray() const
 		objects.push_back(parseObjectFromString(objString));
 	}
 	return objects;
+}
+
+bool JSONObject::isNull() const
+{
+	return data == "null";
+}
+
+JSONObject::operator bool() const
+{
+	return !isNull();
 }
