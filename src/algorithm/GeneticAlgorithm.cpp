@@ -101,13 +101,7 @@ void GeneticAlgorithm::initializeGeneration(const GeneticModel& modelTemplate)
 	models.reserve(generationSize);
 	for (int i = 0; i < generationSize; i++)
 	{
-		ModelHandle newModel(modelTemplate.clone());\
-		std::vector<double> params = newModel->getParameters();
-		for (int i = 0; i < params.size(); i++)
-		{
-			params[i] += offsetSize*(2*((double) rand() / RAND_MAX) - 1);
-		}
-		newModel->setParameters(params);
+		ModelHandle newModel(modelTemplate.copyWithOffset(offsetSize));
 		models.push_back(newModel);
 	}
 }
@@ -150,17 +144,6 @@ void GeneticAlgorithm::calculateFitnesses()
 	reorderModels(sortedIndices);
 }
 
-std::vector<double> GeneticAlgorithm::mutateParams(const std::vector<double>& params)
-{
-	std::vector<double> mutated = params;
-	for (int i = 0; i < params.size(); i++)
-	{
-		if (((double) rand() / RAND_MAX) < mutationChance)
-			mutated[i] += mutated[i]*mutationSize*((rand() % 3) - 1);
-	}
-	return mutated;
-}
-
 void GeneticAlgorithm::recordFitness()
 {
 	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / models.size();
@@ -172,11 +155,9 @@ void GeneticAlgorithm::recordFitness()
 ModelHandle GeneticAlgorithm::createChildModel()
 {
 	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(models, fitnesses);
-	std::vector<double> combined = parentComb->combineParameters(parents.first->getParameters(), parents.second->getParameters());
-	combined = mutateParams(combined);
 
-	ModelHandle child(models[0]);
-	child->setParameters(combined);
+	ModelHandle child(parents.first->combine(*parents.second, *parentComb));
+	child->mutate(mutationChance, mutationSize);
 	return child;
 }
 

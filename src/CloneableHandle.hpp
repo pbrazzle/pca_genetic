@@ -26,6 +26,7 @@ namespace PCAGenetic
             }
 			
 			T* operator->() const { return handle.get(); }
+			T& operator*() const { return *handle; }
     };
 }
 

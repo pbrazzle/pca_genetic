@@ -37,8 +37,6 @@ namespace PCAGenetic
 			double mutationChance, mutationSize;
 			double elitism;
 			
-			std::vector<double> mutateParams(const std::vector<double>&);
-			
 			std::vector<double> avgFitnesses;
 			std::vector<double> bestFitnesses;
 

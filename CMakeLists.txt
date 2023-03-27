@@ -13,17 +13,7 @@ set(JSON_SOURCES
 add_library(GeneticJSON STATIC ${JSON_SOURCES})
 target_include_directories(GeneticJSON PUBLIC src)
 
-set(MODEL_SOURCES 
-	src/model/linear/LinearGeneticModel.cpp 
-	src/model/input/ModelInputDataVector.cpp 
-	src/model/output/ModelOutputDataVector.cpp
-	src/model/convolution/ConvolutionModel.cpp
-	src/model/downsample/DownSamplingModel.cpp
-	src/model/neural/NeuralModel.cpp
-	src/model/regression/LogisticRegressionModel.cpp)
-	
-add_library(GeneticModels STATIC ${MODEL_SOURCES})
-target_include_directories(GeneticModels PUBLIC src src/model)
+add_subdirectory(src/model)
 
 add_subdirectory(src/algorithm)
 
