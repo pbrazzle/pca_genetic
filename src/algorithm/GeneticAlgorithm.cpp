@@ -1,6 +1,8 @@
 #include "GeneticAlgorithm.hpp"
 
 #include "fitness/distance/DistanceCalculator.hpp"
+#include "selection/sum/FitnessSumSelector.hpp"
+#include "combination/single/SingleCrossingCombiner.hpp"
 
 #include <cstdlib>
 #include <numeric>
@@ -29,6 +31,8 @@ GeneticAlgorithm::GeneticAlgorithm()
 	elitism = 0.50;
 
 	fitnessCalc = std::unique_ptr<FitnessCalculator>(new DistanceCalculator());
+	parentSelect = std::unique_ptr<ParentSelector>(new FitnessSumSelector());
+	parentComb = std::unique_ptr<ParentCombiner>(new SingleCrossingCombiner());
 }
 
 void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)

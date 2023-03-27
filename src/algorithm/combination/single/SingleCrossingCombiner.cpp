@@ -3,6 +3,7 @@
 
 using PCAGenetic::SingleCrossingCombiner;
 using PCAGenetic::ParentCombiner;
+using namespace GeneticJSON;
 
 SingleCrossingCombiner::SingleCrossingCombiner() { }
 
@@ -21,4 +22,11 @@ std::vector<double> SingleCrossingCombiner::combineParameters(const std::vector<
 	newParams.insert(newParams.end(), p2.begin()+crossingIndex, p2.end());
 
 	return newParams;
+}
+
+JSONObject SingleCrossingCombiner::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("typename", "SingleCrossingCombiner");
+	return obj;
 }

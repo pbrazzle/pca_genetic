@@ -15,3 +15,10 @@ std::pair<ModelHandle, ModelHandle> BestFitnessSelector::selectParents(const std
 {
 	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models.back()->clone()), ModelHandle(models.back()->clone()));
 }
+
+JSONObject BestFitnessSelector::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("typename", "BestFitnessSelector");
+	return obj;
+}

@@ -8,6 +8,8 @@ using PCAGenetic::FitnessCalculator;
 using PCAGenetic::trainingItem;
 using PCAGenetic::GeneticModel;
 
+using namespace GeneticJSON;
+
 DecisionCalculator::DecisionCalculator() { }
 
 std::unique_ptr<FitnessCalculator> DecisionCalculator::clone() const
@@ -65,4 +67,13 @@ std::vector<double> DecisionCalculator::calculateFitnesses(const std::vector<tra
 	}
 	
 	return fitnesses;
+}
+
+JSONObject DecisionCalculator::toJSON() const
+{
+	JSONObject obj;
+
+	obj.addString("typename", "DistanceCalculator");
+
+	return obj;
 }

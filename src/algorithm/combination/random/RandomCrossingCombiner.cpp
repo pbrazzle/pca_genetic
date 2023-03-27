@@ -4,6 +4,8 @@
 using PCAGenetic::RandomCrossingCombiner;
 using PCAGenetic::ParentCombiner;
 
+using namespace GeneticJSON;
+
 RandomCrossingCombiner::RandomCrossingCombiner() : RandomCrossingCombiner(0.5) { }
 
 RandomCrossingCombiner::RandomCrossingCombiner(double c) : crossingChance(c) { }
@@ -28,4 +30,11 @@ std::vector<double> RandomCrossingCombiner::combineParameters(const std::vector<
 	}
 
 	return newParams;
+}
+
+JSONObject RandomCrossingCombiner::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("typename", "RandomCrossingCombiner");
+	return obj;
 }

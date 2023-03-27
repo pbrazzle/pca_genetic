@@ -27,6 +27,8 @@ namespace PCAGenetic
 
 			//Returns a std::pair of GeneticModels to be combined as parents
 			std::pair<ModelHandle, ModelHandle> selectParents(const std::vector<ModelHandle>&, const std::vector<double>&);
+
+			JSONObject toJSON() const;
 	};
 }
 

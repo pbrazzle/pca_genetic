@@ -22,6 +22,8 @@ namespace PCAGenetic
 			virtual std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<std::unique_ptr<GeneticModel>>&) = 0;
 			
 			virtual std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<ModelHandle>&) = 0;
+
+			virtual JSONObject toJSON() const = 0;
 	};
 }
 

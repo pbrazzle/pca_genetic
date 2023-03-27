@@ -42,3 +42,10 @@ std::pair<ModelHandle, ModelHandle> DistributionSelector::selectParents(const st
 	size_t i1 = makeSelection(models), i2 = makeSelection(models);
 	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models[i1]->clone()), ModelHandle(models[i2]->clone()));
 }
+
+JSONObject DistributionSelector::toJSON() const
+{
+	JSONObject obj;
+	obj.addString("typename", "DistributionSelector");
+	return obj;
+}

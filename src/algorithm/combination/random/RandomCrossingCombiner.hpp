@@ -20,6 +20,8 @@ namespace PCAGenetic
 			std::unique_ptr<ParentCombiner> clone() const;
 
 			std::vector<double> combineParameters(const std::vector<double>& p1, const std::vector<double>& p2);
+
+			JSONObject toJSON() const;
 	};
 }
 

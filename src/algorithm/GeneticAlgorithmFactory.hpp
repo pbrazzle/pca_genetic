@@ -10,6 +10,8 @@
 #include "algorithm/fitness/distance/DistanceCalculator.hpp"
 #include "algorithm/fitness/decision/DecisionCalculator.hpp"
 
+#include "json/AbstractJSONFactory.hpp"
+
 #include <memory>
 #include <string>
 #include <map>
@@ -28,25 +30,42 @@ namespace PCAGenetic
 	
 	template <typename PComb>
 	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
-	
-	std::map<std::string, FitCalcFactory> fitCalcMap {
-		{"", []() { return std::unique_ptr<FitnessCalculator>(); }},
-		{"DistanceCalculator", &makeFitnessCalculator<DistanceCalculator>},
-		{"DecisionCalculator", &makeFitnessCalculator<DecisionCalculator>}
+
+	using namespace GeneticJSON;
+
+	template <typename Base, typename Derived>
+	std::unique_ptr<Base> makeDefaultDerived() { return std::unique_ptr<Base>(new Derived()); }
+
+	typenameMap<FitnessCalculator> fitCalcMap {
+		{"DecisionCalculator", &makeDefaultDerived<FitnessCalculator, DecisionCalculator>},
+		{"DistanceCalculator", &makeDefaultDerived<FitnessCalculator, DistanceCalculator>}
 	};
-	
-	std::map<std::string, SelectFactory> selectMap {
-		{"", []() { return std::unique_ptr<ParentSelector>(); }},
-		{"FitnessSumSelector", &makeParentSelector<FitnessSumSelector>},
-		{"BestFitnessSelector", &makeParentSelector<BestFitnessSelector>},
-		{"DistributionSelector", &makeParentSelector<DistributionSelector>}
+
+	std::unique_ptr<FitnessCalculator> FitCalcFromJSON(const JSONObject& obj) 
+	{ 
+		return makeAbstractFromJSON<FitnessCalculator>(fitCalcMap, obj);
+	}
+
+	typenameMap<ParentSelector> selectMap {
+		{"FitnessSumSelector", &makeDefaultDerived<ParentSelector, FitnessSumSelector>},
+		{"BestFitnessSelector", &makeDefaultDerived<ParentSelector, BestFitnessSelector>},
+		{"DistributionSelector", &makeDefaultDerived<ParentSelector, DistributionSelector>}
 	};
+
+	std::unique_ptr<ParentSelector> ParentSelectFromJSON(const JSONObject& obj) 
+	{ 
+		return makeAbstractFromJSON<ParentSelector>(selectMap, obj);
+	}
 	
-	std::map<std::string, CombinerFactory> combinerMap {
-		{"", []() { return std::unique_ptr<ParentCombiner>(); }},
-		{"SingleCrossingCombiner", &makeParentCombiner<SingleCrossingCombiner>},
-		{"RandomCrossingCombiner", &makeParentCombiner<RandomCrossingCombiner>}
+	typenameMap<ParentCombiner> combinerMap {
+		{"SingleCrossingCombiner", &makeDefaultDerived<ParentCombiner, SingleCrossingCombiner>},
+		{"RandomCrossingCombiner", &makeDefaultDerived<ParentCombiner, RandomCrossingCombiner>}
 	};
+
+	std::unique_ptr<ParentCombiner> ParentCombFromJSON(const JSONObject& obj) 
+	{ 
+		return makeAbstractFromJSON<ParentCombiner>(combinerMap, obj);
+	}
 }
 
 #endif

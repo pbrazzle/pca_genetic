@@ -146,6 +146,7 @@ std::string JSONObject::asJSON() const
 
 JSONObject JSONObject::operator[](const std::string key) const
 {
+	if (!subObjects.count(key)) return JSONObject();
 	return subObjects.at(key);
 }
 
