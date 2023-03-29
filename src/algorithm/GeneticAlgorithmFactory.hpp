@@ -2,13 +2,13 @@
 #define GENETIC_ALGORITHM_FACTORY
 
 #include "GeneticAlgorithm.hpp"
-#include "algorithm/combination/single/SingleCrossingCombiner.hpp"
-#include "algorithm/combination/random/RandomCrossingCombiner.hpp"
-#include "algorithm/selection/sum/FitnessSumSelector.hpp"
-#include "algorithm/selection/best/BestFitnessSelector.hpp"
-#include "algorithm/selection/distribution/DistributionSelector.hpp"
-#include "algorithm/fitness/distance/DistanceCalculator.hpp"
-#include "algorithm/fitness/decision/DecisionCalculator.hpp"
+#include "strategies/SingleCrossingCombiner.hpp"
+#include "strategies/RandomCrossingCombiner.hpp"
+#include "strategies/FitnessSumSelector.hpp"
+#include "strategies/BestFitnessSelector.hpp"
+#include "strategies/DistributionSelector.hpp"
+#include "strategies/DistanceCalculator.hpp"
+#include "strategies/DecisionCalculator.hpp"
 
 #include "json/AbstractJSONFactory.hpp"
 
@@ -18,6 +18,15 @@
 
 namespace PCAGenetic 
 {
+	GeneticAlgorithm makeBasicAlgorithm()
+	{
+		std::unique_ptr<FitnessCalculator> fc(new DistanceCalculator());
+		std::unique_ptr<ParentSelector> ps(new FitnessSumSelector());
+		std::unique_ptr<ParentCombiner> pc(new SingleCrossingCombiner());
+
+		return GeneticAlgorithm(std::move(fc), std::move(ps), std::move(pc));
+	}
+
 	using FitCalcFactory = std::unique_ptr<FitnessCalculator> (*)();
 	using SelectFactory = std::unique_ptr<ParentSelector> (*)();
 	using CombinerFactory = std::unique_ptr<ParentCombiner> (*)();

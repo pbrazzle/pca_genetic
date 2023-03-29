@@ -1,8 +1,8 @@
 #include "GeneticAlgorithm.hpp"
 
-#include "fitness/distance/DistanceCalculator.hpp"
-#include "selection/sum/FitnessSumSelector.hpp"
-#include "combination/single/SingleCrossingCombiner.hpp"
+#include "strategies/DistanceCalculator.hpp"
+#include "strategies/FitnessSumSelector.hpp"
+#include "strategies/SingleCrossingCombiner.hpp"
 
 #include <cstdlib>
 #include <numeric>
@@ -20,19 +20,6 @@ void LOG(T message)
 {
 	if (DEBUG)
 		std::cout << message;
-}
-
-GeneticAlgorithm::GeneticAlgorithm()
-{ 
-	generationSize = 100;
-	offsetSize = 1;
-	mutationChance = 0.1;
-	mutationSize = 0.01;
-	elitism = 0.50;
-
-	fitnessCalc = std::unique_ptr<FitnessCalculator>(new DistanceCalculator());
-	parentSelect = std::unique_ptr<ParentSelector>(new FitnessSumSelector());
-	parentComb = std::unique_ptr<ParentCombiner>(new SingleCrossingCombiner());
 }
 
 void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)
@@ -81,14 +68,20 @@ void GeneticAlgorithm::copy(const GeneticAlgorithm& alg)
 	copySettings(alg);	
 }
 
-GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps, std::unique_ptr<ParentCombiner> pc) : GeneticAlgorithm()
-{ 
+GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps, std::unique_ptr<ParentCombiner> pc)
+{
+	generationSize = 100;
+	offsetSize = 1;
+	mutationChance = 0.1;
+	mutationSize = 0.01;
+	elitism = 0.50;
+
 	fitnessCalc = std::move(fc);
 	parentSelect = std::move(ps);
 	parentComb = std::move(pc);
 }
 
-GeneticAlgorithm::GeneticAlgorithm(GeneticAlgorithm& alg)
+GeneticAlgorithm::GeneticAlgorithm(const GeneticAlgorithm& alg)
 {
 	copy(alg);
 }

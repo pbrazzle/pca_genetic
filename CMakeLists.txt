@@ -24,7 +24,7 @@ set(SIMULATOR_SOURCES
 	
 add_library(GeneticSimulator STATIC ${SIMULATOR_SOURCES})
 target_include_directories(GeneticSimulator PUBLIC src)
-target_link_libraries(GeneticSimulator PUBLIC GeneticAlgorithms)
+target_link_libraries(GeneticSimulator PUBLIC GeneticAlgorithms alg_strategies)
 
 add_executable(GeneticSim src/simulator/GeneticSim.cpp )
 target_include_directories(GeneticSim PUBLIC src)
@@ -40,8 +40,8 @@ set(TEST_SOURCES
 	src/algorithm/GeneticAlgorithm.test.cpp
 	src/json/JSONObject.test.cpp
 	src/simulator/Simulation.test.cpp
-	src/model/neural/NeuralModel.test.cpp
-	src/model/downsample/DownSamplingModel.test.cpp)
+	src/model/NeuralModel.test.cpp
+	src/model/DownSamplingModel.test.cpp)
 	
 foreach(testSrc ${TEST_SOURCES})
 	get_filename_component(testName ${testSrc} NAME_WE)

@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 
-#include "model/input/ModelInputData.hpp"
-#include "model/output/ModelOutputData.hpp"
+#include "model/ModelInputData.hpp"
+#include "model/ModelOutputData.hpp"
 #include "json/JSONSerializable.hpp"
-#include "algorithm/combination/ParentCombiner.hpp"
+#include "algorithm/ParentCombiner.hpp"
 
 namespace GeneticModels
 {

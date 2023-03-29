@@ -13,9 +13,8 @@ Simulation::Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<Geneti
 	trainingData = std::move(td);
 }
 
-Simulation::Simulation(const Simulation& other)
+Simulation::Simulation(const Simulation& other) : alg(other.alg)
 {
-	alg = other.alg;
 	name = other.name;
 	modelTemplate = other.modelTemplate->clone();
 	generations = other.generations;

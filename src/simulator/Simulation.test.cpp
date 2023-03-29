@@ -1,7 +1,8 @@
 #include "simulator/Simulation.hpp"
 
 #include "algorithm/GeneticAlgorithm.hpp"
-#include "model/linear/LinearGeneticModel.hpp"
+#include "algorithm/GeneticAlgorithmFactory.hpp"
+#include "model/LinearGeneticModel.hpp"
 #include "GeneticTypes.hpp"
 
 #include <iostream>
@@ -13,7 +14,7 @@ using namespace GeneticSimulator;
 
 int main()
 {
-	GeneticAlgorithm alg;
+	GeneticAlgorithm alg = makeBasicAlgorithm();
 	std::unique_ptr<GeneticModel> modelTemplate(new LinearGeneticModel(3));
 	std::vector<trainingItem> trainingData;
 	

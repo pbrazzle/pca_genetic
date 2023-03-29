@@ -1,4 +1,5 @@
 #include "algorithm/GeneticAlgorithm.hpp"
+#include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -8,13 +9,13 @@ using namespace JSON_IO;
 
 void printAlgJSON()
 {
-    GeneticAlgorithm alg;
+    GeneticAlgorithm alg = makeBasicAlgorithm();
     std::cout << alg.toJSON().asJSON() << '\n';
 }
 
 void serializable()
 {
-    GeneticAlgorithm alg;
+    GeneticAlgorithm alg = makeBasicAlgorithm();
 
     JSONObject serialData = alg.toJSON();
 

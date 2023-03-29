@@ -29,6 +29,7 @@ namespace GeneticLogger
 				case Level::Debug:
 					return "DEBUG: ";
 			}
+			return "";
 		}
 	}
 	
