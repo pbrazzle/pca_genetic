@@ -3,7 +3,7 @@
 
 using PCAGenetic::SingleCrossingCombiner;
 using PCAGenetic::ParentCombiner;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 SingleCrossingCombiner::SingleCrossingCombiner() { }
 

@@ -4,7 +4,7 @@
 using PCAGenetic::RandomCrossingCombiner;
 using PCAGenetic::ParentCombiner;
 
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 RandomCrossingCombiner::RandomCrossingCombiner() : RandomCrossingCombiner(0.5) { }
 

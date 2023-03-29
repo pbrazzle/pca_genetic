@@ -8,7 +8,7 @@
 using PCAGenetic::DistanceCalculator;
 using PCAGenetic::FitnessCalculator;
 
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 DistanceCalculator::DistanceCalculator() { }
 

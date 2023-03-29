@@ -31,7 +31,7 @@ namespace PCAGenetic
 	template <typename PComb>
 	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
 
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 
 	template <typename Base, typename Derived>
 	std::unique_ptr<Base> makeDefaultDerived() { return std::unique_ptr<Base>(new Derived()); }

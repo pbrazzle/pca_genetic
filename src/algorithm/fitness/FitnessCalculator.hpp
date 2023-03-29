@@ -10,7 +10,7 @@
 
 namespace PCAGenetic
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	
 	class FitnessCalculator : public JSONSerializable
 	{

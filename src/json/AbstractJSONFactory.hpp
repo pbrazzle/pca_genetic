@@ -7,7 +7,7 @@
 
 #include "JSONObject.hpp"
 
-namespace GeneticJSON
+namespace JSON_IO
 {
     template<typename T>
     using abstractFactory = std::function<std::unique_ptr<T>()>;

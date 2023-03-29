@@ -5,7 +5,7 @@
 
 #include "json/JSONObject.hpp"
 
-namespace GeneticJSON
+namespace JSON_IO
 {
 	class JSONFileReader
 	{

@@ -5,7 +5,7 @@
 #include <algorithm>
 
 using GeneticSimulator::Simulation;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 Simulation::Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<GeneticModel> m, std::vector<trainingItem> td, int g) : name(n), alg(a), generations(g)
 {

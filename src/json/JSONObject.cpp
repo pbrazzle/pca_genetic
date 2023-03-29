@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cmath>
 
-using GeneticJSON::JSONObject;
+using JSON_IO::JSONObject;
 
 std::vector<std::string> split(std::string s, char delim)
 {

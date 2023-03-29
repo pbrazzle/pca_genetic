@@ -7,7 +7,7 @@
 
 namespace PCAGenetic
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 
 	class SingleCrossingCombiner : public ParentCombiner
 	{

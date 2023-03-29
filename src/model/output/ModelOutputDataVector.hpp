@@ -6,7 +6,7 @@
 
 namespace GeneticModels
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	
 	class ModelOutputDataVector : public ModelOutputData
 	{

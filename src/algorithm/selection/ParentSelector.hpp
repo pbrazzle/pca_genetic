@@ -8,7 +8,7 @@
 
 namespace PCAGenetic
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	using namespace GeneticModels;
 	
 	class ParentSelector : public JSONSerializable

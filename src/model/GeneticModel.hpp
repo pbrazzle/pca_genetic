@@ -11,7 +11,7 @@
 
 namespace GeneticModels
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	using namespace PCAGenetic;
 	
 	class GeneticModel : public JSONSerializable

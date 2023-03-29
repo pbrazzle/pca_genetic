@@ -3,7 +3,7 @@
 
 #include "JSONObject.hpp"
 
-namespace GeneticJSON
+namespace JSON_IO
 {
 	class JSONSerializable
 	{

@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 JSONFileReader::JSONFileReader(std::string filename) : inFile(filename) { }
 JSONObject JSONFileReader::read() 

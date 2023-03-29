@@ -6,7 +6,7 @@
 
 namespace PCAGenetic
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	
 	class RandomCrossingCombiner : public ParentCombiner
 	{

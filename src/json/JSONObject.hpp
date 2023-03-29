@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-namespace GeneticJSON
+namespace JSON_IO
 {
 	class JSONObject
 	{

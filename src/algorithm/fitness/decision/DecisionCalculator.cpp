@@ -8,7 +8,7 @@ using PCAGenetic::FitnessCalculator;
 using PCAGenetic::trainingItem;
 using PCAGenetic::GeneticModel;
 
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 DecisionCalculator::DecisionCalculator() { }
 

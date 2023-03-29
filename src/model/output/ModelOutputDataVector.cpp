@@ -11,7 +11,7 @@
 
 using GeneticModels::ModelOutputDataVector;
 using GeneticModels::ModelOutputData;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 ModelOutputDataVector::ModelOutputDataVector(std::vector<double> d) : data(d) { }
 

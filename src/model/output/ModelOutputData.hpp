@@ -8,7 +8,7 @@
 
 namespace GeneticModels
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	
 	class ModelOutputData : public JSONSerializable
 	{

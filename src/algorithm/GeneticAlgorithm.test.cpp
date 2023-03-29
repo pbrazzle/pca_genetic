@@ -4,7 +4,7 @@
 #include <cassert>
 
 using namespace PCAGenetic;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 void printAlgJSON()
 {

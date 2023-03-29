@@ -9,7 +9,7 @@ using GeneticModels::LinearGeneticModel;
 using GeneticModels::GeneticModel;
 using GeneticModels::ModelOutputData;
 using GeneticModels::ModelOutputDataVector;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 LinearGeneticModel::LinearGeneticModel(int d) : dataLength(d)
 {

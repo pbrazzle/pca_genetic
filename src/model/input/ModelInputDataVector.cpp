@@ -3,7 +3,7 @@
 
 using GeneticModels::ModelInputDataVector;
 using GeneticModels::ModelInputData;
-using namespace GeneticJSON;
+using namespace JSON_IO;
 
 ModelInputDataVector::ModelInputDataVector(std::vector<double> d) : data(d) { }
 
