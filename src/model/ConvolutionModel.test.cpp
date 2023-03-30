@@ -1,14 +1,14 @@
 /*#include "GeneticModel.test.hpp"
-#include "DownSamplingModel.hpp"
+#include "ConvolutionModel.hpp"
 
 using namespace GeneticModels;
 
-class DownSamplingModelTests : public GeneticModelTests
+class ConvolutionModelTests : public GeneticModelTests
 {
 	public:
 		std::unique_ptr<GeneticModel> createModel()
 		{
-			return std::unique_ptr<GeneticModel>(new DownSamplingModel());
+			return std::unique_ptr<GeneticModel>(new ConvolutionModel());
 		}
 		
 		//TODO Add evaluation test
@@ -16,7 +16,7 @@ class DownSamplingModelTests : public GeneticModelTests
 
 int main()
 {
-	DownSamplingModelTests tests;
+	ConvolutionModelTests tests;
 	tests.runTests();
 	
 	return 0;

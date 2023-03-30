@@ -1,5 +1,5 @@
-#include "algorithm/GeneticAlgorithm.hpp"
-#include "algorithm/GeneticAlgorithmFactory.hpp"
+#include "GeneticAlgorithm.hpp"
+#include "GeneticAlgorithmFactory.hpp"
 
 #include <iostream>
 #include <cassert>

@@ -1,58 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
 
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.3.2)
+
+FetchContent_MakeAvailable(Catch2)
+
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+
 project(pca_genetic)
+include(CTest)
+include(Catch)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
 enable_testing()
 
-set(JSON_SOURCES
-	src/json/JSONObject.cpp
-	src/json/JSONFile.cpp)
-	
-add_library(GeneticJSON STATIC ${JSON_SOURCES})
-target_include_directories(GeneticJSON PUBLIC src)
+function(create_test)
+	add_executable(${ARGV} ${ARGV})
+	add_test(NAME ${ARGV}
+			 COMMAND $<TARGET_FILE:${ARGV}>)
+endfunction(create_test)
 
-add_subdirectory(src/model)
-
-add_subdirectory(src/algorithm)
-
-set(SIMULATOR_SOURCES
-	src/simulator/SimulationFileReader.cpp
-	src/simulator/Simulation.cpp 
-	src/Logger.cpp)
-	
-add_library(GeneticSimulator STATIC ${SIMULATOR_SOURCES})
-target_include_directories(GeneticSimulator PUBLIC src)
-target_link_libraries(GeneticSimulator PUBLIC GeneticAlgorithms alg_strategies)
-
-add_executable(GeneticSim src/simulator/GeneticSim.cpp )
-target_include_directories(GeneticSim PUBLIC src)
-target_link_libraries(GeneticSim PUBLIC GeneticSimulator)
-
-set(ALL_LIBS
-	GeneticModels
-	GeneticAlgorithms
-	GeneticSimulator
-	GeneticJSON)
-	
-set(TEST_SOURCES
-	src/algorithm/GeneticAlgorithm.test.cpp
-	src/json/JSONObject.test.cpp
-	src/simulator/Simulation.test.cpp
-	src/model/NeuralModel.test.cpp
-	src/model/DownSamplingModel.test.cpp)
-	
-foreach(testSrc ${TEST_SOURCES})
-	get_filename_component(testName ${testSrc} NAME_WE)
-	add_executable(${testName} ${testSrc})
-	
-	target_include_directories(${testName} PUBLIC src)
-	target_link_libraries(${testName} PUBLIC ${ALL_LIBS})
-	set_target_properties(${testName} PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/bin/tests)
-		
-	add_test(NAME ${testName}
-			COMMAND $<TARGET_FILE:${testName}>
-			)
-endforeach(testSrc)
+add_subdirectory(src)
