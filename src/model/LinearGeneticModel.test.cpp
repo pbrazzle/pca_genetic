@@ -1,14 +1,3 @@
-/*#include "GeneticModel.test.hpp"
-
-
-int main()
-{
-	LinearModelTests tests;
-	tests.runTests();
-	
-	return 0;
-}*/
-
 #include "LinearGeneticModel.hpp"
 #include "GeneticModel.test.hpp"
 
@@ -25,9 +14,12 @@ class LinearModelTests : public GeneticModelTests
 		//TODO Add evaluation test
 };
 
-std::unique_ptr<GeneticModelTests> getTestClass() { return std::unique_ptr<GeneticModelTests>(new LinearModelTests()); }
-
-TEST_CASE("Blank Test", "[LinearGeneticModel]")
+TEST_CASE("LinearGeneticModel", "[LinearGeneticModel]")
 {
-	REQUIRE(true);
+	LinearModelTests testClass;
+	
+	SECTION("Interface Tests")
+	{
+		testClass.runTests();
+	}
 }

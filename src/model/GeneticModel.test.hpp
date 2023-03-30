@@ -18,11 +18,6 @@ class GeneticModelTests
 	
 		virtual std::unique_ptr<GeneticModel> createModel() = 0;
 		
-		void test(bool result)
-		{
-			if (!result) exit(1);
-		}
-		
 		void offsetCloneDistance()
 		{
 			ModelPtr model = createModel();
@@ -36,13 +31,12 @@ class GeneticModelTests
 			}
 		}
 		
-		void testCloneParameterLength()
+		void cloneHasEqualParameterLength()
 		{
-			std::cout << "Testing Clone Parameter Length...\n";
 			ModelPtr model = createModel();
 			ModelPtr copy = model->clone();
 			
-			test(model->getParameters().size() == copy->getParameters().size());
+			REQUIRE(model->getParameters().size() == copy->getParameters().size());
 		}
 		
 		void serializable()
@@ -54,19 +48,21 @@ class GeneticModelTests
 			REQUIRE(obj);
 			REQUIRE(obj["typename"]);
 		}
+		
+		void runTests()
+		{
+			SECTION("Serializable")
+			{
+				serializable();
+			}
+			SECTION("Offset clone within max distance")
+			{
+				offsetCloneDistance();
+			}
+			SECTION("Clone has equal parameter length")
+			{
+				cloneHasEqualParameterLength();
+			}
+		}
 };
-}
-
-std::unique_ptr<GeneticModels::GeneticModelTests> getTestClass();
-
-TEST_CASE("GeneticModel is serializable", "[GeneticModel]")
-{
-	auto testClass = getTestClass();
-	testClass->serializable();
-}
-
-TEST_CASE("GeneticModel offset clone within max distance", "[GeneticModel]")
-{
-	auto testClass = getTestClass();
-	testClass->offsetCloneDistance();
 }
