@@ -1,13 +1,14 @@
 set(MODEL_SOURCES
 	GeneticModel.cpp
-	convolution/ConvolutionModel.cpp
-	downsample/DownSamplingModel.cpp
-	input/ModelInputDataVector.cpp
+	ConvolutionModel.cpp
+	DownSamplingModel.cpp
+	ModelInputDataVector.cpp
 	#interconnect/InterconnectedModel.cpp
-	linear/LinearGeneticModel.cpp
-	neural/NeuralModel.cpp
-	output/ModelOutputDataVector.cpp
-	regression/LogisticRegressionModel.cpp)
+	"LinearGeneticModel.cpp"
+	NeuralModel.cpp
+	"ModelOutputDataVector.cpp"
+	"LogisticRegressionModel.cpp")
 	
 add_library(GeneticModels ${MODEL_SOURCES})
 target_link_libraries(GeneticModels PUBLIC GeneticJSON)
+target_include_directories(GeneticModels PUBLIC model)

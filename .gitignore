@@ -6,3 +6,4 @@ Testing
 *.csv
 *.gen
 .vscode
+.vs

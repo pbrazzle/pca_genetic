@@ -4,14 +4,14 @@
 #include <memory>
 #include <vector>
 
-#include "model/input/ModelInputData.hpp"
-#include "model/output/ModelOutputData.hpp"
+#include "model/ModelInputData.hpp"
+#include "model/ModelOutputData.hpp"
 #include "json/JSONSerializable.hpp"
-#include "algorithm/combination/ParentCombiner.hpp"
+#include "algorithm/ParentCombiner.hpp"
 
 namespace GeneticModels
 {
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	using namespace PCAGenetic;
 	
 	class GeneticModel : public JSONSerializable
@@ -33,8 +33,7 @@ namespace GeneticModels
 			//Mutate all parameters
 			//Params: Mutation chance, mutation size
 			virtual void mutate(double, double);
-
-			//TODO: Using iterators here would make more sense			
+	
 			virtual std::vector<double> getParameters() const = 0;
 			virtual void setParameters(std::vector<double>) = 0;
 	};

@@ -3,7 +3,7 @@
 
 #include "json/JSONObject.hpp"
 
-using GeneticJSON::JSONObject;
+using JSON_IO::JSONObject;
 
 void testJSONInt()
 {

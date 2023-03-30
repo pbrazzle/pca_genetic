@@ -1,11 +1,11 @@
 #include "simulator/SimulationFileReader.hpp"
 
-#include "algorithm/fitness/distance/DistanceCalculator.hpp"
-#include "algorithm/selection/sum/FitnessSumSelector.hpp"
-#include "algorithm/combination/single/SingleCrossingCombiner.hpp"
-#include "model/linear/LinearGeneticModel.hpp"
-#include "model/input/ModelInputDataVector.hpp"
-#include "model/output/ModelOutputDataVector.hpp"
+#include "algorithm/strategies/DistanceCalculator.hpp"
+#include "algorithm/strategies/FitnessSumSelector.hpp"
+#include "algorithm/strategies/SingleCrossingCombiner.hpp"
+#include "model/LinearGeneticModel.hpp"
+#include "model/ModelInputDataVector.hpp"
+#include "model/ModelOutputDataVector.hpp"
 #include "algorithm/GeneticAlgorithmFactory.hpp"
 
 #include <fstream>
@@ -16,25 +16,8 @@
 
 using GeneticSimulator::SimulationFileReader;
 using GeneticSimulator::Simulation;
-using PCAGenetic::GeneticAlgorithm;
-using PCAGenetic::GeneticModel;
-using PCAGenetic::trainingItem;
-using PCAGenetic::FitnessCalculator;
-using PCAGenetic::DistanceCalculator;
-using PCAGenetic::ParentSelector;
-using PCAGenetic::FitnessSumSelector;
-using PCAGenetic::ParentCombiner;
-using PCAGenetic::SingleCrossingCombiner;
-using PCAGenetic::LinearGeneticModel;
-using PCAGenetic::GeneticModel;
-using PCAGenetic::ModelInputDataVector;
-using PCAGenetic::ModelOutputDataVector;
-using PCAGenetic::ModelInputData;
-using PCAGenetic::ModelOutputData;
 
-using PCAGenetic::fitCalcMap;
-using PCAGenetic::selectMap;
-using PCAGenetic::combinerMap;
+using namespace PCAGenetic;
 
 SimulationFileReader::SimulationFileReader() { }
 
@@ -106,7 +89,7 @@ std::vector<trainingItem> readTrainingData(std::ifstream& file)
 Simulation readNextSim(std::ifstream& file)
 {
 	std::string name;
-	GeneticAlgorithm alg;
+	GeneticAlgorithm alg = makeBasicAlgorithm();
 	std::unique_ptr<GeneticModel> modelTemplate;
 	std::vector<trainingItem> trainingData;
 	int generations;

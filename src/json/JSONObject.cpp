@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cmath>
 
-using GeneticJSON::JSONObject;
+using JSON_IO::JSONObject;
 
 std::vector<std::string> split(std::string s, char delim)
 {
@@ -144,9 +144,15 @@ std::string JSONObject::asJSON() const
 	return data;
 }
 
-JSONObject JSONObject::operator[](std::string key) const
+JSONObject JSONObject::operator[](const std::string key) const
 {
+	if (!subObjects.count(key)) return JSONObject();
 	return subObjects.at(key);
+}
+
+JSONObject JSONObject::operator[](const char* key) const
+{
+	return (*this)[std::string(key)];
 }
 
 int JSONObject::asInt() const
@@ -184,4 +190,14 @@ std::vector<JSONObject> JSONObject::asArray() const
 		objects.push_back(parseObjectFromString(objString));
 	}
 	return objects;
+}
+
+bool JSONObject::isNull() const
+{
+	return data == "null";
+}
+
+JSONObject::operator bool() const
+{
+	return !isNull();
 }

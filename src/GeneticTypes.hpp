@@ -1,8 +1,8 @@
 #ifndef GENETIC_TYPES
 #define GENETIC_TYPES
 
-#include "model/input/ModelInputData.hpp"
-#include "model/output/ModelOutputData.hpp"
+#include "model/ModelInputData.hpp"
+#include "model/ModelOutputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "CloneableHandle.hpp"
 

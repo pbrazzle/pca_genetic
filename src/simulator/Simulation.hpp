@@ -13,7 +13,7 @@
 namespace GeneticSimulator
 {
 	using namespace PCAGenetic;
-	using namespace GeneticJSON;
+	using namespace JSON_IO;
 	
 	//TODO should Simulation write algorithm reports? Or should GeneticAlgorithm do it?
 	class Simulation : public JSONSerializable

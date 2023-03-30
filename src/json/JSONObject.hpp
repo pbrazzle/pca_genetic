@@ -5,9 +5,8 @@
 #include <vector>
 #include <map>
 
-namespace GeneticJSON
+namespace JSON_IO
 {
-	//TODO add support for arrays
 	class JSONObject
 	{
 		private:
@@ -55,7 +54,8 @@ namespace GeneticJSON
 			/**Reading**/
 			
 			//Get value from object key
-			JSONObject operator[](std::string key) const;
+			JSONObject operator[](const std::string key) const;
+			JSONObject operator[](const char* key) const;
 			
 			//Converts object to int value
 			int asInt() const;
@@ -71,6 +71,14 @@ namespace GeneticJSON
 			
 			//Converts object to vector of JSONObjects
 			std::vector<JSONObject> asArray() const;
+
+			/**Testing**/
+
+			//Returns True if the object is null, false otherwise
+			bool isNull() const;
+
+			//Returns True if the object is not null, false otherwise
+			operator bool() const;
 	};
 }
 

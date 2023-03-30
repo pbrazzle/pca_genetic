@@ -1,9 +1,9 @@
 #ifndef JSON_SERIALIZABLE
 #define JSON_SERIALIZABLE
 
-#include "json/JSONObject.hpp"
+#include "JSONObject.hpp"
 
-namespace GeneticJSON
+namespace JSON_IO
 {
 	class JSONSerializable
 	{
