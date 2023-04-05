@@ -16,6 +16,8 @@ namespace GeneticModels
 			std::vector<double> parameters;
 
 		public:
+			LinearGeneticModel() = default;
+
 			//Constructs a linear model for the provided data length
 			//All parameters are initialized to 0
 			LinearGeneticModel(int);
@@ -44,7 +46,7 @@ namespace GeneticModels
 			//Returns a string representation of the model parameters in matrix form
 			std::string printMatrix() const;
 			
-			JSONObject toJSON() const;
+			JSONObject toJSON() const override;
 			void fromJSON(const JSONObject& obj);
 			int getInputDataLength() const override;
 			int getOutputDataLength() const override;

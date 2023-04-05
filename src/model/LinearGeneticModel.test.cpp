@@ -10,7 +10,17 @@ class LinearModelTests : public GeneticModelTests
 		{
 			return std::unique_ptr<GeneticModel>(new LinearGeneticModel(3));
 		}
-		
+
+		ModelPtr getTestModel() override
+		{
+			return std::make_unique<LinearGeneticModel>(LinearGeneticModel(3));
+		}
+
+		ModelPtr getBlankModel() override
+		{
+			return std::make_unique<LinearGeneticModel>(LinearGeneticModel());
+		}
+
 		//TODO Add evaluation test
 };
 

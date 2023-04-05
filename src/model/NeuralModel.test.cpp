@@ -11,10 +11,20 @@ public:
 		return std::unique_ptr<GeneticModel>(new NeuralModel({ 3 }));
 	}
 
+	ModelPtr getTestModel() override
+	{
+		return std::make_unique<NeuralModel>(NeuralModel({ 3, 3 }));
+	}
+
+	ModelPtr getBlankModel() override
+	{
+		return std::make_unique<NeuralModel>(NeuralModel());
+	}
+
 	//TODO Add evaluation test
 };
 
-TEST_CASE("LinearGeneticModel", "[LinearGeneticModel]")
+TEST_CASE("NeuralModel", "[NeuralModel]")
 {
 	NeuralModelTests testClass;
 

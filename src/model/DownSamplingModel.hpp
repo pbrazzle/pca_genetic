@@ -29,6 +29,9 @@ namespace GeneticModels
 			void setParameters(std::vector<double>);
 			int getInputDataLength() const override;
 			int getOutputDataLength() const override;
+
+			JSONObject toJSON() const override;
+			void fromJSON(const JSONObject& obj) override;
 	};
 }
 

@@ -31,7 +31,7 @@ std::unique_ptr<GeneticModel> LinearGeneticModel::clone() const
 std::unique_ptr<ModelOutputData> LinearGeneticModel::evaluate(ModelInputData& inputData)
 {
 	std::vector<double> inputVec = inputData.getData();
-	if (inputVec.size()*inputVec.size() != parameters.size()) throw std::invalid_argument("LinearGeneticModel: InputData is incorrect length");
+	if (inputVec.size() != dataLength) throw std::invalid_argument("LinearGeneticModel: InputData is incorrect length");
 
 	std::vector<double> result(inputVec.size(), 0);
 	for (int i = 0; i < inputVec.size(); i++)
@@ -72,25 +72,35 @@ std::string LinearGeneticModel::printMatrix() const
 JSONObject LinearGeneticModel::toJSON() const
 {
 	JSONObject obj;
-	obj.addString("model_type", "LinearGeneticModel");
+	obj.addString("typename", "LinearGeneticModel");
 	
 	std::vector<JSONObject> paramJSON;
 	for (double d : parameters) paramJSON.push_back(JSONObject(d));
-	obj.addArray("parameters", paramJSON);
+	JSONObject dataObj;
+	dataObj.addArray("parameters", paramJSON);
+
+	obj.addObject("data", dataObj);
 	
 	return obj;
 }
 
 void LinearGeneticModel::fromJSON(const JSONObject& obj)
 {
+	auto params = obj["parameters"].asArray();
+
+	std::vector<double> newParams;
+	for (auto jsonParam : params) newParams.push_back(jsonParam.asFloat());
+
+	parameters = newParams;
+	dataLength = (int) sqrt(parameters.size());
 }
 
 int LinearGeneticModel::getInputDataLength() const
 {
-	return 0;
+	return dataLength;
 }
 
 int LinearGeneticModel::getOutputDataLength() const
 {
-	return 0;
+	return dataLength;
 }

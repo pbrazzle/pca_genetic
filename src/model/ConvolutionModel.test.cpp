@@ -11,10 +11,20 @@ public:
 		return std::unique_ptr<GeneticModel>(new ConvolutionModel());
 	}
 
+	ModelPtr getTestModel() override
+	{
+		return std::make_unique<ConvolutionModel>(ConvolutionModel());
+	}
+
+	ModelPtr getBlankModel() override
+	{
+		return std::make_unique<ConvolutionModel>(ConvolutionModel());
+	}
+
 	//TODO Add evaluation test
 };
 
-TEST_CASE("LinearGeneticModel", "[LinearGeneticModel]")
+TEST_CASE("ConvolutionModel", "[ConvolutionModel]")
 {
 	ConvolutionModelTests testClass;
 

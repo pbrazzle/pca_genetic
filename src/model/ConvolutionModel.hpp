@@ -18,6 +18,8 @@ namespace GeneticModels
 
 			int getInputDataLength() const;
 			int getOutputDataLength() const;
+			JSONObject toJSON() const override;
+			void fromJSON(const JSONObject& obj) override;
 	};
 }
 

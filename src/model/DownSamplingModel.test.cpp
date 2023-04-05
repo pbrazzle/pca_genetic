@@ -11,6 +11,16 @@ public:
 		return std::unique_ptr<GeneticModel>(new DownSamplingModel(3, 3, 100, 100));
 	}
 
+	ModelPtr getTestModel() override
+	{
+		return std::make_unique<DownSamplingModel>(DownSamplingModel(3, 3, 100, 100));
+	}
+
+	ModelPtr getBlankModel() override
+	{
+		return std::make_unique<DownSamplingModel>(DownSamplingModel());
+	}
+
 	//TODO Add evaluation test
 };
 
