@@ -46,6 +46,8 @@ namespace GeneticModels
 			
 			JSONObject toJSON() const;
 			void fromJSON(const JSONObject& obj);
+			int getInputDataLength() const override;
+			int getOutputDataLength() const override;
 	};
 }
 

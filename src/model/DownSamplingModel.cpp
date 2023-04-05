@@ -89,3 +89,13 @@ void DownSamplingModel::setParameters(std::vector<double>)
 {
 	
 }
+
+int DownSamplingModel::getInputDataLength() const
+{
+	return 0;
+}
+
+int DownSamplingModel::getOutputDataLength() const
+{
+	return 0;
+}

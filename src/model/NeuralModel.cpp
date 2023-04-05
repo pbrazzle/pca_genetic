@@ -75,3 +75,13 @@ void NeuralModel::setParameters(std::vector<double> newWeights)
 	if (newWeights.size() != weights.size()) throw std::invalid_argument("Invalid number of weights");
 	weights = newWeights;
 }
+
+int NeuralModel::getInputDataLength() const
+{
+	return 0;
+}
+
+int NeuralModel::getOutputDataLength() const
+{
+	return 0;
+}

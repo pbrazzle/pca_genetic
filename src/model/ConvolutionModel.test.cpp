@@ -1,25 +1,25 @@
-/*#include "GeneticModel.test.hpp"
 #include "ConvolutionModel.hpp"
+#include "GeneticModel.test.hpp"
 
 using namespace GeneticModels;
 
 class ConvolutionModelTests : public GeneticModelTests
 {
-	public:
-		std::unique_ptr<GeneticModel> createModel()
-		{
-			return std::unique_ptr<GeneticModel>(new ConvolutionModel());
-		}
-		
-		//TODO Add evaluation test
+public:
+	std::unique_ptr<GeneticModel> createModel()
+	{
+		return std::unique_ptr<GeneticModel>(new ConvolutionModel());
+	}
+
+	//TODO Add evaluation test
 };
 
-int main()
+TEST_CASE("LinearGeneticModel", "[LinearGeneticModel]")
 {
-	ConvolutionModelTests tests;
-	tests.runTests();
-	
-	return 0;
-}*/
+	ConvolutionModelTests testClass;
 
-#include <catch2/catch_test_macros.hpp>
+	SECTION("Interface Tests")
+	{
+		testClass.runTests();
+	}
+}

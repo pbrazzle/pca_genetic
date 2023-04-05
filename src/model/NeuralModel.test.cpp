@@ -1,25 +1,25 @@
-/*#include "GeneticModel.test.hpp"
 #include "NeuralModel.hpp"
+#include "GeneticModel.test.hpp"
 
 using namespace GeneticModels;
 
 class NeuralModelTests : public GeneticModelTests
 {
-	public:
-		std::unique_ptr<GeneticModel> createModel()
-		{
-			return std::unique_ptr<GeneticModel>(new NeuralModel());
-		}
-		
-		//TODO Add evaluation test
+public:
+	std::unique_ptr<GeneticModel> createModel()
+	{
+		return std::unique_ptr<GeneticModel>(new NeuralModel({ 3 }));
+	}
+
+	//TODO Add evaluation test
 };
 
-int main()
+TEST_CASE("LinearGeneticModel", "[LinearGeneticModel]")
 {
-	NeuralModelTests tests;
-	tests.runTests();
-	
-	return 0;
-}*/
+	NeuralModelTests testClass;
 
-#include <catch2/catch_test_macros.hpp>
+	SECTION("Interface Tests")
+	{
+		testClass.runTests();
+	}
+}

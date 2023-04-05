@@ -83,5 +83,14 @@ JSONObject LinearGeneticModel::toJSON() const
 
 void LinearGeneticModel::fromJSON(const JSONObject& obj)
 {
-	
+}
+
+int LinearGeneticModel::getInputDataLength() const
+{
+	return 0;
+}
+
+int LinearGeneticModel::getOutputDataLength() const
+{
+	return 0;
 }

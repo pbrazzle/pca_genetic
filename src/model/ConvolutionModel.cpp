@@ -23,3 +23,13 @@ void ConvolutionModel::setParameters(std::vector<double>)
 {
 	
 }
+
+int ConvolutionModel::getInputDataLength() const
+{
+	return 0;
+}
+
+int ConvolutionModel::getOutputDataLength() const
+{
+	return 0;
+}

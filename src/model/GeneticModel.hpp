@@ -36,6 +36,9 @@ namespace GeneticModels
 	
 			virtual std::vector<double> getParameters() const = 0;
 			virtual void setParameters(std::vector<double>) = 0;
+
+			virtual int getInputDataLength() const = 0;
+			virtual int getOutputDataLength() const = 0;
 	};
 }
 

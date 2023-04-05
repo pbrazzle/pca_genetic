@@ -26,6 +26,9 @@ namespace GeneticModels
 		
 			std::vector<double> getParameters() const;
 			void setParameters(std::vector<double>);
+
+			int getInputDataLength() const override;
+			int getOutputDataLength() const override;
 	};
 }
 

@@ -1,25 +1,25 @@
-/*#include "GeneticModel.test.hpp"
 #include "DownSamplingModel.hpp"
+#include "GeneticModel.test.hpp"
 
 using namespace GeneticModels;
 
 class DownSamplingModelTests : public GeneticModelTests
 {
-	public:
-		std::unique_ptr<GeneticModel> createModel()
-		{
-			return std::unique_ptr<GeneticModel>(new DownSamplingModel());
-		}
-		
-		//TODO Add evaluation test
+public:
+	std::unique_ptr<GeneticModel> createModel()
+	{
+		return std::unique_ptr<GeneticModel>(new DownSamplingModel(3, 3, 100, 100));
+	}
+
+	//TODO Add evaluation test
 };
 
-int main()
+TEST_CASE("DownSamplingModel", "[DownSamplingModel]")
 {
-	DownSamplingModelTests tests;
-	tests.runTests();
-	
-	return 0;
-}*/
+	DownSamplingModelTests testClass;
 
-#include <catch2/catch_test_macros.hpp>
+	SECTION("Interface Tests")
+	{
+		testClass.runTests();
+	}
+}
