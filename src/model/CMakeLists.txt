@@ -6,7 +6,8 @@ set(MODEL_SOURCES
 	#interconnect/InterconnectedModel.cpp
 	"LinearGeneticModel.cpp"
 	NeuralModel.cpp
-	"ModelOutputDataVector.cpp")
+	"ModelOutputDataVector.cpp"
+	GeneticModelFactory.cpp)
 	
 add_library(GeneticModels ${MODEL_SOURCES})
 target_link_libraries(GeneticModels PUBLIC GeneticJSON)
@@ -16,7 +17,9 @@ set(TEST_SOURCES
 	LinearGeneticModel.test.cpp
 	ConvolutionModel.test.cpp
 	DownSamplingModel.test.cpp
-	NeuralModel.test.cpp)
+	NeuralModel.test.cpp
+	ModelInputDataVector.test.cpp
+	ModelOutputDataVector.test.cpp)
 	
 foreach(TEST ${TEST_SOURCES})
 	get_filename_component(TEST_NAME ${TEST} NAME_WE)

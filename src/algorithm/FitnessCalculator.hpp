@@ -18,11 +18,9 @@ namespace PCAGenetic
 
 			virtual std::unique_ptr<FitnessCalculator> clone() const = 0;
 
-			virtual std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<std::unique_ptr<GeneticModel>>&) = 0;
-			
-			virtual std::vector<double> calculateFitnesses(const std::vector<trainingItem>&, const std::vector<ModelHandle>&) = 0;
-
 			virtual double calculateFitness(const trainingItem&, const ModelHandle&) const = 0;
+
+			//virtual double calc(const std::vector<double>&, const std::vector<double>&) const;
 
 			virtual JSONObject toJSON() const = 0;
 	};

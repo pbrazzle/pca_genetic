@@ -59,7 +59,7 @@ std::vector<double> DistanceCalculator::calculateFitnesses(const std::vector<tra
 double DistanceCalculator::calculateFitness(const trainingItem& item, const ModelHandle& model) const
 {
 	const auto result = model->evaluate(*item.first);
-	return result->distance(*item.second);
+	return 1/result->distance(*item.second);
 }
 
 

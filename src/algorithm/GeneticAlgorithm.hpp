@@ -53,6 +53,7 @@ namespace PCAGenetic
 			ModelHandle createChildModel();
 
 		public:
+			GeneticAlgorithm() = default;
 			GeneticAlgorithm(std::unique_ptr<FitnessCalculator>, std::unique_ptr<ParentSelector>, std::unique_ptr<ParentCombiner>);
 			GeneticAlgorithm(const GeneticAlgorithm& alg);
 		

@@ -1,14 +1,14 @@
 #ifndef GENETIC_ALGORITHM_FACTORY
 #define GENETIC_ALGORITHM_FACTORY
 
-#include "GeneticAlgorithm.hpp"
-#include "strategies/SingleCrossingCombiner.hpp"
-#include "strategies/RandomCrossingCombiner.hpp"
-#include "strategies/FitnessSumSelector.hpp"
-#include "strategies/BestFitnessSelector.hpp"
-#include "strategies/DistributionSelector.hpp"
-#include "strategies/DistanceCalculator.hpp"
-#include "strategies/DecisionCalculator.hpp"
+#include "algorithm/GeneticAlgorithm.hpp"
+#include "SingleCrossingCombiner.hpp"
+#include "RandomCrossingCombiner.hpp"
+#include "FitnessSumSelector.hpp"
+#include "BestFitnessSelector.hpp"
+#include "DistributionSelector.hpp"
+#include "DistanceCalculator.hpp"
+#include "DecisionCalculator.hpp"
 
 #include "json/AbstractJSONFactory.hpp"
 
@@ -16,65 +16,15 @@
 #include <string>
 #include <map>
 
-namespace PCAGenetic 
+namespace PCAGenetic
 {
-	GeneticAlgorithm makeBasicAlgorithm()
-	{
-		std::unique_ptr<FitnessCalculator> fc(new DistanceCalculator());
-		std::unique_ptr<ParentSelector> ps(new FitnessSumSelector());
-		std::unique_ptr<ParentCombiner> pc(new SingleCrossingCombiner());
-
-		return GeneticAlgorithm(std::move(fc), std::move(ps), std::move(pc));
-	}
-
-	using FitCalcFactory = std::unique_ptr<FitnessCalculator> (*)();
-	using SelectFactory = std::unique_ptr<ParentSelector> (*)();
-	using CombinerFactory = std::unique_ptr<ParentCombiner> (*)();
-	
-	template <typename FitCalc>
-	std::unique_ptr<FitnessCalculator> makeFitnessCalculator() { return std::unique_ptr<FitnessCalculator>(new FitCalc()); }
-	
-	template <typename PSelect>
-	std::unique_ptr<ParentSelector> makeParentSelector() { return std::unique_ptr<ParentSelector>(new PSelect()); }
-	
-	template <typename PComb>
-	std::unique_ptr<ParentCombiner> makeParentCombiner() { return std::unique_ptr<ParentCombiner>(new PComb()); }
+	GeneticAlgorithm makeBasicAlgorithm();
 
 	using namespace JSON_IO;
 
-	template <typename Base, typename Derived>
-	std::unique_ptr<Base> makeDefaultDerived() { return std::unique_ptr<Base>(new Derived()); }
-
-	typenameMap<FitnessCalculator> fitCalcMap {
-		{"DecisionCalculator", &makeDefaultDerived<FitnessCalculator, DecisionCalculator>},
-		{"DistanceCalculator", &makeDefaultDerived<FitnessCalculator, DistanceCalculator>}
-	};
-
-	std::unique_ptr<FitnessCalculator> FitCalcFromJSON(const JSONObject& obj) 
-	{ 
-		return makeAbstractFromJSON<FitnessCalculator>(fitCalcMap, obj);
-	}
-
-	typenameMap<ParentSelector> selectMap {
-		{"FitnessSumSelector", &makeDefaultDerived<ParentSelector, FitnessSumSelector>},
-		{"BestFitnessSelector", &makeDefaultDerived<ParentSelector, BestFitnessSelector>},
-		{"DistributionSelector", &makeDefaultDerived<ParentSelector, DistributionSelector>}
-	};
-
-	std::unique_ptr<ParentSelector> ParentSelectFromJSON(const JSONObject& obj) 
-	{ 
-		return makeAbstractFromJSON<ParentSelector>(selectMap, obj);
-	}
-	
-	typenameMap<ParentCombiner> combinerMap {
-		{"SingleCrossingCombiner", &makeDefaultDerived<ParentCombiner, SingleCrossingCombiner>},
-		{"RandomCrossingCombiner", &makeDefaultDerived<ParentCombiner, RandomCrossingCombiner>}
-	};
-
-	std::unique_ptr<ParentCombiner> ParentCombFromJSON(const JSONObject& obj) 
-	{ 
-		return makeAbstractFromJSON<ParentCombiner>(combinerMap, obj);
-	}
+	std::unique_ptr<FitnessCalculator> FitCalcFromJSON(const JSONObject& obj);
+	std::unique_ptr<ParentSelector> ParentSelectFromJSON(const JSONObject& obj);
+	std::unique_ptr<ParentCombiner> ParentCombFromJSON(const JSONObject& obj);
 }
 
 #endif

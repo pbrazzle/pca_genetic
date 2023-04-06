@@ -25,4 +25,7 @@ namespace JSON_IO
     }
 }
 
+template <typename Base, typename Derived>
+std::unique_ptr<Base> makeDefaultDerived() { return std::unique_ptr<Base>(new Derived()); }
+
 #endif

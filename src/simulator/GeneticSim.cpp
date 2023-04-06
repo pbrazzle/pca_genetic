@@ -1,19 +1,22 @@
-#include "simulator/SimulationFileReader.hpp"
+#include "json/JSONFile.hpp"
 #include "simulator/Simulation.hpp"
 
 #include <time.h>
 
-using GeneticSimulator::SimulationFileReader;
+using JSON_IO::JSONFileReader;
+using GeneticSimulator::Simulation;
 
 int main(int argc, char* argv[])
 {
 	srand((unsigned int) time(NULL));
-	SimulationFileReader simReader;
 
 	std::string filename(argv[1]);
-	auto simulations = simReader.readSimulations(filename);
-	
-	for (auto sim : simulations) sim.run();
+	JSONFileReader jsonReader(filename);
+	auto obj = jsonReader.read();
+
+	Simulation sim;
+	sim.fromJSON(obj);
+	sim.run();
 	
 	return 0;
 }

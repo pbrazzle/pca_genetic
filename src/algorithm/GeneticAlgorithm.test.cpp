@@ -1,43 +1,31 @@
 #include "GeneticAlgorithm.hpp"
 #include "GeneticAlgorithmFactory.hpp"
 
-#include <iostream>
-#include <cassert>
+#include <catch2/catch_test_macros.hpp>
 
 using namespace PCAGenetic;
 using namespace JSON_IO;
 
-void printAlgJSON()
-{
-    GeneticAlgorithm alg = makeBasicAlgorithm();
-    std::cout << alg.toJSON().asJSON() << '\n';
-}
-
-void serializable()
+TEST_CASE("GeneticAlgorithm", "[GeneticAlgorithm]")
 {
     GeneticAlgorithm alg = makeBasicAlgorithm();
 
-    JSONObject serialData = alg.toJSON();
+    SECTION("Serializable")
+    {
+        JSONObject obj = alg.toJSON();
 
-    //Assert top level object
-    assert(serialData);
+        REQUIRE(obj);
 
-    //Assert numerical parameters are serialized
-    assert(serialData["generationSize"]);
-    assert(serialData["offsetSize"]);
-    assert(serialData["mutationSize"]);
-    assert(serialData["mutationChance"]);
-    assert(serialData["elitism"]);
+        //REQUIRE numerical parameters are serialized
+        REQUIRE(obj["generationSize"]);
+        REQUIRE(obj["offsetSize"]);
+        REQUIRE(obj["mutationSize"]);
+        REQUIRE(obj["mutationChance"]);
+        REQUIRE(obj["elitism"]);
 
-    //Assert strategies are serialized
-    assert(serialData["FitnessCalculator"]);
-    assert(serialData["ParentSelector"]);
-    assert(serialData["ParentCombiner"]);
-}
-
-int main()
-{
-    printAlgJSON();
-    serializable();
-    return 0;
+        //REQUIRE strategies are serialized
+        REQUIRE(obj["FitnessCalculator"]);
+        REQUIRE(obj["ParentSelector"]);
+        REQUIRE(obj["ParentCombiner"]);
+    }
 }

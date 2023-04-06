@@ -26,6 +26,7 @@ namespace GeneticSimulator
 			int generations;
 
 		public:
+			Simulation() = default;
 			Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<GeneticModel> m, std::vector<trainingItem> td, int g);
 			Simulation(const Simulation& other);
 

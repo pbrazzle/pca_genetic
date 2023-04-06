@@ -36,6 +36,70 @@ std::string trim(std::string s)
 	return s;
 }
 
+JSONObject parseObjectFromString(std::string objString);
+
+JSONObject readObjectFromList(std::string& listString)
+{
+	if (listString.size() == 0) return JSONObject();
+	int bracketDepth = 0;
+
+	std::string objString;
+	char current = listString.front();
+	do
+	{
+		if (current == '{' || current == '[') bracketDepth++;
+		if (current == '}' || current == ']') bracketDepth--;
+
+		objString += current;
+
+		listString.erase(0, 1);
+		if (listString.size() == 0) return parseObjectFromString(objString);
+		current = listString.front();
+	} while (current != ',' || bracketDepth);
+	listString.erase(0, 1);
+	return parseObjectFromString(objString);
+}
+
+std::pair<std::string, std::string> firstSplit(std::string val, char delim)
+{
+	std::pair<std::string, std::string> result;
+	if (val.empty()) return result;
+
+	while (val.front() != delim)
+	{
+		result.first += val.front();
+		val.erase(0, 1);
+
+		if (val.empty()) return result;
+	}
+	val.erase(0, 1);
+	result.second = val;
+
+	return result;
+}
+
+std::string bracketAwareSplit(std::string& listString)
+{
+	if (listString.empty()) return "";
+	int bracketDepth = 0;
+
+	std::string objString;
+	char current = listString.front();
+	do
+	{
+		if (current == '{' || current == '[') bracketDepth++;
+		if (current == '}' || current == ']') bracketDepth--;
+
+		objString += current;
+
+		listString.erase(0, 1);
+		if (listString.empty()) return objString;
+		current = listString.front();
+	} while (current != ',' || bracketDepth);
+	listString.erase(0, 1);
+	return objString;
+}
+
 JSONObject parseObjectFromString(std::string objString)
 {
 	if (objString == "null") return JSONObject();
@@ -53,8 +117,27 @@ JSONObject parseObjectFromString(std::string objString)
 		objString = objString.substr(1, objString.size()-2);
 		auto arrStrings = split(objString, ',');
 		std::vector<JSONObject> arr;
-		for (auto str : arrStrings) arr.push_back(parseObjectFromString(str));
+		while (!objString.empty())
+		{
+			auto nextObjString = bracketAwareSplit(objString);
+			arr.push_back(parseObjectFromString(nextObjString));
+		}
 		return JSONObject(arr);
+	}
+
+	if (objString[0] == '{')
+	{
+		JSONObject obj;
+		auto noDelims = objString.substr(1, objString.size() - 2);
+
+		while (!noDelims.empty())
+		{
+			auto nextSubObjString = bracketAwareSplit(noDelims);
+			auto keyVal = firstSplit(nextSubObjString, ':');
+			obj.addObject(keyVal.first, parseObjectFromString(keyVal.second));
+		}
+
+		return obj;
 	}
 	
 	return JSONObject(objString.substr(1, objString.size()-2));
@@ -182,13 +265,15 @@ std::vector<JSONObject> JSONObject::asArray() const
 	if (data[0] != '[') return std::vector<JSONObject>();
 	
 	std::string noDelims = data.substr(1, data.size()-2);
-	auto objectStrings = split(noDelims, ',');
-	
+
 	std::vector<JSONObject> objects;
-	for (auto objString : objectStrings)
+	JSONObject nextObj = readObjectFromList(noDelims);
+	while(nextObj)
 	{
-		objects.push_back(parseObjectFromString(objString));
+		objects.push_back(nextObj);
+		nextObj = readObjectFromList(noDelims);
 	}
+
 	return objects;
 }
 

@@ -14,6 +14,7 @@ namespace GeneticModels
 			std::vector<double> data;
 
 		public:
+			ModelInputDataVector() = default;
 			ModelInputDataVector(std::vector<double>);
 
 			std::unique_ptr<ModelInputData> clone() const;

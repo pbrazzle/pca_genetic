@@ -13,6 +13,7 @@ namespace GeneticModels
 		private:
 			std::vector<double> data;
 		public:
+			ModelOutputDataVector() = default;
 			ModelOutputDataVector(std::vector<double>);
 
 			std::unique_ptr<ModelOutputData> clone() const;

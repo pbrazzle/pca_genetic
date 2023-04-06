@@ -16,7 +16,7 @@ std::vector<double> ModelInputDataVector::getData() { return data; }
 JSONObject ModelInputDataVector::toJSON() const
 {
 	JSONObject obj;
-	obj.addString("data_type", "ModelInputDataVector");
+	obj.addString("typename", "ModelInputDataVector");
 	
 	std::vector<JSONObject> dataJSON;
 	for (double d : data) dataJSON.push_back(JSONObject(d));
@@ -27,5 +27,8 @@ JSONObject ModelInputDataVector::toJSON() const
 
 void ModelInputDataVector::fromJSON(const JSONObject& obj)
 {
-	
+	auto dataArr = obj.asArray();
+
+	data.clear();
+	for (auto dataObj : dataArr) data.push_back(dataObj.asFloat());
 }

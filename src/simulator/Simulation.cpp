@@ -4,8 +4,11 @@
 #include <fstream>
 #include <algorithm>
 
+#include "model/GeneticModelFactory.hpp"
+
 using GeneticSimulator::Simulation;
 using namespace JSON_IO;
+using namespace GeneticModels;
 
 Simulation::Simulation(std::string n, GeneticAlgorithm a, std::unique_ptr<GeneticModel> m, std::vector<trainingItem> td, int g) : name(n), alg(a), generations(g)
 {
@@ -82,8 +85,21 @@ JSONObject Simulation::toJSON() const
 	return obj;
 }
 
-//TODO implement this
 void Simulation::fromJSON(const JSONObject& obj)
 {
-	
+	name = obj["name"].asString();
+	generations = obj["generations"].asInt();
+
+	alg.fromJSON(obj["algorithm"]);
+	modelTemplate = ModelFromJSON(obj["model_template"]);
+
+	trainingData.clear();
+	auto trainingArr = obj["training_data"].asArray();
+	for (auto trainingObj : trainingArr)
+	{
+		auto input = InputDataFromJSON(trainingObj["input"]);
+		auto output = OutputDataFromJSON(trainingObj["output"]);
+
+		trainingData.emplace_back(trainingItem(std::move(input), std::move(output)));
+	}
 }

@@ -1,14 +1,12 @@
 #include "GeneticAlgorithm.hpp"
 
-#include "strategies/DistanceCalculator.hpp"
-#include "strategies/FitnessSumSelector.hpp"
-#include "strategies/SingleCrossingCombiner.hpp"
-
 #include <cstdlib>
 #include <numeric>
 #include <algorithm>
 #include <vector>
 #include <iostream>
+
+#include "algorithm/GeneticAlgorithmFactory.hpp"
 
 using namespace GeneticModels;
 using namespace PCAGenetic;
@@ -105,6 +103,7 @@ void GeneticAlgorithm::initializeGeneration(const GeneticModel& modelTemplate)
 
 void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem>& td, int generations)
 {
+	initializeGeneration(modelTemplate);
 	trainingData = std::move(td);
 	calculateFitnesses();
 	continueTraining(generations);
@@ -136,7 +135,17 @@ void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
 
 void GeneticAlgorithm::calculateFitnesses()
 {
-	fitnesses = fitnessCalc->calculateFitnesses(trainingData, models);
+	fitnesses.clear();
+	for (auto& model : models)
+	{
+		double fitness = 0;
+		for (auto& trainingItem : trainingData)
+		{
+			fitness += fitnessCalc->calculateFitness(trainingItem, model);
+		}
+		fitnesses.push_back(fitness);
+	}
+
 	auto sortedIndices = getSortedFitnessIndices();	
 	reorderModels(sortedIndices);
 }
@@ -164,12 +173,15 @@ void GeneticAlgorithm::runGeneration()
 
 	int numEliteModels = (int) (elitism*models.size());
 	LOG("Saving best "); LOG(numEliteModels); LOG(" models\n");
-	models.erase(models.begin(), models.end()-numEliteModels);
 
-	for (int i = 0; i < models.size()-numEliteModels; i++)
+	int numNewModels = generationSize - numEliteModels;
+
+	for (int i = 0; i < numNewModels; i++)
 	{
-		models.push_back(createChildModel());
+		newModels.push_back(createChildModel());
 	}
+	newModels.insert(newModels.end(), models.begin() + generationSize - numEliteModels, models.end());
+	models = newModels;
 
 	calculateFitnesses();
 }
@@ -232,4 +244,8 @@ void GeneticAlgorithm::fromJSON(const JSONObject& obj)
 	mutationChance = obj["mutationChance"].asFloat();
 	mutationSize = obj["mutationSize"].asFloat();
 	elitism = obj["elitism"].asFloat();
+
+	fitnessCalc = FitCalcFromJSON(obj["FitnessCalculator"]);
+	parentSelect = ParentSelectFromJSON(obj["ParentSelector"]);
+	parentComb = ParentCombFromJSON(obj["ParentCombiner"]);
 }
