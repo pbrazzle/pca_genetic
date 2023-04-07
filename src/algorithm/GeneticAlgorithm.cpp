@@ -103,9 +103,10 @@ void GeneticAlgorithm::initializeGeneration(const GeneticModel& modelTemplate)
 
 void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem>& td, int generations)
 {
+	bestFitnesses.clear();
+	avgFitnesses.clear();
 	initializeGeneration(modelTemplate);
 	trainingData = std::move(td);
-	calculateFitnesses();
 	continueTraining(generations);
 }
 
@@ -169,6 +170,11 @@ ModelHandle GeneticAlgorithm::createChildModel()
 
 void GeneticAlgorithm::runGeneration()
 {
+	calculateFitnesses();
+
+	bestFitnesses.push_back(fitnesses.back());
+	avgFitnesses.push_back(std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / fitnesses.size());
+
 	std::vector<ModelHandle> newModels;
 
 	int numEliteModels = (int) (elitism*models.size());
@@ -182,8 +188,6 @@ void GeneticAlgorithm::runGeneration()
 	}
 	newModels.insert(newModels.end(), models.begin() + generationSize - numEliteModels, models.end());
 	models = newModels;
-
-	calculateFitnesses();
 }
 
 std::vector<double> GeneticAlgorithm::getAvgFitnesses() const { return avgFitnesses; }

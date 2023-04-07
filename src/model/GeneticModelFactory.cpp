@@ -1,6 +1,7 @@
 #include "GeneticModelFactory.hpp"
 
 #include "LinearGeneticModel.hpp"
+#include "NeuralModel.hpp"
 
 #include "ModelInputDataVector.hpp"
 #include "ModelOutputDataVector.hpp"
@@ -9,7 +10,8 @@ using namespace GeneticModels;
 using namespace JSON_IO;
 
 typenameMap<GeneticModel> modelMap{
-	{"LinearGeneticModel", &makeDefaultDerived<GeneticModel, LinearGeneticModel>}
+	{"LinearGeneticModel", &makeDefaultDerived<GeneticModel, LinearGeneticModel>},
+	{"NeuralModel", &makeDefaultDerived<GeneticModel, NeuralModel>}
 };
 
 std::unique_ptr<GeneticModel> GeneticModels::ModelFromJSON(const JSONObject& obj)

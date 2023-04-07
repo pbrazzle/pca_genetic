@@ -13,7 +13,7 @@ public:
 
 	ModelPtr getTestModel() override
 	{
-		return std::make_unique<ConvolutionModel>(ConvolutionModel());
+		return std::make_unique<ConvolutionModel>(ConvolutionModel(5, 5, 3, 3, std::vector<double>(9, 1.0)));
 	}
 
 	ModelPtr getBlankModel() override
@@ -21,7 +21,18 @@ public:
 		return std::make_unique<ConvolutionModel>(ConvolutionModel());
 	}
 
-	//TODO Add evaluation test
+	void evalTest()
+	{
+		ModelInputDataVector input(std::vector<double>(25, 1.0));
+
+		ModelPtr model = getTestModel();
+		auto output = model->evaluate(input);
+
+		for (auto val : output->getData())
+		{
+			REQUIRE(val == 9.0);
+		}
+	}
 };
 
 TEST_CASE("ConvolutionModel", "[ConvolutionModel]")
@@ -31,5 +42,9 @@ TEST_CASE("ConvolutionModel", "[ConvolutionModel]")
 	SECTION("Interface Tests")
 	{
 		testClass.runTests();
+	}
+	SECTION("Evaluation Test")
+	{
+		testClass.evalTest();
 	}
 }

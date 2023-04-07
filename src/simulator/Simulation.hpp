@@ -34,6 +34,9 @@ namespace GeneticSimulator
 			
 			JSONObject toJSON() const;
 			void fromJSON(const JSONObject& obj);
+
+			std::vector<double> getBestFitnesses();
+			std::vector<double> getAvgFitnesses();
 	};
 }
 

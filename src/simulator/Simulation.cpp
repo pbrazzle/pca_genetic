@@ -103,3 +103,13 @@ void Simulation::fromJSON(const JSONObject& obj)
 		trainingData.emplace_back(trainingItem(std::move(input), std::move(output)));
 	}
 }
+
+std::vector<double> Simulation::getBestFitnesses()
+{
+	return alg.getBestFitnesses();
+}
+
+std::vector<double> Simulation::getAvgFitnesses()
+{
+	return alg.getAvgFitnesses();
+}
