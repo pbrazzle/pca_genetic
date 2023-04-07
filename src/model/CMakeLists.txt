@@ -3,7 +3,7 @@ set(MODEL_SOURCES
 	ConvolutionModel.cpp
 	DownSamplingModel.cpp
 	ModelInputDataVector.cpp
-	#interconnect/InterconnectedModel.cpp
+	InterconnectedGeneticModel.cpp
 	"LinearGeneticModel.cpp"
 	NeuralModel.cpp
 	"ModelOutputDataVector.cpp"
@@ -19,7 +19,8 @@ set(TEST_SOURCES
 	DownSamplingModel.test.cpp
 	NeuralModel.test.cpp
 	ModelInputDataVector.test.cpp
-	ModelOutputDataVector.test.cpp)
+	ModelOutputDataVector.test.cpp
+	InterconnectedGeneticModel.test.cpp)
 	
 foreach(TEST ${TEST_SOURCES})
 	get_filename_component(TEST_NAME ${TEST} NAME_WE)

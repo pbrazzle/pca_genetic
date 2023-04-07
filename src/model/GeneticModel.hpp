@@ -39,6 +39,7 @@ namespace GeneticModels
 
 			virtual int getInputDataLength() const = 0;
 			virtual int getOutputDataLength() const = 0;
+			virtual int getParameterLength() const;
 	};
 }
 

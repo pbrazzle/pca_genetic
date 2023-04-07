@@ -20,13 +20,26 @@ namespace GeneticModels
 	//TODO implement this
 	class InterconnectedGeneticModel : public GeneticModel
 	{
+	private:
+		typedef std::unique_ptr<GeneticModel> ModelPtr;
+		typedef std::vector<ModelPtr> ModelLayer;
+		typedef std::vector<ModelLayer> LayerArray;
+
+		LayerArray layers;
 		public:
+			InterconnectedGeneticModel() = default;
+			InterconnectedGeneticModel(LayerArray&);
+
 			std::unique_ptr<GeneticModel> clone() const;
 
 			std::unique_ptr<ModelOutputData> evaluate(ModelInputData&);
 
 			std::vector<double> getParameters() const;
 			void setParameters(std::vector<double>);
+			int getInputDataLength() const override;
+			int getOutputDataLength() const override;
+		JSONObject toJSON() const override;
+		void fromJSON(const JSONObject& obj) override;
 	};
 }
 

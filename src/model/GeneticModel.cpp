@@ -41,3 +41,8 @@ void GeneticModel::mutate(double mutChance, double mutSize)
 	
 	setParameters(params);
 }
+
+int GeneticModel::getParameterLength() const
+{
+	return getParameters().size();
+}
