@@ -7,11 +7,12 @@ set(MODEL_SOURCES
 	"LinearGeneticModel.cpp"
 	NeuralModel.cpp
 	"ModelOutputDataVector.cpp"
-	GeneticModelFactory.cpp)
+	GeneticModelFactory.cpp
+	ModelInputImage.cpp)
 	
 add_library(GeneticModels ${MODEL_SOURCES})
 target_link_libraries(GeneticModels PUBLIC GeneticJSON)
-target_include_directories(GeneticModels PUBLIC model)
+target_include_directories(GeneticModels PUBLIC model ${CMAKE_SRC_DIR}/../external)
 
 set(TEST_SOURCES
 	LinearGeneticModel.test.cpp
