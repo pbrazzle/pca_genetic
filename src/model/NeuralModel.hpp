@@ -1,7 +1,7 @@
 #ifndef NEURAL_MODEL
 #define NEURAL_MODEL
 
-#include "model/GeneticModel.hpp"
+#include "GeneticModel.hpp"
 
 #include <vector>
 

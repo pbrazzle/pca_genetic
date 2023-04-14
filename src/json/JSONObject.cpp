@@ -102,6 +102,7 @@ std::string bracketAwareSplit(std::string& listString)
 
 JSONObject parseObjectFromString(std::string objString)
 {
+	objString = trim(objString);
 	if (objString == "null") return JSONObject();
 	try
 	{
@@ -134,7 +135,7 @@ JSONObject parseObjectFromString(std::string objString)
 		{
 			auto nextSubObjString = bracketAwareSplit(noDelims);
 			auto keyVal = firstSplit(nextSubObjString, ':');
-			obj.addObject(keyVal.first, parseObjectFromString(keyVal.second));
+			obj.addObject(trim(keyVal.first), parseObjectFromString(keyVal.second));
 		}
 
 		return obj;
@@ -151,24 +152,7 @@ JSONObject::JSONObject(std::string value)
 	data = trim(value);
 	if (data[0] == '{')
 	{
-		data = data.substr(1, data.size()-2);
-
-		std::vector<std::string> subObjectStrings = split(data, ',');
-		std::transform(subObjectStrings.begin(), subObjectStrings.end(), subObjectStrings.begin(), [](std::string s) {
-			return trim(s);
-		});
-		
-		for (std::string objectString : subObjectStrings)
-		{
-			std::vector<std::string> keyVal = split(objectString, ':');
-			std::transform(keyVal.begin(), keyVal.end(), keyVal.begin(), [](std::string s) {
-				return trim(s);
-			});
-			
-			JSONObject parsedObj = parseObjectFromString(keyVal[1]);
-			
-			subObjects[keyVal[0]] = parsedObj;
-		}
+		*this = parseObjectFromString(data);
 	}
 	else
 	{

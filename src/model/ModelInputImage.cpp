@@ -1,15 +1,17 @@
 #include "ModelInputImage.hpp"
-#include "../external/CImg.h"
 
-using namespace cimg_library;
+//#define cimg_use_jpeg
+//#include "../external/CImg.h"
+//using namespace cimg_library;
 
 void GeneticModels::ModelInputImage::readImage()
 {
-	CImg<double> image(filename.c_str());
-	const int imgWidth = image.width();
-	const int imgHeight = image.height();
-	const int channels = image.spectrum();
+	//CImg<double> image(filename.c_str());
+	//const int imgWidth = image.width();
+	//const int imgHeight = image.height();
+	//const int channels = image.spectrum();
 
+	/*
 	data.clear();
 	for (int i = 0; i < imgHeight; i++)
 	{
@@ -20,6 +22,7 @@ void GeneticModels::ModelInputImage::readImage()
 			data.push_back(sum / channels);
 		}
 	}
+	*/
 }
 
 GeneticModels::ModelInputImage::ModelInputImage(std::string f) : filename(f)

@@ -1,7 +1,7 @@
 #ifndef DOWNSAMPLING_MODEL
 #define DOWNSAMPLING_MODEL
 
-#include "model/GeneticModel.hpp"
+#include "GeneticModel.hpp"
 
 namespace GeneticModels
 {

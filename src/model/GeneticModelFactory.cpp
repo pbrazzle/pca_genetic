@@ -6,6 +6,7 @@
 #include "NeuralModel.hpp"
 
 #include "ModelInputDataVector.hpp"
+#include "ModelInputImage.hpp"
 #include "ModelOutputDataVector.hpp"
 
 using namespace GeneticModels;
@@ -24,7 +25,8 @@ std::unique_ptr<GeneticModel> GeneticModels::ModelFromJSON(const JSONObject& obj
 }
 
 typenameMap<ModelInputData> inDataMap{
-	{"ModelInputDataVector", &makeDefaultDerived<ModelInputData, ModelInputDataVector>}
+	{"ModelInputDataVector", &makeDefaultDerived<ModelInputData, ModelInputDataVector>},
+	{"ModelInputImage",& makeDefaultDerived<ModelInputData, ModelInputImage> }
 };
 
 std::unique_ptr<ModelInputData> GeneticModels::InputDataFromJSON(const JSONObject& obj)

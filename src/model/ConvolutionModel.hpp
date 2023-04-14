@@ -1,7 +1,7 @@
 #ifndef CONVOLUTION_MODEL
 #define CONVOLUTION_MODEL
 
-#include "model/GeneticModel.hpp"
+#include "GeneticModel.hpp"
 
 namespace GeneticModels
 {

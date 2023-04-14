@@ -111,16 +111,59 @@ def run_sweep_with_graphs(template, sweep_vals, sweep_name, num_runs=1):
         os.system('del '+graph)
     pdf.output('sweep_'+sweep_name+'_'+str(sweep_vals[0]).replace('.','_')+'_'+str(sweep_vals[-1]).replace('.','_')+'.pdf', 'F')
     
-sim = Simulation()
-sim.gen_size = 100
-sim.num_gens = 300
-sim.mut_chance = 0.1
-sim.mut_size = 0.01
-#sim.model_params = [1,0.1,0,0,1,0,0,0,1]
-sim.param_range = 5
+def make_vector_json(data=[]):
+    return '[' + ','.join([str(x) for x in data]) + ']'
+    
+def make_output_selection(index=0):
+    data = [0]*10
+    data[index] = 1
+    return '{' + 'typename : \"ModelOutputDataVector\", data : ' + make_vector_json(data) + '}'
+    
+def make_input_file(filename):
+    return '{' + 'typename : \"ModelInputImage\", data : {filename : ' + filename + '}}'
+    
+def make_tdata_entry(input="null", output="null"):
+    return '{' + 'input : {0}, output : {1}'.format(input, output) + '}'
+    
+def make_image_tdata(filename, selection):
+    return make_tdata_entry(make_input_file(filename), make_output_selection(selection))
+    
+def build_nn():
+    layerStr = "[" + str(28*28) + ',' + str(10) + ']'
+    weightStr = "[" + ','.join(["1.0" for x in range(28*28*10)]) + ']'
+    dataStr = "{" + "layerSizes: {0}, weights: {1}".format(layerStr, weightStr) + "}"
+    typeStr = "\"NeuralModel\""
+    nnStr = "{" + "typename : {0}, data : {1}".format(typeStr, dataStr) + "}"
+    return nnStr
+    
+def make_null_abstract(typename="null"):
+    return '{' + "typename : \"{0}\", data : null".format(typename) + '}'
 
-#run_sweep_with_graphs(sim, np.arange(0.001,0.011,0.001), 'param_range', num_runs=5)
-#run_sweep_with_graphs(sim, np.arange(1,11,1), 'param_range', num_runs=5)
-#run_sweep_with_graphs(sim, np.arange(0.1,0.6,0.1), 'mut_size', num_runs=5)
-#run_sweep_with_graphs(sim, np.arange(0.0,0.31,0.05), 'mut_size', num_runs=1)
-run_sweep_with_graphs(sim, np.arange(10, 110, 10), 'gen_size', num_runs=5)
+def make_alg_json(generationSize="1", offset="1.0", mutChance="0.1", mutSize="0.01", elitism="0.05",
+                    fCalc="null", pSelect="null", pComb="null"):
+    return '{' + ("generationSize : {0}, offsetSize : {1}, mutationChance : {2},"
+            "mutationSize : {3}, elitism : {4}, FitnessCalculator : {5},"
+            "ParentSelector : {6}, ParentCombiner: {7}"
+            ).format(generationSize, offset, mutChance, mutSize, elitism, fCalc, pSelect, pComb) + '}'
+            
+def build_basic_alg():
+    fcalc = make_null_abstract("DistanceCalculator")
+    pselect = make_null_abstract("FitnessSumSelector")
+    pcomb = make_null_abstract("SingleCrossingCombiner")
+    return make_alg_json(generationSize="100", fCalc=fcalc, pSelect=pselect, pComb=pcomb)
+ 
+def make_sim_json(name="\"blank_sim\"", generations="1", alg="null", trainingData="null", model="null"):
+    return '{' + "name : {0}, generations : {1}, algorithm : {2}, model_template : {3}, training_data : {4}".format(name, generations, alg, model, trainingData) + '}'
+   
+def build_basic_nn_sim():
+    nameStr = "\"basic_nn\""
+    generationStr = "10"
+    algStr = build_basic_alg()
+    trainingDataStr = '[' + make_image_tdata("\"data/digit_training/0/img_1.jpg\"", 0) + ']'
+    modelStr = build_nn()
+   
+    return make_sim_json(nameStr, generationStr, algStr, trainingDataStr, modelStr)
+
+jsonFile = open("basic_nn.json", 'w+')
+jsonFile.write(build_basic_nn_sim())
+jsonFile.close()

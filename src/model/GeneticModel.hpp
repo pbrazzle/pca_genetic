@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "model/ModelInputData.hpp"
-#include "model/ModelOutputData.hpp"
+#include "ModelInputData.hpp"
+#include "ModelOutputData.hpp"
 #include "json/JSONSerializable.hpp"
 #include "algorithm/ParentCombiner.hpp"
 

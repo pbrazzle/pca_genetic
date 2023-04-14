@@ -1,15 +1,24 @@
 #include "JSONFile.hpp"
 
 #include <sstream>
+#include <filesystem>
+#include <iostream>
 
 using namespace JSON_IO;
 
-JSONFileReader::JSONFileReader(std::string filename) : inFile(filename) { }
+JSONFileReader::JSONFileReader(std::string filename)
+{
+	inFile.open(filename);
+}
+
 JSONObject JSONFileReader::read() 
 {
 	std::stringstream ss;
 	ss << inFile.rdbuf();
-	return JSONObject(ss.str()); 
+	auto contents = ss.str();
+	std::cout << contents << '\n';
+
+	return JSONObject(contents); 
 }
 
 JSONFileWriter::JSONFileWriter(std::string filename) : outFile(filename) { }

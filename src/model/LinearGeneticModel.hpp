@@ -1,7 +1,7 @@
 #ifndef LINEAR_GENETIC_MODEL
 #define LINEAR_GENETIC_MODEL
 
-#include "model/GeneticModel.hpp"
+#include "GeneticModel.hpp"
 
 #include <string>
 

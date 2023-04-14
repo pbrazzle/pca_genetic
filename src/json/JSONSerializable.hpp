@@ -1,7 +1,7 @@
 #ifndef JSON_SERIALIZABLE
 #define JSON_SERIALIZABLE
 
-#include "JSONObject.hpp"
+#include "json/JSONObject.hpp"
 
 namespace JSON_IO
 {

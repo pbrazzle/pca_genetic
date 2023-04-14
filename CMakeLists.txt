@@ -11,6 +11,23 @@ FetchContent_MakeAvailable(Catch2)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 
+include(ExternalProject)
+ExternalProject_Add(libjpeg-turbo
+        CMAKE_ARGS
+        -DENABLE_SHARED=OFF
+        -DENABLE_STATIC=ON
+        -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/libjpeg-turbo
+        -DCMAKE_INSTALL_LIBDIR=${CMAKE_BINARY_DIR}/bin
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+  		GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
+  		GIT_TAG        2.1.91)
+
+if(WIN32)
+  set(JPEG_LIBNAME ${CMAKE_BINARY_DIR}/bin/jpeg-static.lib)
+else(WIN32)
+  set(JPEG_LIBNAME ${CMAKE_BINARY_DIR}/bin/libjpeg.a)
+endif(WIN32)
+
 project(pca_genetic)
 include(CTest)
 include(Catch)
