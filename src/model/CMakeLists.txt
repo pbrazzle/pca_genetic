@@ -11,9 +11,9 @@ set(MODEL_SOURCES
 	ModelInputImage.cpp)
 	
 add_library(GeneticModels ${MODEL_SOURCES})
-#add_dependencies(GeneticModels libjpeg-turbo)
-target_link_libraries(GeneticModels PUBLIC GeneticJSON)
-target_include_directories(GeneticModels PUBLIC ${CMAKE_SOURCE_DIR}/src model ${CMAKE_SRC_DIR}/../external)
+add_dependencies(GeneticModels libjpeg-turbo)
+target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME})
+target_include_directories(GeneticModels PUBLIC ${CMAKE_SOURCE_DIR}/src model ${CMAKE_SOURCE_DIR}/external ${CMAKE_BINARY_DIR}/libjpeg-turbo/include)
 
 set(TEST_SOURCES
 	LinearGeneticModel.test.cpp

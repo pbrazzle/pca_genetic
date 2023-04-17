@@ -32,8 +32,25 @@ Simulation::Simulation(const Simulation& other) : alg(other.alg)
 void Simulation::run()
 {
 	trainingItem sampleItem(trainingData[0].first->clone(), trainingData[0].second->clone());
+
 	std::cout << "Running Simulation: " << name << '\n';
-	alg.train(*modelTemplate, trainingData, generations);
+	alg.train(*modelTemplate, trainingData, 0);
+
+	for (int i = 1; i <= generations; i++)
+	{
+		alg.continueTraining(1);
+		std::cout << "Finished generation " << i << '\n';
+
+		auto bestModel = alg.getBestModel();
+		auto bestResult = bestModel->evaluate(*sampleItem.first);
+		std::cout << "Best model output for sample: ";
+		for (auto val : bestResult->getData()) std::cout << val << ", ";
+		std::cout << '\n';
+		
+		std::cout << "Current best fitness: " << alg.getBestFitnesses().back() << '\n';
+		std::cout << "Current avg fitness: " << alg.getAvgFitnesses().back() << '\n';
+	}
+
 	std::cout << "Finished running " << generations << " generations\n";
 
 	std::unique_ptr<GeneticModel> bestModel = alg.getBestModel();

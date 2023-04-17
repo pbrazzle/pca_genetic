@@ -58,7 +58,8 @@ std::unique_ptr<ModelOutputData> NeuralModel::evaluate(ModelInputData& input)
 			{
 				sum += result[k] * weights[k + weightOffset];
 			}
-			layerResult[j] = sum;
+			//Apply ReLu
+			layerResult[j] = (sum < 0) ? 0 : sum;
 			weightOffset += layerSizes[i - 1];
 		}
 		result = layerResult;
