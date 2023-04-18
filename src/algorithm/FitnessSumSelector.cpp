@@ -34,7 +34,7 @@ std::pair<ModelHandle, ModelHandle> FitnessSumSelector::selectParents(const std:
 		[&](double fitness){ p += fitness / sum; return p;});
 
 	size_t i1 = probDensitySelect(probDensity), i2 = probDensitySelect(probDensity);
-	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models[i1]->clone()), ModelHandle(models[i2]->clone()));
+	return std::pair<ModelHandle, ModelHandle>(models[i1], models[i2]);
 }
 
 JSONObject FitnessSumSelector::toJSON() const

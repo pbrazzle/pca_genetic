@@ -40,7 +40,7 @@ size_t DistributionSelector::makeSelection(const std::vector<ModelHandle>& model
 std::pair<ModelHandle, ModelHandle> DistributionSelector::selectParents(const std::vector<ModelHandle>& models, const std::vector<double>& fitnesses)
 {
 	size_t i1 = makeSelection(models), i2 = makeSelection(models);
-	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models[i1]->clone()), ModelHandle(models[i2]->clone()));
+	return std::pair<ModelHandle, ModelHandle>(models[i1], models[i2]);
 }
 
 JSONObject DistributionSelector::toJSON() const
