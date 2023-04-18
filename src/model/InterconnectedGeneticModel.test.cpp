@@ -19,7 +19,7 @@ public:
 		allLayers.emplace_back(std::move(layer1));
 		allLayers.emplace_back(std::move(layer2));
 
-		return std::make_unique<InterconnectedGeneticModel>(std::move(allLayers));
+		return std::make_unique<InterconnectedGeneticModel>(allLayers);
 	}
 
 	ModelPtr getBlankModel() override { return std::make_unique<InterconnectedGeneticModel>(); }

@@ -10,9 +10,17 @@ set(MODEL_SOURCES
 	GeneticModelFactory.cpp
 	ModelInputImage.cpp)
 	
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+	
 add_library(GeneticModels ${MODEL_SOURCES})
 add_dependencies(GeneticModels libjpeg-turbo)
-target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME})
+target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME} PRIVATE Threads::Threads)
+
+if(UNIX)
+target_link_libraries(GeneticModels X11)
+endif(UNIX)
+
 target_include_directories(GeneticModels PUBLIC ${CMAKE_SOURCE_DIR}/src model ${CMAKE_SOURCE_DIR}/external ${CMAKE_BINARY_DIR}/libjpeg-turbo/include)
 
 set(TEST_SOURCES

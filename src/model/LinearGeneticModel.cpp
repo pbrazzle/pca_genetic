@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <math.h>
 
 using GeneticModels::LinearGeneticModel;
 using GeneticModels::GeneticModel;
