@@ -30,12 +30,14 @@ ExternalProject_Add(libjpeg-turbo
   		GIT_TAG        2.1.91
         BUILD_BYPRODUCTS ${JPEG_LIBNAME})
 
-project(pca_genetic)
-include(CTest)
-include(Catch)
-
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+
+set(CMAKE_CXX_STANDARD 14)
+
 enable_testing()
 
 function(create_test)
@@ -43,5 +45,9 @@ function(create_test)
 	add_test(NAME ${ARGV}
 			 COMMAND $<TARGET_FILE:${ARGV}>)
 endfunction(create_test)
+
+project(pca_genetic)
+include(CTest)
+include(Catch)
 
 add_subdirectory(src)

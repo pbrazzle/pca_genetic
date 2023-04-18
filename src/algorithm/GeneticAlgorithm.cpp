@@ -144,7 +144,7 @@ void GeneticAlgorithm::calculateFitnesses()
 		{
 			fitness += fitnessCalc->calculateFitness(trainingItem, model);
 		}
-		fitnesses.push_back(fitness);
+		fitnesses.push_back(fitness / trainingData.size());
 	}
 
 	auto sortedIndices = getSortedFitnessIndices();	

@@ -16,7 +16,6 @@ JSONObject JSONFileReader::read()
 	std::stringstream ss;
 	ss << inFile.rdbuf();
 	auto contents = ss.str();
-	std::cout << contents << '\n';
 
 	return JSONObject(contents); 
 }

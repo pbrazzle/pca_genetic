@@ -201,7 +201,7 @@ def generate_sweep_files(sweep_name, var_name, sweep_vals, alg):
     for val in sweep_vals:
         setattr(alg, var_name, val)
         sim_name = sweep_name + '_' + str(val)
-        sim_json = make_sim_json('"'+sim_name+'"', "10", alg.to_json(), build_equal_training_data(1), build_nn())
+        sim_json = make_sim_json('"'+sim_name+'"', "10", alg.to_json(), build_equal_training_data(10), build_nn())
         json_file = open(sim_name+'.json', 'w+')
         filenames.append(sim_name+'.json')
         json_file.write(sim_json)
@@ -264,4 +264,4 @@ def run_sim(sim_filename="blank_sim.json"):
     os.system("bin\GeneticSim " + os.getcwd()+'/tools/'+sim_filename)
  
 if __name__ == '__main__':   
-    run_sweep_with_graphs("test", "mutSize", [0.01, 0.02, 0.03], Algorithm())
+    run_sweep_with_graphs("test", "mutSize", [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1], Algorithm())
