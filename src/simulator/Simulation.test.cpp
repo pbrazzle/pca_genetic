@@ -123,7 +123,7 @@ TEST_CASE("Simulate InterconnectedGeneticModel Identity", "[Simulation]")
 	layer2.emplace_back(std::make_unique<LinearGeneticModel>(3, std::vector<double>({ 1, 1, 1, 1, 1, 1, 1, 1, 1 })));
 	layers.emplace_back(std::move(layer1));
 	layers.emplace_back(std::move(layer2));
-	std::unique_ptr<GeneticModel> modelTemplate = std::make_unique<InterconnectedGeneticModel>(std::move(layers));
+	std::unique_ptr<GeneticModel> modelTemplate = std::make_unique<InterconnectedGeneticModel>(layers);
 
 	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector({ 1, 1, 1 }));
 	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector({ 1, 1, 1 }));
