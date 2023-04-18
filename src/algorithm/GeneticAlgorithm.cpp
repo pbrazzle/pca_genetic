@@ -35,7 +35,7 @@ void GeneticAlgorithm::copyData(const GeneticAlgorithm& alg)
 	for (int i = 0; i < alg.models.size(); i++)
 	{
 		std::unique_ptr<GeneticModel> copy = alg.models[i]->clone();
-		models.emplace_back(copy->clone());
+		models.emplace_back(*copy);
 		fitnesses.push_back(alg.fitnesses[i]);
 	}
 	
@@ -96,7 +96,7 @@ void GeneticAlgorithm::initializeGeneration(const GeneticModel& modelTemplate)
 	models.reserve(generationSize);
 	for (int i = 0; i < generationSize; i++)
 	{
-		ModelHandle newModel(modelTemplate.copyWithOffset(offsetSize)->clone());
+		ModelHandle newModel(*(modelTemplate.copyWithOffset(offsetSize)));
 		models.push_back(newModel);
 	}
 }
@@ -163,7 +163,7 @@ ModelHandle GeneticAlgorithm::createChildModel()
 {
 	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(models, fitnesses);
 
-	ModelHandle child(parents.first->combine(*parents.second, *parentComb)->clone());
+	ModelHandle child(*(parents.first->combine(*parents.second, *parentComb)));
 	child->mutate(mutationChance, mutationSize);
 	return child;
 }

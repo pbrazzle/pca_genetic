@@ -15,10 +15,11 @@ find_package(Threads REQUIRED)
 	
 add_library(GeneticModels ${MODEL_SOURCES})
 add_dependencies(GeneticModels libjpeg-turbo)
-target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME} PRIVATE Threads::Threads)
 
 if(UNIX)
-target_link_libraries(GeneticModels X11)
+target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME} X11 PRIVATE Threads::Threads)
+else()
+target_link_libraries(GeneticModels PUBLIC GeneticJSON ${JPEG_LIBNAME} PRIVATE Threads::Threads)
 endif(UNIX)
 
 target_include_directories(GeneticModels PUBLIC ${CMAKE_SOURCE_DIR}/src model ${CMAKE_SOURCE_DIR}/external ${CMAKE_BINARY_DIR}/libjpeg-turbo/include)

@@ -13,7 +13,7 @@ std::unique_ptr<ParentSelector> BestFitnessSelector::clone() const
 //TODO: Should this selector pick the first and second best? Or just the best?
 std::pair<ModelHandle, ModelHandle> BestFitnessSelector::selectParents(const std::vector<ModelHandle>& models, const std::vector<double>&)
 {
-	return std::pair<ModelHandle, ModelHandle>(ModelHandle(models.back()->clone()), ModelHandle(models.back()->clone()));
+	return std::pair<ModelHandle, ModelHandle>(models.back(), models.back());
 }
 
 JSONObject BestFitnessSelector::toJSON() const
