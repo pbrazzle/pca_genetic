@@ -12,6 +12,8 @@ JSONFileReader::JSONFileReader(std::string filename)
 
 JSONObject JSONFileReader::read() 
 {
+	if (inFile.fail()) return JSONObject();
+
 	std::stringstream ss;
 	ss << inFile.rdbuf();
 	auto contents = ss.str();

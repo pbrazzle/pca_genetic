@@ -21,6 +21,10 @@ namespace PCAGenetic
 	class GeneticAlgorithm : public JSONSerializable
 	{
 		private:
+			static unsigned int numThreads;
+
+			void readThreadFile();
+
 			std::unique_ptr<FitnessCalculator> fitnessCalc;
 			std::unique_ptr<ParentSelector> parentSelect;
 			std::unique_ptr<ParentCombiner> parentComb;
@@ -53,7 +57,7 @@ namespace PCAGenetic
 			ModelHandle createChildModel();
 
 		public:
-			GeneticAlgorithm() = default;
+			GeneticAlgorithm();
 			GeneticAlgorithm(std::unique_ptr<FitnessCalculator>, std::unique_ptr<ParentSelector>, std::unique_ptr<ParentCombiner>);
 			GeneticAlgorithm(const GeneticAlgorithm& alg);
 		

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "json/JSONFile.hpp"
 #include "simulator/Simulation.hpp"
 
@@ -13,6 +15,12 @@ int main(int argc, char* argv[])
 	std::string filename(argv[1]);
 	JSONFileReader jsonReader(filename);
 	auto obj = jsonReader.read();
+
+	if (!obj)
+	{
+		std::cout << "Could not find simulation file!\n";
+		return -1;
+	}
 
 	Simulation sim;
 	sim.fromJSON(obj);

@@ -9,9 +9,11 @@ set(ALG_SOURCES
 	SingleCrossingCombiner.cpp
 	GeneticAlgorithmFactory.cpp)
 	
+find_package(OpenMP REQUIRED)
+
 add_library(GeneticAlgorithms STATIC ${ALG_SOURCES})
 target_include_directories(GeneticAlgorithms PUBLIC ..)
-target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels GeneticJSON)
+target_link_libraries(GeneticAlgorithms PUBLIC GeneticModels GeneticJSON PRIVATE OpenMP::OpenMP_CXX)
 
 set(TEST_SOURCES
 	GeneticAlgorithm.test.cpp

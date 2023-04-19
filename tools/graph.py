@@ -22,6 +22,7 @@ def csv_to_graph(filename):
     plt.plot(best_data, label='Best Fitness')
     plt.xlabel('Generations')
     plt.ylabel('Fitness')
+    plt.ylim([0, 1])
     plt.title(image_name)
     plt.savefig(image_name+'.png')
     file.close()

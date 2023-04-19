@@ -5,8 +5,10 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <omp.h>
 
 #include "algorithm/GeneticAlgorithmFactory.hpp"
+#include "json/JSONFile.hpp"
 
 using namespace GeneticModels;
 using namespace PCAGenetic;
@@ -19,6 +21,8 @@ void LOG(T message)
 	if (DEBUG)
 		std::cout << message;
 }
+
+unsigned int GeneticAlgorithm::numThreads = 1;
 
 void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)
 {
@@ -38,7 +42,7 @@ void GeneticAlgorithm::copyData(const GeneticAlgorithm& alg)
 		models.emplace_back(*copy);
 		fitnesses.push_back(alg.fitnesses[i]);
 	}
-	
+
 	for (int i = 0; i < alg.trainingData.size(); i++)
 	{
 		trainingItem item(alg.trainingData[i].first->clone(), alg.trainingData[i].second->clone());
@@ -53,7 +57,7 @@ void GeneticAlgorithm::copySettings(const GeneticAlgorithm& alg)
 
 	generationSize = alg.generationSize;
 	offsetSize = alg.offsetSize;
-	
+
 	avgFitnesses = alg.avgFitnesses;
 	bestFitnesses = alg.bestFitnesses;
 	elitism = alg.elitism;
@@ -63,10 +67,11 @@ void GeneticAlgorithm::copy(const GeneticAlgorithm& alg)
 {
 	copyStrategies(alg);
 	copyData(alg);
-	copySettings(alg);	
+	copySettings(alg);
 }
 
-GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps, std::unique_ptr<ParentCombiner> pc)
+GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::unique_ptr<ParentSelector> ps,
+                                   std::unique_ptr<ParentCombiner> pc) : GeneticAlgorithm()
 {
 	generationSize = 100;
 	offsetSize = 1;
@@ -79,7 +84,7 @@ GeneticAlgorithm::GeneticAlgorithm(std::unique_ptr<FitnessCalculator> fc, std::u
 	parentComb = std::move(pc);
 }
 
-GeneticAlgorithm::GeneticAlgorithm(const GeneticAlgorithm& alg)
+GeneticAlgorithm::GeneticAlgorithm(const GeneticAlgorithm& alg) : GeneticAlgorithm()
 {
 	copy(alg);
 }
@@ -120,8 +125,8 @@ std::vector<size_t> GeneticAlgorithm::getSortedFitnessIndices()
 	std::vector<size_t> sortedIndices(fitnesses.size(), 0);
 	std::iota(sortedIndices.begin(), sortedIndices.end(), 0);
 
-	std::sort(sortedIndices.begin(), sortedIndices.end(), 
-			[&](size_t i1, size_t i2) { return fitnesses[i1] < fitnesses[i2]; });
+	std::sort(sortedIndices.begin(), sortedIndices.end(),
+	          [&](size_t i1, size_t i2) { return fitnesses[i1] < fitnesses[i2]; });
 	std::sort(fitnesses.begin(), fitnesses.end());
 	return sortedIndices;
 }
@@ -137,17 +142,23 @@ void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
 void GeneticAlgorithm::calculateFitnesses()
 {
 	fitnesses.clear();
-	for (auto& model : models)
+
+	auto fitnessArr = new double[models.size()];
+	#pragma omp parallel for num_threads(numThreads)
+	for (int i = 0; i < models.size(); i++)
 	{
 		double fitness = 0;
-		for (auto& trainingItem : trainingData)
+		//#pragma omp parallel for reduction(+ : fitness) num_threads(numThreads)
+		for (int j = 0; j < trainingData.size(); j++)
 		{
-			fitness += fitnessCalc->calculateFitness(trainingItem, model);
+			fitness += fitnessCalc->calculateFitness(trainingData[j], models[i]);
 		}
-		fitnesses.push_back(fitness / trainingData.size());
+		fitnessArr[i] = fitness / trainingData.size();
+		//fitnesses.push_back(fitness / trainingData.size());
 	}
 
-	auto sortedIndices = getSortedFitnessIndices();	
+	fitnesses.insert(fitnesses.end(), &fitnessArr[0], &fitnessArr[models.size()]);
+	auto sortedIndices = getSortedFitnessIndices();
 	reorderModels(sortedIndices);
 }
 
@@ -156,7 +167,9 @@ void GeneticAlgorithm::recordFitness()
 	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / models.size();
 	avgFitnesses.push_back(avg_fitness);
 	bestFitnesses.push_back(fitnesses.back());
-	LOG("Best fitness: "); LOG(fitnesses.back()); LOG('\n');
+	LOG("Best fitness: ");
+	LOG(fitnesses.back());
+	LOG('\n');
 }
 
 ModelHandle GeneticAlgorithm::createChildModel()
@@ -168,6 +181,19 @@ ModelHandle GeneticAlgorithm::createChildModel()
 	return child;
 }
 
+GeneticAlgorithm::GeneticAlgorithm()
+{
+	readThreadFile();
+}
+
+void GeneticAlgorithm::readThreadFile()
+{
+	JSONFileReader threadFileReader("config.json");
+	auto threadObj = threadFileReader.read();
+	if (!threadObj) return;
+	numThreads = threadObj["numThreads"].asInt();
+}
+
 void GeneticAlgorithm::runGeneration()
 {
 	calculateFitnesses();
@@ -177,16 +203,26 @@ void GeneticAlgorithm::runGeneration()
 
 	std::vector<ModelHandle> newModels;
 
-	int numEliteModels = (int) (elitism*models.size());
-	LOG("Saving best "); LOG(numEliteModels); LOG(" models\n");
+	int numEliteModels = static_cast<int>(elitism * models.size());
+	LOG("Saving best ");
+	LOG(numEliteModels);
+	LOG(" models\n");
 
 	int numNewModels = generationSize - numEliteModels;
 
+	auto newModelArr = new ModelHandle[numNewModels];
+
+#pragma omp parallel for num_threads(numThreads)
 	for (int i = 0; i < numNewModels; i++)
 	{
-		newModels.push_back(createChildModel());
+		//newModels.push_back(createChildModel());
+		newModelArr[i] = createChildModel();
 	}
+
+	newModels.insert(newModels.end(), &newModelArr[0], &newModelArr[numNewModels]);
+	delete[] newModelArr;
 	newModels.insert(newModels.end(), models.begin() + generationSize - numEliteModels, models.end());
+
 	models = newModels;
 }
 
@@ -202,9 +238,9 @@ void GeneticAlgorithm::setMutationChance(const double& m) { mutationChance = m; 
 void GeneticAlgorithm::setMutationSize(const double& s) { mutationSize = s; }
 void GeneticAlgorithm::setParamRange(const double& p) { offsetSize = p; }
 
-void GeneticAlgorithm::setEilitism(const double& e) 
-{ 
-	elitism = e; 
+void GeneticAlgorithm::setEilitism(const double& e)
+{
+	elitism = e;
 	if (elitism > 1) elitism = 1;
 	else if (elitism < 0) elitism = 0;
 }
@@ -241,7 +277,7 @@ JSONObject GeneticAlgorithm::toJSON() const
 
 //TODO implement this
 //We'll need some factory setup to read in the strategies
-void GeneticAlgorithm::fromJSON(const JSONObject& obj) 
+void GeneticAlgorithm::fromJSON(const JSONObject& obj)
 {
 	generationSize = obj["generationSize"].asInt();
 	offsetSize = obj["offsetSize"].asFloat();

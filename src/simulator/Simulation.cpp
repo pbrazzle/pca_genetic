@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <omp.h>
 
 #include "model/GeneticModelFactory.hpp"
 
@@ -38,8 +39,11 @@ void Simulation::run()
 
 	for (int i = 1; i <= generations; i++)
 	{
+		double start_time = omp_get_wtime();
 		alg.continueTraining(1);
+		double gen_time = omp_get_wtime() - start_time;
 		std::cout << "Finished generation " << i << '\n';
+		std::cout << "Took " << gen_time << " seconds\n";
 
 		auto bestModel = alg.getBestModel();
 		auto bestResult = bestModel->evaluate(*sampleItem.first);

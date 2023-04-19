@@ -14,6 +14,7 @@ namespace PCAGenetic
 			std::unique_ptr<T> handle;
 			
 		public:
+			CloneableHandle() : handle(nullptr) { }
 			CloneableHandle(T* ptr) : handle(ptr->clone()) { }
 			CloneableHandle(std::unique_ptr<T>& ptr) : handle(ptr->clone()) { }
 			CloneableHandle(const T& rhs) : handle(rhs.clone()) { }
