@@ -78,6 +78,14 @@ def build_nn():
     nnStr = "{" + "typename : {0}, data : {1}".format(typeStr, dataStr) + "}"
     return nnStr
     
+def build_nn_3layer():
+    layerStr = "[" + str(28*28) + ',' + str(10) + ',' + str(10) + ']'
+    weightStr = "[" + ','.join(["0.0" for x in range(28*28*10 + 10*10)]) + ']'
+    dataStr = "{" + "layer_sizes: {0}, weights: {1}".format(layerStr, weightStr) + "}"
+    typeStr = "\"NeuralModel\""
+    nnStr = "{" + "typename : {0}, data : {1}".format(typeStr, dataStr) + "}"
+    return nnStr
+    
 # Simulation JSON
     
 def make_sim_json(name="\"blank_sim\"", generations="1", alg="null", trainingData="null", model="null"):
@@ -88,7 +96,7 @@ def generate_sweep_files(sweep_name, var_name, sweep_vals, alg, generations=10, 
     for val in sweep_vals:
         setattr(alg, var_name, val)
         sim_name = sweep_name + '_' + str(val)
-        sim_json = make_sim_json('"'+sim_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_nn())
+        sim_json = make_sim_json('"'+sim_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_nn_3layer())
         json_file = open(sim_name+'.json', 'w+')
         filenames.append(sim_name+'.json')
         json_file.write(sim_json)

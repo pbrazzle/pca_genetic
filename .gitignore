@@ -8,3 +8,4 @@ Testing
 *.json
 .vscode
 .vs
+*.zip
