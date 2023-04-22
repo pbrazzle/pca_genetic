@@ -48,7 +48,7 @@ def make_alg_json(generationSize="1", offset="0.01", mutChance="0.1", mutSize="0
 def build_basic_alg():
     fcalc = make_null_abstract("DecisionCalculator")
     pselect = make_null_abstract("FitnessSumSelector")
-    pcomb = make_null_abstract("SingleCrossingCombiner")
+    pcomb = make_null_abstract("RandomCrossingCombiner")
     return make_alg_json(generationSize="100", fCalc=fcalc, pSelect=pselect, pComb=pcomb)
   
 class Algorithm:
@@ -82,6 +82,9 @@ def build_nn():
     
 def build_nn_3layer():
     return build_nn_template([28*28, 10, 10])
+    
+def build_big_nn():
+    return build_nn_template([28*28, 50, 20, 10])
 
 def build_downsampling_template(pool_width, pool_height, image_width, image_height):
     dsStr = '{ typename : "DownSamplingModel", data : { pool_width : '+str(pool_width)+', pool_height : '+str(pool_height)+', image_width : '+str(image_width)+', image_height : '+str(image_height)+'}}'
@@ -106,7 +109,7 @@ def make_sim_json(name="\"blank_sim\"", generations="1", alg="null", trainingDat
     return '{' + "name : {0}, generations : {1}, algorithm : {2}, model_template : {3}, training_data : {4}".format(name, generations, alg, model, trainingData) + '}'
     
 def generate_run_file(run_name, alg, generations=10, num_images=10):
-    sim_json = make_sim_json('"'+run_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_nn())
+    sim_json = make_sim_json('"'+run_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_big_nn())
     json_file = open(run_name+'.json', 'w+')
     json_file.write(sim_json)
     json_file.close()
@@ -180,11 +183,11 @@ def get_args():
     parser.add_argument('generations', type=int)
     parser.add_argument('num_images', type=int)
     
-    parser.add_argument('-g', '--gen-size', type=int, default=100)
-    parser.add_argument('-o', '--offset', type=float, default=10)
+    parser.add_argument('-g', '--gen-size', type=int, default=500)
+    parser.add_argument('-o', '--offset', type=float, default=0.1)
     parser.add_argument('-c', '--mut-chance', type=float, default=1)
-    parser.add_argument('-s', '--mut-size', type=float, default=0.01)
-    parser.add_argument('-e', '--elitism', type=float, default=0.0)
+    parser.add_argument('-s', '--mut-size', type=float, default=0.1)
+    parser.add_argument('-e', '--elitism', type=float, default=0.1)
     
     return parser.parse_args()
  
