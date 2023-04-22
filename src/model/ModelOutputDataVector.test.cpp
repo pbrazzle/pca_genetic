@@ -5,7 +5,7 @@
 class ModelOutputDataVectorTests : public ModelOutputDataTests
 {
 public:
-	DataPtr getTestData() override { return std::make_unique<GeneticModels::ModelOutputDataVector>(GeneticModels::ModelOutputDataVector({ 1, 2, 3, 4, 5 })); }
+	DataPtr getTestData() override { return std::make_unique<GeneticModels::ModelOutputDataVector>(GeneticModels::ModelOutputDataVector(std::vector<double>{ 1, 2, 3, 4, 5 })); }
 	DataPtr getBlankData() override { return std::make_unique<GeneticModels::ModelOutputDataVector>(GeneticModels::ModelOutputDataVector()); }
 };
 

@@ -25,6 +25,8 @@ namespace GeneticModels
 		typedef std::vector<ModelPtr> ModelLayer;
 		typedef std::vector<ModelLayer> LayerArray;
 
+		void checkDataSizes();
+
 		LayerArray layers;
 		public:
 			InterconnectedGeneticModel() = default;

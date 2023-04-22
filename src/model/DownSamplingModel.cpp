@@ -22,10 +22,8 @@ std::unique_ptr<GeneticModel> DownSamplingModel::clone() const
 	return std::make_unique<DownSamplingModel>(pool_size, image_size);
 }
 
-std::vector<double> DownSamplingModel::getPool(const std::vector<double>& image, int offset)
+double DownSamplingModel::maxPool(const std::vector<double>& image, const int& offset)
 {
-	std::vector<double> pool;
-
 	int pool_width = pool_size.first;
 	int remaining_edge = image_size.first - offset % image_size.first;
 	if (remaining_edge < pool_size.first)
@@ -36,44 +34,16 @@ std::vector<double> DownSamplingModel::getPool(const std::vector<double>& image,
 	if (remaining_edge < pool_size.second)
 		pool_height = remaining_edge;
 
+	double max = 0.0;
 	for (int i = 0; i < pool_height; i++)
 	{
-		pool.insert(pool.end(), image.begin() + offset, image.begin() + offset + pool_width);
-		offset += image_size.first;
-	}
-
-	return pool;
-}
-
-std::vector<std::vector<double>> DownSamplingModel::reorderByPools(const std::vector<double>& image)
-{
-	std::vector<std::vector<double>> pools;
-
-	int horizontal_pools = static_cast<int>(std::ceil((double)image_size.first / pool_size.first));
-	int vertical_pools = static_cast<int>(std::ceil((double)image_size.second / pool_size.second));
-
-	for (int i = 0; i < vertical_pools; i++)
-	{
-		for (int j = 0; j < horizontal_pools; j++)
+		for (int j = 0; j < pool_width; j++)
 		{
-			pools.push_back(getPool(image, j * pool_size.first + i * image_size.first * pool_size.second));
+			if (image[offset + j + image_size.first * i] > max) max = image[offset + j + image_size.first * i];
 		}
 	}
 
-	return pools;
-}
-
-std::vector<double> DownSamplingModel::maxPool(const std::vector<std::vector<double>>& pools)
-{
-	std::vector<double> maxPools;
-	maxPools.reserve(pools.size());
-
-	std::transform(pools.begin(), pools.end(), std::back_inserter(maxPools), [](std::vector<double> pool)
-	{
-		return *std::max_element(pool.begin(), pool.end());
-	});
-
-	return maxPools;
+	return max;
 }
 
 std::unique_ptr<ModelOutputData> DownSamplingModel::evaluate(ModelInputData& input)
@@ -81,8 +51,22 @@ std::unique_ptr<ModelOutputData> DownSamplingModel::evaluate(ModelInputData& inp
 	std::vector<double> image = input.getData();
 	if (image.size() != image_size.first * image_size.second) throw std::invalid_argument("Invalid image size");
 
-	auto pools = reorderByPools(image);
-	return std::make_unique<ModelOutputDataVector>(maxPool(pools));
+	const int horizontal_pools = (image_size.first / pool_size.first) + ((image_size.first % pool_size.first) ? 1 : 0);
+	const int vertical_pools = (image_size.second / pool_size.second) + ((image_size.second % pool_size.second) ? 1 : 0);
+	std::vector<double> poolResults(horizontal_pools * vertical_pools, 0);
+
+	int offset = 0;
+	for (int i = 0; i < vertical_pools; i++)
+	{
+		int offset = i * image_size.first * pool_size.second;
+		for (int j = 0; j < horizontal_pools; j++)
+		{
+			poolResults[horizontal_pools*i + j] = maxPool(image, offset);
+			offset += pool_size.first;
+		}
+	}
+
+	return std::make_unique<ModelOutputDataVector>(poolResults);
 }
 
 std::vector<double> DownSamplingModel::getParameters() const

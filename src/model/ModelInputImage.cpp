@@ -11,6 +11,7 @@ void GeneticModels::ModelInputImage::readImage()
 	const int imgHeight = image.height();
 	const int channels = image.spectrum();
 
+	//data = std::vector<double>(imgWidth * imgHeight, 0.0);
 	data.clear();
 	for (int i = 0; i < imgHeight; i++)
 	{
@@ -18,6 +19,7 @@ void GeneticModels::ModelInputImage::readImage()
 		{
 			double sum = 0.0;
 			for (int k = 0; k < channels; k++) sum += image(j, i, 0, k);
+			//data[i*imgWidth + j] = sum / channels;
 			data.push_back(sum / channels);
 		}
 	}

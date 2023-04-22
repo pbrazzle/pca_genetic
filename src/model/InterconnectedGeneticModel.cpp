@@ -1,11 +1,32 @@
 #include "InterconnectedGeneticModel.hpp"
+
+#include <stdexcept>
+
 #include "GeneticModelFactory.hpp"
 
 #include "ModelInputDataVector.hpp"
 #include "ModelOutputDataVector.hpp"
 
+void GeneticModels::InterconnectedGeneticModel::checkDataSizes()
+{
+	for (int i = 0; i < layers.size()-1; i++)
+	{
+		int inputSum = 0, outputSum = 0;
+		for (int j = 0; j < layers[i].size(); j++)
+		{
+			outputSum += layers[i][j]->getOutputDataLength();
+		}
+		for (int j = 0; j < layers[i+1].size(); j++)
+		{
+			inputSum += layers[i+1][j]->getInputDataLength();
+		}
+		if (outputSum != inputSum) throw std::invalid_argument("InterconnectedGeneticModel: Layers have incompatible data sizes");
+	}
+}
+
 GeneticModels::InterconnectedGeneticModel::InterconnectedGeneticModel(LayerArray& models) : layers(std::move(models))
 {
+	checkDataSizes();
 }
 
 std::unique_ptr<GeneticModel> GeneticModels::InterconnectedGeneticModel::clone() const
@@ -25,12 +46,14 @@ std::unique_ptr<ModelOutputData> GeneticModels::InterconnectedGeneticModel::eval
 	auto inputData = input.getData();
 
 	std::vector<double> layerResult;
+	std::vector<double> modelInputData;
 	for (int i = 0; i < layers.size(); i++)
 	{
 		layerResult.clear();
 		for (int j = 0; j < layers[i].size(); j++)
 		{
-			const std::vector<double> modelInputData(inputData.begin(), inputData.begin() + layers[i][j]->getInputDataLength());
+			modelInputData.clear();
+			modelInputData.insert(modelInputData.end(), inputData.begin(), inputData.begin() + layers[i][j]->getInputDataLength());
 			inputData.erase(inputData.begin(), inputData.begin() + layers[i][j]->getInputDataLength());
 			ModelInputDataVector modelInput(modelInputData);
 			auto result = layers[i][j]->evaluate(modelInput)->getData();
@@ -124,4 +147,6 @@ void GeneticModels::InterconnectedGeneticModel::fromJSON(const JSONObject& obj)
 		}
 		layers.emplace_back(std::move(newLayer));
 	}
+
+	checkDataSizes();
 }

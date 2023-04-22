@@ -14,7 +14,17 @@ int main(int argc, char* argv[])
 
 	std::string filename(argv[1]);
 	JSONFileReader jsonReader(filename);
-	auto obj = jsonReader.read();
+
+	JSON_IO::JSONObject obj;
+	try
+	{
+		obj = jsonReader.read();
+	}
+	catch (...)
+	{
+		std::cout << "Error reading simulation file!\n";
+		return -1;
+	}
 
 	if (!obj)
 	{

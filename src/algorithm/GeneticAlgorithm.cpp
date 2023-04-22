@@ -177,7 +177,8 @@ ModelHandle GeneticAlgorithm::createChildModel()
 	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(models, fitnesses);
 
 	ModelHandle child(*(parents.first->combine(*parents.second, *parentComb)));
-	child->mutate(mutationChance, mutationSize);
+	if ((((double) rand()) / RAND_MAX) < 0.05)
+		child->mutate(mutationChance, mutationSize);
 	return child;
 }
 

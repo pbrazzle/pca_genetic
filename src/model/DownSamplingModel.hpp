@@ -12,9 +12,7 @@ namespace GeneticModels
 			std::pair<int, int> pool_size;
 			std::pair<int, int> image_size;
 
-			std::vector<std::vector<double>> reorderByPools(const std::vector<double>&);
-			std::vector<double> maxPool(const std::vector<std::vector<double>>&);
-			std::vector<double> getPool(const std::vector<double>&, int);
+			double maxPool(const std::vector<double>&, const int&);
 
 		public:
 			DownSamplingModel() = default;

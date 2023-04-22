@@ -13,11 +13,12 @@ using GeneticModels::ModelOutputDataVector;
 using GeneticModels::ModelOutputData;
 using namespace JSON_IO;
 
-ModelOutputDataVector::ModelOutputDataVector(std::vector<double> d) : data(d) { }
+ModelOutputDataVector::ModelOutputDataVector(std::vector<double>& d) { data = std::move(d); }
 
 std::unique_ptr<ModelOutputData> ModelOutputDataVector::clone() const 
 {
-	return std::unique_ptr<ModelOutputData>(new ModelOutputDataVector(data));
+	std::vector<double> clonedData = data;
+	return std::unique_ptr<ModelOutputData>(new ModelOutputDataVector(clonedData));
 }
 
 double ModelOutputDataVector::distance(ModelOutputData& otherData)

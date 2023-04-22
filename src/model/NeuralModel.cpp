@@ -44,28 +44,40 @@ std::unique_ptr<ModelOutputData> NeuralModel::evaluate(ModelInputData& input)
 	if (layerSizes.size() == 0) throw std::logic_error("Model has no layers to evaluate data");
 	if (input.getData().size() != layerSizes[0]) throw std::invalid_argument("Invalid input data size");
 
-	std::vector<double> result = input.getData();
+	int largestLayer = *std::max_element(layerSizes.begin(), layerSizes.end());
+	double* inputLayerArr = new double[largestLayer];
+	double* resultArr = new double[largestLayer];
+
+	unsigned int* layerSizeArr = new unsigned int[layerSizes.size()];
+	for (int i = 0; i < layerSizes.size(); i++) layerSizeArr[i] = layerSizes[i];
+
+	std::vector<double> inputVec = input.getData();
+	for (int i = 0; i < inputVec.size(); i++) resultArr[i] = inputVec[i];
 
 	int weightOffset = 0;
+	double* weightArr = &weights[0];
 	for (int i = 1; i < layerSizes.size(); i++)
 	{
-		std::vector<double> layerResult(layerSizes[i], 0);
-
-		for (int j = 0; j < layerSizes[i]; j++)
+		for (int j = 0; j < layerSizeArr[i]; j++)
 		{
 			double sum = 0;
-			for (int k = 0; k < layerSizes[i - 1]; k++)
+			for (int k = 0; k < layerSizeArr[i - 1]; k++)
 			{
-				sum += result[k] * weights[k + weightOffset];
+				sum += resultArr[k] * weightArr[k + weightOffset];
 			}
 			//Apply ReLu
-			layerResult[j] = (sum < 0) ? 0 : sum;
-			weightOffset += layerSizes[i - 1];
+			inputLayerArr[j] = (sum < 0) ? 0 : sum;
+			weightOffset += layerSizeArr[i - 1];
 		}
-		result = layerResult;
+		for (int j = 0; j < layerSizeArr[i]; j++) resultArr[i] = inputLayerArr[i];
 	}
 
-	return std::make_unique<ModelOutputDataVector>(result);
+	std::vector<double> finalResult;
+	finalResult.insert(finalResult.end(), &resultArr[0], &resultArr[layerSizeArr[layerSizes.size() - 1]]);
+	delete[] resultArr;
+	delete[] inputLayerArr;
+	delete[] layerSizeArr;
+	return std::make_unique<ModelOutputDataVector>(finalResult);
 }
 
 std::vector<double> NeuralModel::getParameters() const

@@ -4,11 +4,12 @@
 using namespace GeneticModels;
 using namespace JSON_IO;
 
-ModelInputDataVector::ModelInputDataVector(std::vector<double> d) : data(d) { }
+ModelInputDataVector::ModelInputDataVector(std::vector<double>& d) { data = std::move(d); }
 
 std::unique_ptr<ModelInputData> ModelInputDataVector::clone() const
 {
-	return std::unique_ptr<ModelInputData>(new ModelInputDataVector(data));
+	std::vector<double> clonedData = data;
+	return std::unique_ptr<ModelInputData>(new ModelInputDataVector(clonedData));
 }
 
 std::vector<double> ModelInputDataVector::getData() { return data; }

@@ -1,6 +1,7 @@
 #include "GeneticModelFactory.hpp"
 
 #include "ConvolutionModel.hpp"
+#include "DownSamplingModel.hpp"
 #include "InterconnectedGeneticModel.hpp"
 #include "LinearGeneticModel.hpp"
 #include "NeuralModel.hpp"
@@ -16,7 +17,8 @@ typenameMap<GeneticModel> modelMap{
 	{"LinearGeneticModel", &makeDefaultDerived<GeneticModel, LinearGeneticModel>},
 	{"NeuralModel", &makeDefaultDerived<GeneticModel, NeuralModel>},
 	{"InterconnectedGeneticModel",& makeDefaultDerived<GeneticModel, InterconnectedGeneticModel> },
-	{"ConvolutionModel", &makeDefaultDerived<GeneticModel, ConvolutionModel>}
+	{"ConvolutionModel", &makeDefaultDerived<GeneticModel, ConvolutionModel>},
+	{"DownSamplingModel", &makeDefaultDerived<GeneticModel, DownSamplingModel>}
 };
 
 std::unique_ptr<GeneticModel> GeneticModels::ModelFromJSON(const JSONObject& obj)

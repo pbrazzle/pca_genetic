@@ -30,7 +30,7 @@ std::unique_ptr<ModelOutputData> ConvolutionModel::evaluate(ModelInputData& inpu
 	std::vector<double> inputData = input.getData();
 	if (inputData.size() != (image_width * image_height)) throw std::invalid_argument("Incorrect input image size");
 
-	std::vector<double> output;
+	std::vector<double> output(output_width*output_height, 0.0);
 	for (int i = kernel_height/2; i < image_height - kernel_height/2; i++)
 	{
 		for (int j = kernel_width/2; j < image_width - kernel_width/2; j++)
@@ -43,10 +43,9 @@ std::unique_ptr<ModelOutputData> ConvolutionModel::evaluate(ModelInputData& inpu
 					result += inputData[(i+i_k)*image_width + j+j_k] * kernel_weights[(i_k+kernel_height/2) * kernel_width + j_k+kernel_width/2];
 				}
 			}
-			output.push_back(result);
+			output[output_width*(i-kernel_height/2) + (j-kernel_width/2)] = result;
 		}
 	}
-
 	return std::make_unique<ModelOutputDataVector>(output);
 }
 

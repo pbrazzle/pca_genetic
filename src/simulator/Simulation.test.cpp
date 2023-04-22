@@ -29,8 +29,8 @@ TEST_CASE("Simulate LinearGeneticModel Identity", "[Simulation]")
 	std::unique_ptr<GeneticModel> modelTemplate(new LinearGeneticModel(3, { 1, 0, 0, 0, 1, 0, 0, 0, 1 }));
 	std::vector<trainingItem> trainingData;
 
-	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector({ 1, 1, 1 }));
-	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector({ 2, 2, 2 }));
+	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector(std::vector<double>{ 1, 1, 1 }));
+	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector(std::vector<double>{ 2, 2, 2 }));
 	trainingData.push_back({ std::move(inData), std::move(outData) });
 
 	Simulation sim("Test Sim", alg, std::move(modelTemplate), std::move(trainingData), 10);
@@ -58,8 +58,8 @@ TEST_CASE("Simulate NeuralModel Identity", "[Simulation]")
 	std::unique_ptr<GeneticModel> modelTemplate(new NeuralModel({ 3, 5, 3}));
 	std::vector<trainingItem> trainingData;
 
-	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector({ 1, 1, 1 }));
-	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector({ 1, 1, 1 }));
+	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector(std::vector<double>{ 1, 1, 1 }));
+	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector(std::vector<double>{ 1, 1, 1 }));
 	trainingData.push_back({ std::move(inData), std::move(outData) });
 
 	Simulation sim("Test Sim", alg, std::move(modelTemplate), std::move(trainingData), 10);
@@ -125,8 +125,8 @@ TEST_CASE("Simulate InterconnectedGeneticModel Identity", "[Simulation]")
 	layers.emplace_back(std::move(layer2));
 	std::unique_ptr<GeneticModel> modelTemplate = std::make_unique<InterconnectedGeneticModel>(layers);
 
-	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector({ 1, 1, 1 }));
-	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector({ 1, 1, 1 }));
+	std::unique_ptr<ModelInputData> inData = std::make_unique<ModelInputDataVector>(ModelInputDataVector(std::vector<double>{ 1, 1, 1 }));
+	std::unique_ptr<ModelOutputData> outData = std::make_unique<ModelOutputDataVector>(ModelOutputDataVector(std::vector<double>{ 1, 1, 1 }));
 	trainingData.push_back({ std::move(inData), std::move(outData) });
 
 	Simulation sim("Test Sim", alg, std::move(modelTemplate), std::move(trainingData), 10);
