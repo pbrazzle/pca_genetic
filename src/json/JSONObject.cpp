@@ -36,7 +36,7 @@ std::string trim(std::string s)
 	return s;
 }
 
-JSONObject parseObjectFromString(std::string objString);
+JSONObject parseObjectFromString(std::string& objString);
 
 JSONObject readObjectFromList(std::string& listString)
 {
@@ -84,35 +84,41 @@ std::string bracketAwareSplit(std::string& listString)
 	int bracketDepth = 0;
 
 	std::string objString;
+	int i = 0;
 	char current = listString.front();
 	do
 	{
+		current = listString[i];
 		if (current == '{' || current == '[') bracketDepth++;
 		if (current == '}' || current == ']') bracketDepth--;
-
-		objString += current;
-
-		listString.erase(0, 1);
-		if (listString.empty()) return objString;
-		current = listString.front();
+		i++;
+		if (i == listString.size())
+		{
+			auto lastSplit = std::move(listString);
+			return lastSplit;
+		}
 	} while (current != ',' || bracketDepth);
-	listString.erase(0, 1);
+
+	objString = listString.substr(0, i-1);
+	listString.erase(0, i);
 	return objString;
 }
 
-JSONObject parseObjectFromString(std::string objString)
+JSONObject parseObjectFromString(std::string& objString)
 {
 	objString = trim(objString);
+
+	//Check for string
+	if (objString[0] == '"') return JSONObject(objString.substr(1, objString.size() - 2));
+
+	//Check for null object
 	if (objString == "null") return JSONObject();
-	try
-	{
-		double d = std::stod(objString);
-		if (floor(d) == d) return JSONObject((int) d);
-		return JSONObject(d);
-	} catch(...) { }
+
+	//Check for bool object
 	if (objString == "true") return JSONObject(true);
 	if (objString == "false") return JSONObject(false);
-	
+
+	//Check for array
 	if (objString[0] == '[')
 	{
 		objString = objString.substr(1, objString.size()-2);
@@ -126,6 +132,7 @@ JSONObject parseObjectFromString(std::string objString)
 		return JSONObject(arr);
 	}
 
+	//Check for object
 	if (objString[0] == '{')
 	{
 		JSONObject obj;
@@ -140,8 +147,18 @@ JSONObject parseObjectFromString(std::string objString)
 
 		return obj;
 	}
-	
-	return JSONObject(objString.substr(1, objString.size()-2));
+
+	//Check for numerical object (int or float)
+	try
+	{
+		double d = std::stod(objString);
+		if (floor(d) == d) return JSONObject((int)d);
+		return JSONObject(d);
+	}
+	catch (...) {}
+
+	//Return null object on fail
+	return JSONObject();
 }
 
 JSONObject::JSONObject() : data("null") { }
