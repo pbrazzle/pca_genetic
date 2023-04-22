@@ -23,7 +23,8 @@ public:
 
 	void evalTest()
 	{
-		ModelInputDataVector input(std::vector<double>(25, 1.0));
+		std::vector<double> inputVec(25, 1.0);
+		ModelInputDataVector input(inputVec);
 
 		ModelPtr model = getTestModel();
 		auto output = model->evaluate(input);
