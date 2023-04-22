@@ -5,7 +5,11 @@
 class ModelInputDataVectorTests : public ModelInputDataTests
 {
 public:
-	DataPtr getTestData() override { return std::make_unique<GeneticModels::ModelInputDataVector>(GeneticModels::ModelInputDataVector(std::vector<double>{ 1, 2, 3, 4, 5 })); }
+	DataPtr getTestData() override
+	{
+		std::vector<double> testData{1, 2, 3, 4, 5};
+		return std::make_unique<GeneticModels::ModelInputDataVector>(GeneticModels::ModelInputDataVector(testData));
+	}
 	DataPtr getBlankData() override { return std::make_unique<GeneticModels::ModelInputDataVector>(GeneticModels::ModelInputDataVector()); }
 };
 
