@@ -34,7 +34,8 @@ class GeneticModelTests
 		{
 			ModelPtr model = getTestModel();
 
-			ModelInputDataVector inputData(std::vector<double>(model->getInputDataLength()));
+			std::vector<double> inputVec(model->getInputDataLength(), 0.0);
+			ModelInputDataVector inputData(inputVec);
 
 			auto result = model->evaluate(inputData);
 
