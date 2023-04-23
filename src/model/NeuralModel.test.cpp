@@ -32,4 +32,20 @@ TEST_CASE("NeuralModel", "[NeuralModel]")
 	{
 		testClass.runTests();
 	}
+
+	SECTION("Evaluation Tests")
+	{
+		auto testModel = testClass.getTestModel();
+
+		std::vector<double> inVec{ 1, 1, 1 };
+		ModelInputDataVector inData(inVec);
+
+		auto result = testModel->evaluate(inData);
+		auto result2 = testModel->evaluate(inData);
+
+		for (int i = 0; i < result->getData().size(); i++)
+		{
+			REQUIRE(result->getData()[i] == result2->getData()[i]);
+		}
+	}
 }

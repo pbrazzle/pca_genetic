@@ -93,6 +93,10 @@ def build_downsampling_template(pool_width, pool_height, image_width, image_heig
 def build_conv_template(kernel_width, kernel_height, image_width, image_height):
     convStr = '{ typename: "ConvolutionModel", data : { kernel_width : '+str(kernel_width)+', kernel_height : '+str(kernel_height)+', image_width : '+str(image_width)+', image_height : '+str(image_height)+', weights : '+'[' + ','.join(['0.0']*(kernel_width*kernel_height))+']'+'}}'
     return convStr
+    
+def build_linear():
+    linStr = '{ typename: "LinearGeneticModel", data : { parameters : ['+','.join(['0.0']*28*28*10)+'], inputSize : '+str(28*28)+', outputSize : 10}}'
+    return linStr
    
 # CNN
 # Conv -> Downsampling -> NN
@@ -109,7 +113,7 @@ def make_sim_json(name="\"blank_sim\"", generations="1", alg="null", trainingDat
     return '{' + "name : {0}, generations : {1}, algorithm : {2}, model_template : {3}, training_data : {4}".format(name, generations, alg, model, trainingData) + '}'
     
 def generate_run_file(run_name, alg, generations=10, num_images=10):
-    sim_json = make_sim_json('"'+run_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_big_nn())
+    sim_json = make_sim_json('"'+run_name+'"', str(generations), alg.to_json(), build_equal_training_data(num_images), build_linear())
     json_file = open(run_name+'.json', 'w+')
     json_file.write(sim_json)
     json_file.close()
@@ -183,10 +187,10 @@ def get_args():
     parser.add_argument('generations', type=int)
     parser.add_argument('num_images', type=int)
     
-    parser.add_argument('-g', '--gen-size', type=int, default=500)
+    parser.add_argument('-g', '--gen-size', type=int, default=1000)
     parser.add_argument('-o', '--offset', type=float, default=0.1)
     parser.add_argument('-c', '--mut-chance', type=float, default=1)
-    parser.add_argument('-s', '--mut-size', type=float, default=0.1)
+    parser.add_argument('-s', '--mut-size', type=float, default=1)
     parser.add_argument('-e', '--elitism', type=float, default=0.1)
     
     return parser.parse_args()

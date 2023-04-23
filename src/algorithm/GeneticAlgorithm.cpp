@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <iterator>
 #include <omp.h>
 
 #include "algorithm/GeneticAlgorithmFactory.hpp"
@@ -141,6 +142,11 @@ void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
 
 void GeneticAlgorithm::calculateFitnesses()
 {
+	LOG("LOG: GeneticAlgorithm: calculateFitnesses begin\n");
+	if (!fitnesses.empty())
+	{
+		LOG("LOG: GeneticAlgorithm: Previous best fitness: "); LOG(fitnesses.back()); LOG('\n');
+	}
 	fitnesses.clear();
 
 	auto fitnessArr = new double[models.size()];
@@ -158,6 +164,8 @@ void GeneticAlgorithm::calculateFitnesses()
 	}
 
 	fitnesses.insert(fitnesses.end(), &fitnessArr[0], &fitnessArr[models.size()]);
+	LOG("LOG: GeneticAlgorithm: Unsorted final fitness score: "); LOG(fitnesses.back()); LOG('\n');
+	LOG("LOG: GeneticAlgorithm: Unsorted final model last parameter: "); LOG(models.back()->getParameters().back()); LOG('\n');
 	auto sortedIndices = getSortedFitnessIndices();
 	reorderModels(sortedIndices);
 }
@@ -197,17 +205,21 @@ void GeneticAlgorithm::readThreadFile()
 
 void GeneticAlgorithm::runGeneration()
 {
+	LOG("LOG: GeneticAlgorithm: runGeneration start\n");
 	calculateFitnesses();
 
 	bestFitnesses.push_back(fitnesses.back());
 	avgFitnesses.push_back(std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / fitnesses.size());
 
+	LOG("LOG: GeneticAlgorithm: bestFitness recorded: "); LOG(bestFitnesses.back()); LOG('\n');
+	LOG("LOG: GeneticAlgorithm: avgFitness recorded: "); LOG(avgFitnesses.back()); LOG('\n');
+	ModelHandle bestModel = models.back();
+	LOG("LOG: GeneticAlgorithm: best model final weight: "); LOG(bestModel->getParameters().back()); LOG('\n');
+
 	std::vector<ModelHandle> newModels;
 
 	int numEliteModels = static_cast<int>(elitism * models.size());
-	LOG("Saving best ");
-	LOG(numEliteModels);
-	LOG(" models\n");
+	LOG("LOG: GeneticAlgorithm: Saving best "); LOG(numEliteModels); LOG(" models\n");
 
 	int numNewModels = generationSize - numEliteModels;
 
@@ -223,6 +235,8 @@ void GeneticAlgorithm::runGeneration()
 	newModels.insert(newModels.end(), &newModelArr[0], &newModelArr[numNewModels]);
 	delete[] newModelArr;
 	newModels.insert(newModels.end(), models.begin() + generationSize - numEliteModels, models.end());
+
+	LOG("LOG: GeneticAlgorithm: runGeneration end - We have "); LOG(newModels.size()); LOG(" models\n");
 
 	models = newModels;
 }
@@ -276,8 +290,6 @@ JSONObject GeneticAlgorithm::toJSON() const
 	return obj;
 }
 
-//TODO implement this
-//We'll need some factory setup to read in the strategies
 void GeneticAlgorithm::fromJSON(const JSONObject& obj)
 {
 	generationSize = obj["generationSize"].asInt();

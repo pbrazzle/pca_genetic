@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 
 using GeneticModels::GeneticModel;
 using GeneticModels::ModelOutputData;
@@ -10,28 +11,33 @@ using GeneticModels::NeuralModel;
 
 NeuralModel::NeuralModel(std::vector<unsigned int> l) : layerSizes(l)
 {
-	for (int i = 0; i < layerSizes.size() - 1; i++)
+	int totalWeights = 0;
+	for (int i = 1; i < layerSizes.size(); i++)
 	{
-		int s1 = layerSizes[i], s2 = layerSizes[i + 1];
-		std::vector<double> layerWeights(s1 * s2, 1.0);
-		weights.insert(weights.end(), layerWeights.begin(), layerWeights.end());
+		totalWeights += layerSizes[i] * layerSizes[i - 1];
 	}
+	weights = std::vector<double>(totalWeights, 1.0);
 }
 
 NeuralModel::NeuralModel(std::vector<unsigned int> l, std::vector<double> w) : layerSizes(l), weights(w)
 {
+	int totalWeights = 0;
+	for (int i = 1; i < layerSizes.size(); i++)
+	{
+		totalWeights += layerSizes[i] * layerSizes[i - 1];
+	}
+	if (totalWeights != weights.size()) throw std::invalid_argument("NeuralModel: Invalid number of weights");
 }
 
 void NeuralModel::setLayerSizes(std::vector<unsigned int> newLayers)
 {
 	layerSizes = newLayers;
-	weights.clear();
-	for (int i = 0; i < layerSizes.size() - 1; i++)
+	int totalWeights = 0;
+	for (int i = 1; i < layerSizes.size(); i++)
 	{
-		int s1 = layerSizes[i], s2 = layerSizes[i + 1];
-		std::vector<double> layerWeights(s1 * s2, 1.0);
-		weights.insert(weights.end(), layerWeights.begin(), layerWeights.end());
+		totalWeights += layerSizes[i] * layerSizes[i - 1];
 	}
+	weights = std::vector<double>(totalWeights, 1.0);
 }
 
 std::unique_ptr<GeneticModel> NeuralModel::clone() const
@@ -69,7 +75,7 @@ std::unique_ptr<ModelOutputData> NeuralModel::evaluate(ModelInputData& input)
 			inputLayerArr[j] = (sum < 0) ? 0 : sum;
 			weightOffset += layerSizeArr[i - 1];
 		}
-		for (int j = 0; j < layerSizeArr[i]; j++) resultArr[i] = inputLayerArr[i];
+		for (int j = 0; j < layerSizeArr[i]; j++) resultArr[j] = inputLayerArr[j];
 	}
 
 	std::vector<double> finalResult;

@@ -12,7 +12,7 @@ namespace GeneticModels
 	class LinearGeneticModel : public GeneticModel
 	{
 		private:
-			int dataLength;
+			int dataLength, inputSize, outputSize;
 			std::vector<double> parameters;
 
 		public:
@@ -21,6 +21,10 @@ namespace GeneticModels
 			//Constructs a linear model for the provided data length
 			//All parameters are initialized to 0
 			LinearGeneticModel(int);
+
+			LinearGeneticModel(int, int);
+
+			LinearGeneticModel(int, int, std::vector<double>);
 
 			//Constructs a linear model for the provided data length
 			//Parameters are initialized to the provided vector
