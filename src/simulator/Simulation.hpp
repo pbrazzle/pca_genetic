@@ -24,6 +24,7 @@ namespace GeneticSimulator
 			std::unique_ptr<GeneticModel> modelTemplate;
 			std::vector<trainingItem> trainingData;
 			int generations;
+			std::vector<double> generationTimes;
 
 		public:
 			Simulation() = default;

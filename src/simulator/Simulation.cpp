@@ -37,6 +37,7 @@ void Simulation::run()
 	std::cout << "Running Simulation: " << name << '\n';
 	alg.train(*modelTemplate, trainingData, 0);
 
+	generationTimes.clear();
 	for (int i = 1; i <= generations; i++)
 	{
 		double start_time = omp_get_wtime();
@@ -44,6 +45,7 @@ void Simulation::run()
 		double gen_time = omp_get_wtime() - start_time;
 		std::cout << "Finished generation " << i << '\n';
 		std::cout << "Took " << gen_time << " seconds\n";
+		generationTimes.push_back(gen_time);
 
 		auto bestModel = alg.getBestModel();
 		auto bestResult = bestModel->evaluate(*sampleItem.first);
@@ -82,6 +84,14 @@ void Simulation::run()
 		outFile << avgFits[i] << ',' << bestFits[i] << '\n';
 	}
 	outFile.close();
+
+	std::cout << "Writing timing data to " << name << "_timing.csv\n";
+	std::ofstream timingFile(name + "_timing.csv");
+	for (double time : generationTimes)
+	{
+		timingFile << std::to_string(time) << '\n';
+	}
+	timingFile.close();
 }
 
 JSONObject Simulation::toJSON() const
