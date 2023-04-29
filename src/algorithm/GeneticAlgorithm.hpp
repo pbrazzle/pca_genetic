@@ -8,6 +8,7 @@
 #include "model/ModelInputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
+#include "Population.hpp"
 #include "algorithm/FitnessCalculator.hpp"
 #include "algorithm/ParentSelector.hpp"
 #include "algorithm/ParentCombiner.hpp"
@@ -29,7 +30,7 @@ namespace PCAGenetic
 			std::unique_ptr<ParentSelector> parentSelect;
 			std::unique_ptr<ParentCombiner> parentComb;
 
-			std::vector<ModelHandle> models;
+			Population population;
 			std::vector<double> fitnesses;
 			std::vector<trainingItem> trainingData;
 

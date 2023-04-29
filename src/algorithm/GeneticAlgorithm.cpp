@@ -4,7 +4,6 @@
 #include <numeric>
 #include <algorithm>
 #include <vector>
-#include <iostream>
 #include <iterator>
 #include <omp.h>
 
@@ -13,15 +12,6 @@
 
 using namespace GeneticModels;
 using namespace PCAGenetic;
-
-const bool DEBUG = false;
-
-template <class T>
-void LOG(T message)
-{
-	if (DEBUG)
-		std::cout << message;
-}
 
 unsigned int GeneticAlgorithm::numThreads = 1;
 
@@ -37,12 +27,8 @@ void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)
 
 void GeneticAlgorithm::copyData(const GeneticAlgorithm& alg)
 {
-	for (int i = 0; i < alg.models.size(); i++)
-	{
-		std::unique_ptr<GeneticModel> copy = alg.models[i]->clone();
-		models.emplace_back(*copy);
-		fitnesses.push_back(alg.fitnesses[i]);
-	}
+	population = alg.population;
+	fitnesses = alg.fitnesses;
 
 	for (int i = 0; i < alg.trainingData.size(); i++)
 	{
@@ -98,13 +84,7 @@ GeneticAlgorithm& GeneticAlgorithm::operator=(const GeneticAlgorithm& alg)
 
 void GeneticAlgorithm::initializeGeneration(const GeneticModel& modelTemplate)
 {
-	models.clear();
-	models.reserve(generationSize);
-	for (int i = 0; i < generationSize; i++)
-	{
-		ModelHandle newModel(*(modelTemplate.copyWithOffset(offsetSize)));
-		models.push_back(newModel);
-	}
+	population = Population(generationSize, modelTemplate, offsetSize);
 }
 
 void GeneticAlgorithm::train(const GeneticModel& modelTemplate, std::vector<trainingItem>& td, int generations)
@@ -134,55 +114,40 @@ std::vector<size_t> GeneticAlgorithm::getSortedFitnessIndices()
 
 void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
 {
-	std::vector<ModelHandle> reorderedModels;
-	reorderedModels.reserve(models.size());
-	for (size_t i : indices) reorderedModels.push_back(models[i]);
-	models = reorderedModels;
+	population.reorder(indices);
 }
 
 void GeneticAlgorithm::calculateFitnesses()
 {
-	LOG("LOG: GeneticAlgorithm: calculateFitnesses begin\n");
-	if (!fitnesses.empty())
-	{
-		LOG("LOG: GeneticAlgorithm: Previous best fitness: "); LOG(fitnesses.back()); LOG('\n');
-	}
 	fitnesses.clear();
 
-	auto fitnessArr = new double[models.size()];
+	auto fitnessArr = new double[population.size()];
 	#pragma omp parallel for num_threads(numThreads)
-	for (int i = 0; i < models.size(); i++)
+	for (int i = 0; i < population.size(); i++)
 	{
 		double fitness = 0;
-		//#pragma omp parallel for reduction(+ : fitness) num_threads(numThreads)
 		for (int j = 0; j < trainingData.size(); j++)
 		{
-			fitness += fitnessCalc->calculateFitness(trainingData[j], models[i]);
+			fitness += fitnessCalc->calculateFitness(trainingData[j], population[i]);
 		}
 		fitnessArr[i] = fitness / trainingData.size();
-		//fitnesses.push_back(fitness / trainingData.size());
 	}
 
-	fitnesses.insert(fitnesses.end(), &fitnessArr[0], &fitnessArr[models.size()]);
-	LOG("LOG: GeneticAlgorithm: Unsorted final fitness score: "); LOG(fitnesses.back()); LOG('\n');
-	LOG("LOG: GeneticAlgorithm: Unsorted final model last parameter: "); LOG(models.back()->getParameters().back()); LOG('\n');
+	fitnesses.insert(fitnesses.end(), &fitnessArr[0], &fitnessArr[population.size()]);
 	auto sortedIndices = getSortedFitnessIndices();
 	reorderModels(sortedIndices);
 }
 
 void GeneticAlgorithm::recordFitness()
 {
-	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / models.size();
+	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / population.size();
 	avgFitnesses.push_back(avg_fitness);
 	bestFitnesses.push_back(fitnesses.back());
-	LOG("Best fitness: ");
-	LOG(fitnesses.back());
-	LOG('\n');
 }
 
 ModelHandle GeneticAlgorithm::createChildModel()
 {
-	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(models, fitnesses);
+	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(population.asHandleVector(), fitnesses);
 
 	ModelHandle child(*(parents.first->combine(*parents.second, *parentComb)));
 	if ((((double) rand()) / RAND_MAX) < 0.05)
@@ -205,47 +170,34 @@ void GeneticAlgorithm::readThreadFile()
 
 void GeneticAlgorithm::runGeneration()
 {
-	LOG("LOG: GeneticAlgorithm: runGeneration start\n");
 	calculateFitnesses();
 
 	bestFitnesses.push_back(fitnesses.back());
 	avgFitnesses.push_back(std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / fitnesses.size());
 
-	LOG("LOG: GeneticAlgorithm: bestFitness recorded: "); LOG(bestFitnesses.back()); LOG('\n');
-	LOG("LOG: GeneticAlgorithm: avgFitness recorded: "); LOG(avgFitnesses.back()); LOG('\n');
-	ModelHandle bestModel = models.back();
-	LOG("LOG: GeneticAlgorithm: best model final weight: "); LOG(bestModel->getParameters().back()); LOG('\n');
-
-	std::vector<ModelHandle> newModels;
-
-	int numEliteModels = static_cast<int>(elitism * models.size());
-	LOG("LOG: GeneticAlgorithm: Saving best "); LOG(numEliteModels); LOG(" models\n");
-
-	int numNewModels = generationSize - numEliteModels;
-
-	auto newModelArr = new ModelHandle[numNewModels];
+	const auto numEliteModels = static_cast<int>(population.size() * elitism);
+	const auto numNewModels = generationSize - numEliteModels;
+	const auto newModelArr = new ModelHandle[numNewModels];
 
 #pragma omp parallel for num_threads(numThreads)
 	for (int i = 0; i < numNewModels; i++)
 	{
-		//newModels.push_back(createChildModel());
 		newModelArr[i] = createChildModel();
 	}
 
-	newModels.insert(newModels.end(), &newModelArr[0], &newModelArr[numNewModels]);
+	population.cullWithElitism(elitism);
+	for (int i = 0; i < numNewModels; i++)
+	{
+		population.append(newModelArr[i]);
+	}
 	delete[] newModelArr;
-	newModels.insert(newModels.end(), models.begin() + generationSize - numEliteModels, models.end());
-
-	LOG("LOG: GeneticAlgorithm: runGeneration end - We have "); LOG(newModels.size()); LOG(" models\n");
-
-	models = newModels;
 }
 
 std::vector<double> GeneticAlgorithm::getAvgFitnesses() const { return avgFitnesses; }
 
 std::unique_ptr<GeneticModel> GeneticAlgorithm::getBestModel()
 {
-	return models.back()->clone();
+	return population.back().clone();
 }
 
 void GeneticAlgorithm::setGenerationSize(const int& g) { generationSize = g; }
