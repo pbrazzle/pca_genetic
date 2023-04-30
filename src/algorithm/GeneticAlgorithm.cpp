@@ -28,7 +28,7 @@ void GeneticAlgorithm::copyStrategies(const GeneticAlgorithm& alg)
 void GeneticAlgorithm::copyData(const GeneticAlgorithm& alg)
 {
 	population = alg.population;
-	fitnesses = alg.fitnesses;
+	scores = alg.scores;
 
 	for (int i = 0; i < alg.trainingData.size(); i++)
 	{
@@ -103,13 +103,7 @@ void GeneticAlgorithm::continueTraining(int generations)
 
 std::vector<size_t> GeneticAlgorithm::getSortedFitnessIndices()
 {
-	std::vector<size_t> sortedIndices(fitnesses.size(), 0);
-	std::iota(sortedIndices.begin(), sortedIndices.end(), 0);
-
-	std::sort(sortedIndices.begin(), sortedIndices.end(),
-	          [&](size_t i1, size_t i2) { return fitnesses[i1] < fitnesses[i2]; });
-	std::sort(fitnesses.begin(), fitnesses.end());
-	return sortedIndices;
+	return scores.getSortedIndices();
 }
 
 void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
@@ -119,8 +113,6 @@ void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
 
 void GeneticAlgorithm::calculateFitnesses()
 {
-	fitnesses.clear();
-
 	auto fitnessArr = new double[population.size()];
 	#pragma omp parallel for num_threads(numThreads)
 	for (int i = 0; i < population.size(); i++)
@@ -133,21 +125,15 @@ void GeneticAlgorithm::calculateFitnesses()
 		fitnessArr[i] = fitness / trainingData.size();
 	}
 
-	fitnesses.insert(fitnesses.end(), &fitnessArr[0], &fitnessArr[population.size()]);
+	scores.clear();
+	for (int i = 0; i < population.size(); i++) scores.append(fitnessArr[i]);
 	auto sortedIndices = getSortedFitnessIndices();
 	reorderModels(sortedIndices);
 }
 
-void GeneticAlgorithm::recordFitness()
-{
-	double avg_fitness = std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / population.size();
-	avgFitnesses.push_back(avg_fitness);
-	bestFitnesses.push_back(fitnesses.back());
-}
-
 ModelHandle GeneticAlgorithm::createChildModel()
 {
-	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(population.asHandleVector(), fitnesses);
+	std::pair<ModelHandle, ModelHandle> parents = parentSelect->selectParents(population.asHandleVector(), scores.asVector());
 
 	ModelHandle child(*(parents.first->combine(*parents.second, *parentComb)));
 	if ((((double) rand()) / RAND_MAX) < 0.05)
@@ -172,8 +158,8 @@ void GeneticAlgorithm::runGeneration()
 {
 	calculateFitnesses();
 
-	bestFitnesses.push_back(fitnesses.back());
-	avgFitnesses.push_back(std::accumulate(fitnesses.begin(), fitnesses.end(), 0.0) / fitnesses.size());
+	bestFitnesses.push_back(scores.best());
+	avgFitnesses.push_back(scores.avg());
 
 	const auto numEliteModels = static_cast<int>(population.size() * elitism);
 	const auto numNewModels = generationSize - numEliteModels;

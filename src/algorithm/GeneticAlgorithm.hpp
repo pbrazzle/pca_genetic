@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "FitnessScores.hpp"
 #include "model/ModelInputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
@@ -31,7 +32,7 @@ namespace PCAGenetic
 			std::unique_ptr<ParentCombiner> parentComb;
 
 			Population population;
-			std::vector<double> fitnesses;
+			FitnessScores scores;
 			std::vector<trainingItem> trainingData;
 
 			void runGeneration();
@@ -54,7 +55,6 @@ namespace PCAGenetic
 
 			std::vector<size_t> getSortedFitnessIndices();
 			void reorderModels(std::vector<size_t> indices);
-			void recordFitness();
 			ModelHandle createChildModel();
 
 		public:
