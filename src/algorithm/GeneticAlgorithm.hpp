@@ -53,8 +53,6 @@ namespace PCAGenetic
 
 			void initializeGeneration(const GeneticModel& modelTemplate);
 
-			std::vector<size_t> getSortedFitnessIndices();
-			void reorderModels(std::vector<size_t> indices);
 			ModelHandle createChildModel();
 
 		public:

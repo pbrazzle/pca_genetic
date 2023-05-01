@@ -29,32 +29,34 @@ void PCAGenetic::FitnessScores::sort()
 	std::sort(scores.begin(), scores.end());
 }
 
-void PCAGenetic::FitnessScores::replace(const std::vector<double>& newScores)
+void PCAGenetic::FitnessScores::replace(const std::vector<double>& newScores) noexcept
 {
 	scores = newScores;
 }
 
-void PCAGenetic::FitnessScores::append(const double& score)
+void PCAGenetic::FitnessScores::append(const double& score) noexcept
 {
 	scores.emplace_back(score);
 }
 
-void PCAGenetic::FitnessScores::clear()
+void PCAGenetic::FitnessScores::clear() noexcept
 {
 	scores.clear();
 }
 
-double PCAGenetic::FitnessScores::best() const
+double PCAGenetic::FitnessScores::best() const noexcept
 {
+	if (scores.empty()) return 0.0;
 	return scores.back();
 }
 
-double PCAGenetic::FitnessScores::avg() const
+double PCAGenetic::FitnessScores::avg() const noexcept
 {
+	if (scores.empty()) return 0.0;
 	return std::accumulate(scores.begin(), scores.end(), 0.0) / scores.size();
 }
 
-const std::vector<double>& PCAGenetic::FitnessScores::asVector() const
+const std::vector<double>& PCAGenetic::FitnessScores::asVector() const noexcept
 {
 	return scores;
 }

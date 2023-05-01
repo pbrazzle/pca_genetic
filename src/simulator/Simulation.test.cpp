@@ -22,7 +22,7 @@ using namespace GeneticSimulator;
 
 TEST_CASE("Simulate NeuralModel Identity", "[Simulation]")
 {
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	GeneticAlgorithm alg = makeBasicAlgorithm();
 	alg.setParamRange(0.05);
@@ -53,7 +53,7 @@ TEST_CASE("Simulate NeuralModel Identity", "[Simulation]")
 
 TEST_CASE("Simulate LinearGeneticModel Identity", "[Simulation]")
 {
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	GeneticAlgorithm alg = makeBasicAlgorithm();
 	alg.setParamRange(0.05);
@@ -84,7 +84,7 @@ TEST_CASE("Simulate LinearGeneticModel Identity", "[Simulation]")
 
 TEST_CASE("Simulate Convolution Identity", "[Simulation]")
 {
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	GeneticAlgorithm alg = makeBasicAlgorithm();
 	alg.setParamRange(0.05);
@@ -115,7 +115,7 @@ TEST_CASE("Simulate Convolution Identity", "[Simulation]")
 
 TEST_CASE("Simulate InterconnectedGeneticModel Identity", "[Simulation]")
 {
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	GeneticAlgorithm alg = makeBasicAlgorithm();
 	alg.setParamRange(0.05);

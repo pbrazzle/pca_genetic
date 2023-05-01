@@ -13,21 +13,21 @@ namespace PCAGenetic
 		FitnessScores() = default;
 
 		double& operator[](const size_t& i);
-		double at(const size_t& i) const;
+		[[nodiscard]] double at(const size_t& i) const;
 
-		std::vector<size_t> getSortedIndices() const;
+		[[nodiscard]] std::vector<size_t> getSortedIndices() const;
 		void sort();
 
-		void replace(const std::vector<double>& newScores);
+		void replace(const std::vector<double>& newScores) noexcept;
 
-		void append(const double& score);
+		void append(const double& score) noexcept;
 
-		void clear();
+		void clear() noexcept;
 
-		double best() const;
-		double avg() const;
+		[[nodiscard]] double best() const noexcept;
+		[[nodiscard]] double avg() const noexcept;
 
-		const std::vector<double>& asVector() const;
+		[[nodiscard]] const std::vector<double>& asVector() const noexcept;
 	};
 }
 

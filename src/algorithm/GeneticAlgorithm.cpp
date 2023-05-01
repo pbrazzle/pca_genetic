@@ -30,11 +30,8 @@ void GeneticAlgorithm::copyData(const GeneticAlgorithm& alg)
 	population = alg.population;
 	scores = alg.scores;
 
-	for (int i = 0; i < alg.trainingData.size(); i++)
-	{
-		trainingItem item(alg.trainingData[i].first->clone(), alg.trainingData[i].second->clone());
-		trainingData.emplace_back(std::move(item));
-	}
+	std::for_each(alg.trainingData.begin(), alg.trainingData.end(), 
+		[&](const auto& item) { trainingData.emplace_back(trainingItem(item.first->clone(), item.second->clone())); });
 }
 
 void GeneticAlgorithm::copySettings(const GeneticAlgorithm& alg)
@@ -101,34 +98,21 @@ void GeneticAlgorithm::continueTraining(int generations)
 	for (int i = 0; i < generations; i++) runGeneration();
 }
 
-std::vector<size_t> GeneticAlgorithm::getSortedFitnessIndices()
-{
-	return scores.getSortedIndices();
-}
-
-void GeneticAlgorithm::reorderModels(std::vector<size_t> indices)
-{
-	population.reorder(indices);
-}
-
 void GeneticAlgorithm::calculateFitnesses()
 {
-	auto fitnessArr = new double[population.size()];
+	std::vector<double> fitnessArr(population.size(), 0.0);
 	#pragma omp parallel for num_threads(numThreads)
 	for (int i = 0; i < population.size(); i++)
 	{
-		double fitness = 0;
-		for (int j = 0; j < trainingData.size(); j++)
-		{
-			fitness += fitnessCalc->calculateFitness(trainingData[j], population[i]);
-		}
+		double fitness = 0.0;
+		std::for_each(trainingData.begin(), trainingData.end(),
+			[&](const auto& trainingItem) { fitness += fitnessCalc->calculateFitness(trainingItem, population[i]); });
 		fitnessArr[i] = fitness / trainingData.size();
 	}
 
-	scores.clear();
-	for (int i = 0; i < population.size(); i++) scores.append(fitnessArr[i]);
-	auto sortedIndices = getSortedFitnessIndices();
-	reorderModels(sortedIndices);
+	scores.replace(fitnessArr);
+	population.reorder(scores.getSortedIndices());
+	scores.sort();
 }
 
 ModelHandle GeneticAlgorithm::createChildModel()
@@ -163,7 +147,7 @@ void GeneticAlgorithm::runGeneration()
 
 	const auto numEliteModels = static_cast<int>(population.size() * elitism);
 	const auto numNewModels = generationSize - numEliteModels;
-	const auto newModelArr = new ModelHandle[numNewModels];
+	std::vector<ModelHandle> newModelArr(numNewModels, nullptr);
 
 #pragma omp parallel for num_threads(numThreads)
 	for (int i = 0; i < numNewModels; i++)
@@ -176,7 +160,6 @@ void GeneticAlgorithm::runGeneration()
 	{
 		population.append(newModelArr[i]);
 	}
-	delete[] newModelArr;
 }
 
 std::vector<double> GeneticAlgorithm::getAvgFitnesses() const { return avgFitnesses; }
