@@ -9,7 +9,8 @@ set(ALG_SOURCES
 	SingleCrossingCombiner.cpp
 	GeneticAlgorithmFactory.cpp
 	Population.cpp
-	FitnessScores.cpp)
+	FitnessScores.cpp
+	Generation.cpp)
 	
 find_package(OpenMP REQUIRED)
 

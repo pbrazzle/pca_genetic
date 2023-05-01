@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "FitnessScores.hpp"
+#include "Generation.hpp"
 #include "model/ModelInputData.hpp"
 #include "model/GeneticModel.hpp"
 #include "GeneticTypes.hpp"
@@ -31,8 +32,7 @@ namespace PCAGenetic
 			std::unique_ptr<ParentSelector> parentSelect;
 			std::unique_ptr<ParentCombiner> parentComb;
 
-			Population population;
-			FitnessScores scores;
+			Generation generation;
 			std::vector<trainingItem> trainingData;
 
 			void runGeneration();
@@ -50,10 +50,6 @@ namespace PCAGenetic
 			void copyData(const GeneticAlgorithm& alg);
 			void copySettings(const GeneticAlgorithm& alg);
 			void copy(const GeneticAlgorithm& alg);
-
-			void initializeGeneration(const GeneticModel& modelTemplate);
-
-			ModelHandle createChildModel();
 
 		public:
 			GeneticAlgorithm();
